@@ -24,4 +24,9 @@
     <string name="text_no_note_id">No note id!</string>
     <string name="text_no_shared_flag">No shared flag!</string>
     <string name="text_hint_note">Type here…</string>
+    <string name="text_dismiss">Dismiss</string>
+    <string name="text_create">Create</string>
+    <string name="text_title_dialog_create">Create note</string>
+    <string name="text_hint_title">Note title...</string>
+    <string name="text_title_empty">Note title can\'t be empty!</string>
 </resources>

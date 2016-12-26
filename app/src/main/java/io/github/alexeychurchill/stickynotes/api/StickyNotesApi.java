@@ -33,7 +33,9 @@ public interface StickyNotesApi {
 //    void userUpdateNameLastName(String name, String lastName);
 //    void userSearch(String query);
     // Notes
-//    void noteCreate();
+    @FormUrlEncoded
+    @POST("/note/create")
+    Call<ServiceResponse<Object>> noteCreate(@Header("X-AccessToken") String token, @Field("title") String title);
     @GET("/note/{id}")
     Call<ServiceResponse<NoteFull>> noteGet(@Header("X-AccessToken") String token, @Path("id") int id);
     @FormUrlEncoded

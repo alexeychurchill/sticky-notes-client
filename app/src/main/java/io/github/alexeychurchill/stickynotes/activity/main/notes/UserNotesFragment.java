@@ -14,10 +14,13 @@ import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.activity.note.NoteActivity;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
+import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
+import io.github.alexeychurchill.stickynotes.dialog.CreateNoteDialogFragment;
 import io.github.alexeychurchill.stickynotes.model.NoteEntry;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListResponseDeserializer;
+import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,7 +31,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * User notes fragment
  */
 
-public class UserNotesFragment extends BaseNotesFragment {
+public class UserNotesFragment extends BaseNotesFragment implements
+        CreateNoteDialogFragment.CreateNoteListener {
     private int mPage = 0;
     private StickyNotesApi mApi;
     private String mAccessToken;
@@ -42,6 +46,7 @@ public class UserNotesFragment extends BaseNotesFragment {
         setFabVisible(true);
         // Gson
         Gson gson = new GsonBuilder()
+                .registerTypeAdapter(SimpleResponseDeserializer.TYPE, new SimpleResponseDeserializer())
                 .registerTypeAdapter(NoteEntryListResponseDeserializer.TYPE, new NoteEntryListResponseDeserializer())
                 .registerTypeAdapter(NoteEntryListDeserializer.TYPE, new NoteEntryListDeserializer())
                 .create();
@@ -58,7 +63,16 @@ public class UserNotesFragment extends BaseNotesFragment {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         mApi = retrofit.create(StickyNotesApi.class);
-        loadDataPage();
+        // Simple response callback
+        mSimpleResponseCallback = new SimpleResponseCallback(getContext()) {
+            @Override
+            public void onResponse(Call<ServiceResponse<Object>> call, Response<ServiceResponse<Object>> response) {
+                super.onResponse(call, response);
+                if(response.isSuccessful() && !response.body().isError()) {
+                    refresh();
+                }
+            }
+        };
     }
 
     private void loadDataPage() {
@@ -72,7 +86,13 @@ public class UserNotesFragment extends BaseNotesFragment {
         }
 //        setWaiting(true);
         Call<ServiceResponse<List<NoteEntry>>> call = mApi.noteGetList(mAccessToken, mPage);
-        call.enqueue(noteEntryListCallback);
+        call.enqueue(mNoteEntryListCallback);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        refresh();
     }
 
     @Override
@@ -84,7 +104,17 @@ public class UserNotesFragment extends BaseNotesFragment {
     }
 
     @Override
+    public void refresh() {
+        clearNotes();
+        mPage = 0;
+        loadDataPage();
+    }
+
+    @Override
     public void onFabClick() {
+        CreateNoteDialogFragment dialog = new CreateNoteDialogFragment();
+        dialog.setListener(this);
+        dialog.show(getActivity().getSupportFragmentManager(), "CreateNoteDialogFragment");
     }
 
     @Override
@@ -92,7 +122,9 @@ public class UserNotesFragment extends BaseNotesFragment {
         loadDataPage();
     }
 
-    Callback<ServiceResponse<List<NoteEntry>>> noteEntryListCallback = new Callback<ServiceResponse<List<NoteEntry>>>() {
+    private SimpleResponseCallback mSimpleResponseCallback;
+
+    private Callback<ServiceResponse<List<NoteEntry>>> mNoteEntryListCallback = new Callback<ServiceResponse<List<NoteEntry>>>() {
         @Override
         public void onResponse(Call<ServiceResponse<List<NoteEntry>>> call, Response<ServiceResponse<List<NoteEntry>>> response) {
             setWaiting(false);
@@ -129,4 +161,13 @@ public class UserNotesFragment extends BaseNotesFragment {
                     .show();
         }
     };
+
+    @Override
+    public void onCreateNote(String title) {
+        if (mAccessToken == null) {
+            return;
+        }
+        Call<ServiceResponse<Object>> call = mApi.noteCreate(mAccessToken, title);
+        call.enqueue(mSimpleResponseCallback);
+    }
 }
