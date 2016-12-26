@@ -24,4 +24,9 @@ public interface StickyNotesApi {
 //    void userUpdateLastName(String lastName);
 //    void userUpdateNameLastName(String name, String lastName);
 //    void userSearch(String query);
+//    void noteCreate();
+//    void noteGet();
+//    void noteUpdate();
+//    void noteGetList();
+//    void noteDelete();
 }

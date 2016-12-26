@@ -14,4 +14,6 @@
 
     <string name="text_menu_notes">Notes</string>
     <string name="text_menu_friends">Friends</string>
+    <string name="text_button_open">Open</string>
+    <string name="text_button_delete">Delete</string>
 </resources>

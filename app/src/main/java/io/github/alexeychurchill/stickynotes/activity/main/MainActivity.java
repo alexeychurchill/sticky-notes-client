@@ -4,15 +4,18 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import io.github.alexeychurchill.stickynotes.R;
+import io.github.alexeychurchill.stickynotes.activity.main.notes.UserNotesFragment;
 
 /**
  * Main application activity
@@ -23,7 +26,11 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     private String[] mMenuStrings;
     private Drawable[] mMenuDrawables;
+
+    private FrameLayout mFLContent;
+
     private Fragment mCurrentFragment;
+    private UserNotesFragment mUserNotesFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +52,14 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         if (btnLogout != null) {
             btnLogout.setOnClickListener(this);
         }
+        // Fragments
+        mUserNotesFragment = new UserNotesFragment();
+        mCurrentFragment = mUserNotesFragment;
+        // Initial fragment
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .add(R.id.flContent, mUserNotesFragment)
+                .commit();
     }
 
     private void initMenuData() {

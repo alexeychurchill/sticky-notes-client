@@ -5,4 +5,5 @@
     <dimen name="edit_text_login_screen_margin">50dp</dimen>
     <dimen name="navigation_panel_size">240dp</dimen>
     <dimen name="menu_item_image_margin">15dp</dimen>
+    <dimen name="note_item_padding">5dp</dimen>
 </resources>
