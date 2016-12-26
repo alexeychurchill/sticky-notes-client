@@ -1,6 +1,7 @@
 package io.github.alexeychurchill.stickynotes.activity.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.github.alexeychurchill.stickynotes.R;
+import io.github.alexeychurchill.stickynotes.activity.main.MainActivity;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 
 /**
@@ -93,7 +95,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onLoggedId(String accessToken) {
-        //...
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(mainActivityIntent);
+        finish();
     }
 
     private enum Action {
