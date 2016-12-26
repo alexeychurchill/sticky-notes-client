@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.notes;
+package io.github.alexeychurchill.stickynotes.listener;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

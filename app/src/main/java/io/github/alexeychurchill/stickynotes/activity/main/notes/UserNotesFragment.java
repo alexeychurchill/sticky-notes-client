@@ -1,6 +1,7 @@
 package io.github.alexeychurchill.stickynotes.activity.main.notes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
@@ -10,6 +11,7 @@ import com.google.gson.GsonBuilder;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
+import io.github.alexeychurchill.stickynotes.activity.note.NoteActivity;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.model.NoteEntry;
@@ -71,6 +73,14 @@ public class UserNotesFragment extends BaseNotesFragment {
 //        setWaiting(true);
         Call<ServiceResponse<List<NoteEntry>>> call = mApi.noteGetList(mAccessToken, mPage);
         call.enqueue(noteEntryListCallback);
+    }
+
+    @Override
+    public void onNoteOpen(NoteEntry noteEntry) {
+        Intent intent = new Intent(getActivity(), NoteActivity.class);
+        intent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteEntry.getId());
+        intent.putExtra(NoteActivity.EXTRA_NOTE_SHARED, false);
+        startActivity(intent);
     }
 
     @Override

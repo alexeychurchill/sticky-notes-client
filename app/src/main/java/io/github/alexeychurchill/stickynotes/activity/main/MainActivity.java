@@ -95,23 +95,26 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     }
 
     private void showNotesFragment() {
-        showFragment(mNotesFragment);
+        showFragment(mNotesFragment, false);
     }
 
     private void showFriendsFragment() {
         //showFragment(mFriendsFragment);
     }
 
-    private void showFragment(Fragment fragment) {
+    private void showFragment(Fragment fragment, boolean addToBackStack) {
         if (mCurrentFragment == fragment) {
             return;
         }
         mCurrentFragment = fragment;
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction()
+        FragmentTransaction transaction = manager.beginTransaction()
                 .replace(R.id.flContent, fragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
     }
 
     private void logout() {

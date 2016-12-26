@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.model.LoginResult;
 import io.github.alexeychurchill.stickynotes.model.NoteEntry;
+import io.github.alexeychurchill.stickynotes.model.NoteFull;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -19,6 +20,7 @@ import retrofit2.http.Path;
 
 
 public interface StickyNotesApi {
+    // Users
     @FormUrlEncoded
     @POST("/user/register")
     Call<ServiceResponse<Object>> userRegister(@Field("login") String login, @Field("password") String password);
@@ -30,10 +32,13 @@ public interface StickyNotesApi {
 //    void userUpdateLastName(String lastName);
 //    void userUpdateNameLastName(String name, String lastName);
 //    void userSearch(String query);
+    // Notes
 //    void noteCreate();
-//    @GET("/note/{id}")
-//    void noteGet();
-//    void noteUpdate();
+    @GET("/note/{id}")
+    Call<ServiceResponse<NoteFull>> noteGet(@Header("X-AccessToken") String token, @Path("id") int id);
+    @FormUrlEncoded
+    @POST("/note/{id}/update")
+    Call<ServiceResponse<Object>> noteUpdate(@Header("X-AccessToken") String token, @Path("id") int id, @Field("text") String text);
     @GET("/note/list/{page}")
     Call<ServiceResponse<List<NoteEntry>>> noteGetList(@Header("X-AccessToken") String token, @Path("page") int page);
 //    void noteDelete();

@@ -20,4 +20,8 @@
     <string name="text_no_base_url">No base URL!</string>
     <string name="text_title_page_user_notes">Notes</string>
     <string name="text_title_page_shared_notes">shared</string>
+    <string name="text_button_commit">Commit</string>
+    <string name="text_no_note_id">No note id!</string>
+    <string name="text_no_shared_flag">No shared flag!</string>
+    <string name="text_hint_note">Type here…</string>
 </resources>

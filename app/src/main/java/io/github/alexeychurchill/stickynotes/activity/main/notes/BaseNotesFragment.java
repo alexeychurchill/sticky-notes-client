@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
+import io.github.alexeychurchill.stickynotes.listener.EndlessRecyclerViewScrollListener;
 import io.github.alexeychurchill.stickynotes.model.NoteEntry;
 
 /**
@@ -47,6 +48,7 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
                 onListReachedEnd(page, totalItemsCount, view);
             }
         };
+        mNotesAdapter.setNoteEntryListener(this);
         mRVNotes.addOnScrollListener(scrollListener);
         mRVNotes.setAdapter(mNotesAdapter);
         mFab = ((FloatingActionButton) view.findViewById(R.id.fab));
