@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.activity.main.notes.UserNotesFragment;
+import io.github.alexeychurchill.stickynotes.activity.main.notes.NotesFragment;
 
 /**
  * Main application activity
@@ -27,10 +28,8 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     private String[] mMenuStrings;
     private Drawable[] mMenuDrawables;
 
-    private FrameLayout mFLContent;
-
     private Fragment mCurrentFragment;
-    private UserNotesFragment mUserNotesFragment;
+    private NotesFragment mNotesFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,18 +46,19 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         MenuAdapter menuAdapter = new MenuAdapter(this, mMenuStrings, mMenuDrawables);
         ListView lvMenu = ((ListView) findViewById(R.id.lvMenu));
         lvMenu.setAdapter(menuAdapter);
+        lvMenu.setOnItemClickListener(this);
         // Logout button event
         Button btnLogout = ((Button) findViewById(R.id.btnLogout));
         if (btnLogout != null) {
             btnLogout.setOnClickListener(this);
         }
         // Fragments
-        mUserNotesFragment = new UserNotesFragment();
-        mCurrentFragment = mUserNotesFragment;
+        mNotesFragment = new NotesFragment();
+        mCurrentFragment = mNotesFragment;
         // Initial fragment
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
-                .add(R.id.flContent, mUserNotesFragment)
+                .add(R.id.flContent, mNotesFragment)
                 .commit();
     }
 
@@ -95,11 +95,23 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     }
 
     private void showNotesFragment() {
-        //...
+        showFragment(mNotesFragment);
     }
 
     private void showFriendsFragment() {
-        //...
+        //showFragment(mFriendsFragment);
+    }
+
+    private void showFragment(Fragment fragment) {
+        if (mCurrentFragment == fragment) {
+            return;
+        }
+        mCurrentFragment = fragment;
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .replace(R.id.flContent, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 
     private void logout() {

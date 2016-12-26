@@ -78,6 +78,9 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
     public void onInit() {
     }
 
+    public void refresh() {
+    }
+
     public void setFabVisible(boolean visible) {
         mFab.setVisibility((visible) ? View.VISIBLE : View.INVISIBLE);
     }
