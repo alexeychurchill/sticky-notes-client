@@ -55,7 +55,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             mBtnLogin.setOnClickListener(this);
         }
         // Setting retrofit
-        String baseUrl = getActivity().getPreferences(Context.MODE_PRIVATE)
+        String baseUrl = getActivity()
+                .getSharedPreferences(AppConfig.APP_PREFERENCES, Context.MODE_PRIVATE)
                 .getString(AppConfig.SHARED_BASE_URL, "");
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(SimpleResponseDeserializer.TYPE, new SimpleResponseDeserializer())
@@ -119,7 +120,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 return;
             }
             LoginResult loginResult = loginResultResponse.getData();
-            getActivity().getPreferences(Context.MODE_PRIVATE)
+
+            getActivity()
+                    .getSharedPreferences(AppConfig.APP_PREFERENCES, Context.MODE_PRIVATE)
                     .edit()
                     .putString(AppConfig.SHARED_ACCESS_TOKEN, loginResult.getAccessToken())
                     .apply();

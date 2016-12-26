@@ -16,4 +16,6 @@
     <string name="text_menu_friends">Friends</string>
     <string name="text_button_open">Open</string>
     <string name="text_button_delete">Delete</string>
+    <string name="text_access_token_is_null">Access token is null</string>
+    <string name="text_no_base_url">No base URL!</string>
 </resources>

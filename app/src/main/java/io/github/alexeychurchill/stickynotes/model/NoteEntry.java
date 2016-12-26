@@ -1,5 +1,9 @@
 package io.github.alexeychurchill.stickynotes.model;
 
+import android.util.Log;
+
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Calendar;
 
 /**
@@ -7,12 +11,17 @@ import java.util.Calendar;
  */
 
 public class NoteEntry {
+    @SerializedName("id")
     private int id;
+    @SerializedName("title")
     private String title;
+    @SerializedName("subject")
     private String subject;
-    private String text;
+    @SerializedName("creation_date")
     private int createdDate;
+    @SerializedName("change_date")
     private int changedDate;
+    @SerializedName("owner_id")
     private int ownerId;
 
     public int getId() {
@@ -27,19 +36,15 @@ public class NoteEntry {
         return subject;
     }
 
-    public String getText() {
-        return text;
-    }
-
     public Calendar getCreatedDate() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(createdDate / 1000);
+        calendar.setTimeInMillis(createdDate * 1000);
         return calendar;
     }
 
     public Calendar getChangedDate() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(changedDate / 1000);
+        calendar.setTimeInMillis(((long) changedDate) * 1000);
         return calendar;
     }
 
