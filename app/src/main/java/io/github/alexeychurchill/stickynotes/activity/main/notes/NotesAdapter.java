@@ -20,6 +20,7 @@ import io.github.alexeychurchill.stickynotes.model.NoteEntry;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
     private List<NoteEntry> mNoteEntries;
     private NoteEntryListener mNoteEntryListener;
+    private boolean mShowDeleteButton = true;
 
     public void setNoteEntries(List<NoteEntry> noteEntries) {
         this.mNoteEntries = noteEntries;
@@ -27,6 +28,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public void setNoteEntryListener(NoteEntryListener noteEntryListener) {
         this.mNoteEntryListener = noteEntryListener;
+    }
+
+    public void setShowDeleteButton(boolean showDeleteButton) {
+        this.mShowDeleteButton = showDeleteButton;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -38,7 +44,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(mNoteEntries.get(position), mNoteEntryListener);
+        holder.bind(mNoteEntries.get(position), mNoteEntryListener, mShowDeleteButton);
     }
 
     @Override
@@ -57,6 +63,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         private TextView mTVDate;
         private NoteEntryListener mNoteEntryListener;
         private NoteEntry mNoteEntry;
+        private Button mBtnDelete;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -78,9 +85,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 });
             }
             // Delete button
-            Button btnDelete = ((Button) itemView.findViewById(R.id.btnDelete));
-            if (btnDelete != null) {
-                btnDelete.setOnClickListener(new View.OnClickListener() {
+            mBtnDelete = ((Button) itemView.findViewById(R.id.btnDelete));
+            if (mBtnDelete != null) {
+                mBtnDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (mNoteEntryListener != null) {
@@ -91,7 +98,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             }
         }
 
-        public void bind(NoteEntry noteEntry, NoteEntryListener listener) {
+        public void bind(NoteEntry noteEntry, NoteEntryListener listener, boolean showDelete) {
             mNoteEntryListener = listener;
             mNoteEntry = noteEntry;
             mTVTitle.setText(noteEntry.getTitle());
@@ -102,6 +109,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 mTVSubject.setVisibility(View.VISIBLE);
                 mTVSubject.setText(noteEntry.getSubject());
             }
+            // Delete button
+            mBtnDelete.setVisibility((showDelete) ? View.VISIBLE : View.GONE);
             // Date
             String dateString =
                     String.format(Locale.getDefault(), "%1$tH:%1$tM %1$td.%1$tm.%1$tY", noteEntry.getChangedDate());

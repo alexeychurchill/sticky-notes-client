@@ -59,6 +59,10 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
         return view;
     }
 
+    public void setShowItemDeleteButton(boolean show) {
+        mNotesAdapter.setShowDeleteButton(show);
+    }
+
     public List<NoteEntry> getNoteEntries() {
         return mNoteEntries;
     }
