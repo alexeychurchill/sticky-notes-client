@@ -8,5 +8,7 @@
     <string name="text_button_back_login">back</string>
     <string name="text_big_register">Register</string>
     <string name="text_button_register">Register</string>
+    <string name="text_failure">Failure!</string>
+    <string name="text_logged_in">Logged in!</string>
 
 </resources>

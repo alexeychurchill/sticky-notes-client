@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 public interface StickyNotesApi {
     @FormUrlEncoded
     @POST("/user/register")
-    Call<ServiceResponse> userRegister(@Field("login") String login, @Field("password") String password);
+    Call<ServiceResponse<Object>> userRegister(@Field("login") String login, @Field("password") String password);
     @FormUrlEncoded
     @POST("/user/login")
     Call<ServiceResponse<LoginResult>> userLogin(@Field("login") String login, @Field("password") String password);

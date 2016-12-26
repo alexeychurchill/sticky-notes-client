@@ -1,5 +1,7 @@
 package io.github.alexeychurchill.stickynotes.activity.login;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,12 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.github.alexeychurchill.stickynotes.R;
+import io.github.alexeychurchill.stickynotes.api.AppConfig;
 
 /**
  * Login and register activity
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
+        OnLoggedInListener {
     private LoginFragment mLoginFragment;
     private RegisterFragment mRegisterFragment;
     private TextView mTVButtonActionTitle;
@@ -26,7 +30,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        preferences.edit()
+                .putString(AppConfig.SHARED_BASE_URL, AppConfig.BASE_URL) // TODO: 26.12.2016 Delete
+                .apply();
         mLoginFragment = new LoginFragment();
+        mLoginFragment.setLoggedInListener(this);
         mRegisterFragment = new RegisterFragment();
         // Initial fragment
         FragmentManager manager = getSupportFragmentManager();
@@ -80,6 +89,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .replace(R.id.flFragmentContainer, fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
+    }
+
+    @Override
+    public void onLoggedId(String accessToken) {
+        //...
     }
 
     private enum Action {

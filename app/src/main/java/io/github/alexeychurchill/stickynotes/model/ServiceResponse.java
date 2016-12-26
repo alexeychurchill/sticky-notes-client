@@ -26,27 +26,34 @@ public class ServiceResponse<T> {
         return data;
     }
 
-    public static class Builder<T> {
+    public boolean containsData() {
+        return data != null;
+    }
 
+    public static class Builder<T> {
         private int code = 0;
         private boolean error = false;
         private String message = "";
         private T data;
-        public Builder setError(int code, String message) {
+
+        public Builder<T> setResponse(boolean error, int code, String message) {
+            this.error = error;
             this.code = code;
             this.message = message;
-            error = true;
             return this;
         }
 
-        public Builder setMessage(int code, String message) {
-            this.code = code;
-            this.message = message;
-            error = false;
+        public Builder<T> setError(int code, String message) {
+            setResponse(true, code, message);
             return this;
         }
 
-        public Builder setData(T data) {
+        public Builder<T> setMessage(int code, String message) {
+            setResponse(false, code, message);
+            return this;
+        }
+
+        public Builder<T> setData(T data) {
             this.data = data;
             return this;
         }
