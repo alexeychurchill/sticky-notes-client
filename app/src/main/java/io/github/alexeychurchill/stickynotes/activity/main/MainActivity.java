@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import io.github.alexeychurchill.stickynotes.R;
+import io.github.alexeychurchill.stickynotes.activity.main.friends.fragment.FriendsFragment;
 import io.github.alexeychurchill.stickynotes.activity.main.friends.fragment.IncomingFriendRequestListFragment;
 import io.github.alexeychurchill.stickynotes.activity.main.notes.fragment.NotesFragment;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     private Fragment mCurrentFragment;
     private NotesFragment mNotesFragment;
+    private FriendsFragment mFriendsFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         }
         // Fragments
         mNotesFragment = new NotesFragment();
+        mFriendsFragment = new FriendsFragment();
         mCurrentFragment = mNotesFragment;
         // Initial fragment
         FragmentManager manager = getSupportFragmentManager();
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     }
 
     private void showFriendsFragment() {
-        showFragment(new IncomingFriendRequestListFragment(), false);
+        showFragment(mFriendsFragment, false);
     }
 
     private void showFragment(Fragment fragment, boolean addToBackStack) {

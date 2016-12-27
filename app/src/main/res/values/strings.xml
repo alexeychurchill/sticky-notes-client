@@ -31,4 +31,7 @@
     <string name="text_title_empty">Note title can\'t be empty!</string>
     <string name="text_button_accept">Accept</string>
     <string name="text_button_reject">Reject</string>
+    <string name="text_title_incoming">Incoming</string>
+    <string name="text_title_friends">Friends</string>
+    <string name="text_title_by_user">By user</string>
 </resources>
