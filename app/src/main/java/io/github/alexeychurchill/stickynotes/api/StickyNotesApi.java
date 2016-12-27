@@ -35,6 +35,7 @@ public interface StickyNotesApi {
 //    void userUpdateLastName(String lastName);
 //    void userUpdateNameLastName(String name, String lastName);
 //    void userSearch(String query);
+
     // Notes
     @FormUrlEncoded
     @POST("/note/create")
@@ -47,7 +48,9 @@ public interface StickyNotesApi {
     //...edit metadata method...
     @GET("/note/list/{page}")
     Call<ServiceResponse<List<NoteEntry>>> noteGetList(@Header("X-AccessToken") String token, @Path("page") int page);
-//    void noteDelete();
+    @POST("/note/{id}/delete")
+    Call<ServiceResponse<Object>> noteDelete(@Header("X-AccessToken") String token, @Path("id") int id);
+
     // Shared notes
 //    void sharedShare();
 //    void sharedUnshare();

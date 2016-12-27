@@ -27,7 +27,7 @@
     <string name="text_dismiss">Dismiss</string>
     <string name="text_create">Create</string>
     <string name="text_title_dialog_create">Create note</string>
-    <string name="text_hint_title">Note title...</string>
+    <string name="text_hint_title">Note title…</string>
     <string name="text_title_empty">Note title can\'t be empty!</string>
     <string name="text_button_accept">Accept</string>
     <string name="text_button_reject">Reject</string>
@@ -35,4 +35,6 @@
     <string name="text_title_friends">Friends</string>
     <string name="text_title_by_user">By user</string>
     <string name="text_button_cancel">Cancel</string>
+    <string name="text_title_dialog_delete">Delete note</string>
+    <string name="text_formatter_delete_note">Are you sure want to delete <b>%s</b>?</string>
 </resources>
