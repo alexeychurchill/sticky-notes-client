@@ -18,6 +18,7 @@ import android.widget.ListView;
 import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.activity.main.friends.FriendsListFragment;
 import io.github.alexeychurchill.stickynotes.activity.main.notes.NotesFragment;
+import io.github.alexeychurchill.stickynotes.activity.main.notes.UserNotesFragment;
 
 /**
  * Main application activity
@@ -96,17 +97,17 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     }
 
     private void showNotesFragment() {
-        showFragment(new NotesFragment(), false);
+        showFragment(mNotesFragment, false);
     }
 
     private void showFriendsFragment() {
-        showFragment(new FriendsListFragment(), false);
+//        showFragment(new FriendsListFragment(), false);
     }
 
     private void showFragment(Fragment fragment, boolean addToBackStack) {
-//        if (mCurrentFragment == fragment) {
-//            return;
-//        }
+        if (mCurrentFragment == fragment) {
+            return;
+        }
         mCurrentFragment = fragment;
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction()

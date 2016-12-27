@@ -41,7 +41,8 @@ public class NotesFragment extends Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        getChildFragmentManager();
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(
                 mUserNotesFragment,
                 getContext().getString(R.string.text_title_page_user_notes)
