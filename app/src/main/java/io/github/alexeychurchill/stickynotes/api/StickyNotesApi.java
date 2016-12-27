@@ -7,6 +7,7 @@ import io.github.alexeychurchill.stickynotes.model.NoteEntry;
 import io.github.alexeychurchill.stickynotes.model.NoteFull;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.SharedNoteFull;
+import io.github.alexeychurchill.stickynotes.model.User;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -57,4 +58,13 @@ public interface StickyNotesApi {
     @FormUrlEncoded
     @POST("/shared/{id}/update")
     Call<ServiceResponse<Object>> sharedUpdate(@Header("X-AccessToken") String token, @Path("id") int id, @Field("text") String text);
+    // Friends API
+//    void friendRequest();
+//    void friendAcceptRequest();
+//    void friendDeleteRequest();
+//    void friendGetMyRequests();
+//    void friendGetRequests();
+    @GET("/friend/list/{page}")
+    Call<ServiceResponse<List<User>>> friendGetList(@Header("X-AccessToken") String token, @Path("page") int page);
+//    void friendUnfriend();
 }
