@@ -22,6 +22,7 @@ public abstract class UserListAdapter<U> extends RecyclerView.Adapter<UserListAd
 
     public void setDataList(List<U> dataList) {
         this.mDataList = dataList;
+        notifyDataSetChanged();
     }
 
     public void setActionListener(OnUserListActionListener actionListener) {
@@ -153,7 +154,7 @@ public abstract class UserListAdapter<U> extends RecyclerView.Adapter<UserListAd
                 mTVSecondLine.setText(user.getLogin());
             } else {
                 mTVFirstLine.setText(user.getLogin());
-                mTVSecondLine.setVisibility(View.INVISIBLE);
+                mTVSecondLine.setVisibility(View.GONE);
             }
         }
 
