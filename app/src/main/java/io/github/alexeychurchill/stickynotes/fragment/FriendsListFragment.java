@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.friends.fragment;
+package io.github.alexeychurchill.stickynotes.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.activity.main.friends.adapter.SimpleUserListAdapter;
-import io.github.alexeychurchill.stickynotes.activity.main.friends.adapter.UserListAdapter;
+import io.github.alexeychurchill.stickynotes.adapter.SimpleUserListAdapter;
+import io.github.alexeychurchill.stickynotes.adapter.UserListAdapter;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;

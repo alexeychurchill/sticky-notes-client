@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.login;
+package io.github.alexeychurchill.stickynotes.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
+import io.github.alexeychurchill.stickynotes.listener.OnLoggedInListener;
 import io.github.alexeychurchill.stickynotes.model.LoginResult;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.deserializer.LoginResultDeserializer;

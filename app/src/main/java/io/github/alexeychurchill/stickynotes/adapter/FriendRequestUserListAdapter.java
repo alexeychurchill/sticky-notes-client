@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.friends.adapter;
+package io.github.alexeychurchill.stickynotes.adapter;
 
 import java.util.Locale;
 

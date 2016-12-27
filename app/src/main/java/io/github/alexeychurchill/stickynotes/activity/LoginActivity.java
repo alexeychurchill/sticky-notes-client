@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.login;
+package io.github.alexeychurchill.stickynotes.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.activity.main.MainActivity;
+import io.github.alexeychurchill.stickynotes.fragment.LoginFragment;
+import io.github.alexeychurchill.stickynotes.listener.OnLoggedInListener;
+import io.github.alexeychurchill.stickynotes.fragment.RegisterFragment;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 
 /**

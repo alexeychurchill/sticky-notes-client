@@ -1,11 +1,10 @@
-package io.github.alexeychurchill.stickynotes.activity.main.friends.fragment;
+package io.github.alexeychurchill.stickynotes.fragment;
 
 import android.view.View;
 
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.model.FriendRequest;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import retrofit2.Call;

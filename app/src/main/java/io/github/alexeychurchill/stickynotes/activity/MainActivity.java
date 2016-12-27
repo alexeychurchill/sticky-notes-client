@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main;
+package io.github.alexeychurchill.stickynotes.activity;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,9 +15,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.activity.main.friends.fragment.FriendsFragment;
-import io.github.alexeychurchill.stickynotes.activity.main.friends.fragment.IncomingFriendRequestListFragment;
-import io.github.alexeychurchill.stickynotes.activity.main.notes.fragment.NotesFragment;
+import io.github.alexeychurchill.stickynotes.adapter.MenuAdapter;
+import io.github.alexeychurchill.stickynotes.fragment.FriendsFragment;
+import io.github.alexeychurchill.stickynotes.fragment.NotesFragment;
 
 /**
  * Main application activity

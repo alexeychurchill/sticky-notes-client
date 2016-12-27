@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main;
+package io.github.alexeychurchill.stickynotes.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

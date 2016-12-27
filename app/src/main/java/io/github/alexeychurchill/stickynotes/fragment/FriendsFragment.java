@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.friends.fragment;
+package io.github.alexeychurchill.stickynotes.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;

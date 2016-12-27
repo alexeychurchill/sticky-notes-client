@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.notes.adapter;
+package io.github.alexeychurchill.stickynotes.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

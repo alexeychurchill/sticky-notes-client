@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.login;
+package io.github.alexeychurchill.stickynotes.listener;
 
 /**
  * Login listener
