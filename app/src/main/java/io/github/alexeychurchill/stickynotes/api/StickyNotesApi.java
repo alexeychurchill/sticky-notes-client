@@ -60,14 +60,18 @@ public interface StickyNotesApi {
     @POST("/shared/{id}/update")
     Call<ServiceResponse<Object>> sharedUpdate(@Header("X-AccessToken") String token, @Path("id") int id, @Field("text") String text);
     // Friends API
+
 //    void friendRequest();
-//    void friendAcceptRequest();
-//    void friendDeleteRequest();
+    @POST("/friend/request/{id}/accept")
+    Call<ServiceResponse<Object>> friendAcceptRequest(@Header("X-AccessToken") String token, @Path("id") int id);
+    @POST("/friend/request/{id}/delete")
+    Call<ServiceResponse<Object>> friendDeleteRequest(@Header("X-AccessToken") String token, @Path("id") int id);
+    @POST("/friend/{id}/unfriend")
+    Call<ServiceResponse<Object>> friendUnfriend(@Header("X-AccessToken") String token, @Path("id") int id);
     @GET("/friend/requests/my/{page}")
     Call<ServiceResponse<List<FriendRequest>>> friendGetMyRequests(@Header("X-AccessToken") String token, @Path("page") int page);
-    @GET("/friend/requests/{page}")
-    Call<ServiceResponse<List<FriendRequest>>> friendGetRequests(@Header("X-AccessToken") String token, @Path("page") int page);
     @GET("/friend/list/{page}")
     Call<ServiceResponse<List<User>>> friendGetList(@Header("X-AccessToken") String token, @Path("page") int page);
-//    void friendUnfriend();
+    @GET("/friend/requests/{page}")
+    Call<ServiceResponse<List<FriendRequest>>> friendGetRequests(@Header("X-AccessToken") String token, @Path("page") int page);
 }

@@ -39,6 +39,22 @@ public class IncomingFriendRequestListFragment extends FriendRequestListFragment
     }
 
     @Override
+    protected Call<ServiceResponse<Object>> getActionOneCall(FriendRequest friendRequest) {
+        if (getApi() == null || getAccessToken() == null) {
+            return null;
+        }
+        return getApi().friendAcceptRequest(getAccessToken(), friendRequest.getId());
+    }
+
+    @Override
+    protected Call<ServiceResponse<Object>> getActionTwoCall(FriendRequest friendRequest) {
+        if (getApi() == null || getAccessToken() == null) {
+            return null;
+        }
+        return getApi().friendDeleteRequest(getAccessToken(), friendRequest.getId());
+    }
+
+    @Override
     protected void onInit(View view) {
         super.onInit(view);
         // Actions titles
@@ -48,14 +64,9 @@ public class IncomingFriendRequestListFragment extends FriendRequestListFragment
 
     @Override
     protected Call<ServiceResponse<List<FriendRequest>>> getLoadDataPageCall(int page) {
-        StickyNotesApi api = getApi();
-        if (api == null) {
+        if (getApi() == null || getAccessToken() == null) {
             return null;
         }
-        String accessToken = getAccessToken();
-        if (accessToken == null) {
-            return null;
-        }
-        return api.friendGetRequests(accessToken, page);
+        return getApi().friendGetRequests(getAccessToken(), page);
     }
 }

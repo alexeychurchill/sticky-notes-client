@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -23,9 +24,11 @@ import io.github.alexeychurchill.stickynotes.activity.main.friends.adapter.Simpl
 import io.github.alexeychurchill.stickynotes.activity.main.friends.adapter.UserListAdapter;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
+import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
 import io.github.alexeychurchill.stickynotes.listener.EndlessRecyclerViewScrollListener;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.User;
+import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.UserListDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.UserListResponseDeserializer;
 import retrofit2.Call;
@@ -44,6 +47,11 @@ public class FriendsListFragment extends Fragment implements
     private List<User> mUserList = new ArrayList<>();
     private int mPage = 0;
     private SimpleUserListAdapter mAdapter;
+    private SimpleResponseCallback mSimpleResponseCallback;
+
+    private ProgressBar mPBWait;
+    private RecyclerView mRVFriends;
+    private FloatingActionButton mFab;
 
     private StickyNotesApi mApi;
     private String mAccessToken;
@@ -52,24 +60,25 @@ public class FriendsListFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend_list, container, false);
+        mPBWait = ((ProgressBar) view.findViewById(R.id.pbWait));
         // Action title
         mActionOneTitle = getString(R.string.text_button_delete);
         // FAB
-        FloatingActionButton fab = ((FloatingActionButton) view.findViewById(R.id.fab));
-        if (fab != null) {
-            fab.setOnClickListener(this);
+        mFab = ((FloatingActionButton) view.findViewById(R.id.fab));
+        if (mFab != null) {
+            mFab.setOnClickListener(this);
         }
         // RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mAdapter = new SimpleUserListAdapter();
-        RecyclerView rvFriends = ((RecyclerView) view.findViewById(R.id.rvFriends));
-        if (rvFriends != null) {
-            rvFriends.setLayoutManager(layoutManager);
-            rvFriends.setAdapter(mAdapter);
-            rvFriends.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+        mRVFriends = ((RecyclerView) view.findViewById(R.id.rvFriends));
+        if (mRVFriends != null) {
+            mRVFriends.setLayoutManager(layoutManager);
+            mRVFriends.setAdapter(mAdapter);
+            mRVFriends.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                    callLoadData();
+                    loadDataPage();
                 }
             });
         }
@@ -91,6 +100,7 @@ public class FriendsListFragment extends Fragment implements
         }
 
         Gson gson = new GsonBuilder()
+                .registerTypeAdapter(SimpleResponseDeserializer.TYPE, new SimpleResponseDeserializer())
                 .registerTypeAdapter(UserListDeserializer.TYPE, new UserListDeserializer())
                 .registerTypeAdapter(UserListResponseDeserializer.TYPE, new UserListResponseDeserializer())
                 .create();
@@ -99,6 +109,17 @@ public class FriendsListFragment extends Fragment implements
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         mApi = retrofit.create(StickyNotesApi.class);
+
+        mSimpleResponseCallback = new SimpleResponseCallback(getContext()) {
+            @Override
+            public void onResponse(Call<ServiceResponse<Object>> call, Response<ServiceResponse<Object>> response) {
+                setWaiting(false);
+                super.onResponse(call, response);
+                if (response.isSuccessful() && !response.body().isError()) {
+                    refresh();
+                }
+            }
+        };
 
         return view;
     }
@@ -121,6 +142,12 @@ public class FriendsListFragment extends Fragment implements
 
     @Override
     public void onUserListActionOne(int position) {
+        if (mAccessToken == null || mApi == null) {
+            return;
+        }
+        User friend = mUserList.get(position);
+        Call<ServiceResponse<Object>> call = mApi.friendUnfriend(mAccessToken, friend.getId());
+        call.enqueue(mSimpleResponseCallback);
     }
 
     @Override
@@ -149,7 +176,17 @@ public class FriendsListFragment extends Fragment implements
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fab) {
-            callAddFriends();
+            addFriends();
+        }
+    }
+
+    private void setWaiting(boolean waiting) {
+        mPBWait.setVisibility((waiting) ? View.VISIBLE : View.INVISIBLE);
+        mRVFriends.setVisibility((waiting) ? View.INVISIBLE : View.VISIBLE);
+        if (waiting) {
+            mFab.hide();
+        } else {
+            mFab.show();
         }
     }
 
@@ -164,19 +201,18 @@ public class FriendsListFragment extends Fragment implements
     }
 
     private void refresh() {
+        setWaiting(true);
         clearData();
         mPage = 0;
-        callLoadData();
+        loadDataPage();
     }
 
-    private void callAddFriends() {
+    private void addFriends() {
         //...
     }
 
-    private void callLoadData() {
-        if (mAccessToken == null) {
-            Toast.makeText(getContext(), R.string.text_access_token_is_null, Toast.LENGTH_SHORT)
-                    .show();
+    private void loadDataPage() {
+        if (mApi == null || mAccessToken == null) {
             return;
         }
         Call<ServiceResponse<List<User>>> call = mApi.friendGetList(mAccessToken, mPage);
@@ -186,6 +222,7 @@ public class FriendsListFragment extends Fragment implements
     private Callback<ServiceResponse<List<User>>> mUserListCallback = new Callback<ServiceResponse<List<User>>>() {
         @Override
         public void onResponse(Call<ServiceResponse<List<User>>> call, Response<ServiceResponse<List<User>>> response) {
+            setWaiting(false);
             if (!response.isSuccessful()) {
                 Toast.makeText(
                         getActivity(),

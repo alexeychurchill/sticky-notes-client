@@ -34,4 +34,5 @@
     <string name="text_title_incoming">Incoming</string>
     <string name="text_title_friends">Friends</string>
     <string name="text_title_by_user">By user</string>
+    <string name="text_button_cancel">Cancel</string>
 </resources>
