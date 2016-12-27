@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.notes;
+package io.github.alexeychurchill.stickynotes.activity.main.notes.fragment;
 
 import android.content.Context;
 import android.content.Intent;

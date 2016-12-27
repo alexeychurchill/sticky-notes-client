@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.notes;
+package io.github.alexeychurchill.stickynotes.activity.main.notes.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
+import io.github.alexeychurchill.stickynotes.activity.main.notes.adapter.NotesAdapter;
 import io.github.alexeychurchill.stickynotes.listener.EndlessRecyclerViewScrollListener;
 import io.github.alexeychurchill.stickynotes.model.NoteEntry;
 

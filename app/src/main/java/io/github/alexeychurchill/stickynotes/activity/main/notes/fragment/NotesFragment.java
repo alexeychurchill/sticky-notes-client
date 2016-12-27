@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.notes;
+package io.github.alexeychurchill.stickynotes.activity.main.notes.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

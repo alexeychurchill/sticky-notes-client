@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.friends;
+package io.github.alexeychurchill.stickynotes.activity.main.friends.adapter;
 
 import io.github.alexeychurchill.stickynotes.model.User;
 

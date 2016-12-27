@@ -12,13 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.activity.main.friends.FriendsListFragment;
-import io.github.alexeychurchill.stickynotes.activity.main.notes.NotesFragment;
-import io.github.alexeychurchill.stickynotes.activity.main.notes.UserNotesFragment;
+import io.github.alexeychurchill.stickynotes.activity.main.friends.fragment.IncomingFriendRequestListFragment;
+import io.github.alexeychurchill.stickynotes.activity.main.notes.fragment.NotesFragment;
 
 /**
  * Main application activity
@@ -101,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     }
 
     private void showFriendsFragment() {
-//        showFragment(new FriendsListFragment(), false);
+        showFragment(new IncomingFriendRequestListFragment(), false);
     }
 
     private void showFragment(Fragment fragment, boolean addToBackStack) {

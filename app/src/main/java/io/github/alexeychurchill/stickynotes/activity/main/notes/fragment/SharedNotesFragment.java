@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity.main.notes;
+package io.github.alexeychurchill.stickynotes.activity.main.notes.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,16 +11,13 @@ import com.google.gson.GsonBuilder;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.activity.main.notes.NotesAdapter.NoteEntryListener;
 import io.github.alexeychurchill.stickynotes.activity.note.NoteActivity;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
-import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
 import io.github.alexeychurchill.stickynotes.model.NoteEntry;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListResponseDeserializer;
-import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

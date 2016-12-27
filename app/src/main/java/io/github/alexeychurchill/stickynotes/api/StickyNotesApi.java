@@ -2,6 +2,7 @@ package io.github.alexeychurchill.stickynotes.api;
 
 import java.util.List;
 
+import io.github.alexeychurchill.stickynotes.model.FriendRequest;
 import io.github.alexeychurchill.stickynotes.model.LoginResult;
 import io.github.alexeychurchill.stickynotes.model.NoteEntry;
 import io.github.alexeychurchill.stickynotes.model.NoteFull;
@@ -62,8 +63,10 @@ public interface StickyNotesApi {
 //    void friendRequest();
 //    void friendAcceptRequest();
 //    void friendDeleteRequest();
-//    void friendGetMyRequests();
-//    void friendGetRequests();
+    @GET("/friend/requests/my/{page}")
+    Call<ServiceResponse<List<FriendRequest>>> friendGetMyRequests(@Header("X-AccessToken") String token, @Path("page") int page);
+    @GET("/friend/requests/{page}")
+    Call<ServiceResponse<List<FriendRequest>>> friendGetRequests(@Header("X-AccessToken") String token, @Path("page") int page);
     @GET("/friend/list/{page}")
     Call<ServiceResponse<List<User>>> friendGetList(@Header("X-AccessToken") String token, @Path("page") int page);
 //    void friendUnfriend();
