@@ -20,7 +20,9 @@ import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
 import io.github.alexeychurchill.stickynotes.model.NoteFull;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
+import io.github.alexeychurchill.stickynotes.model.SharedNoteFull;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteFullResponseDeserializer;
+import io.github.alexeychurchill.stickynotes.model.deserializer.SharedNoteResponseDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -87,7 +89,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         Gson gson = new GsonBuilder()
-                // TODO: register for shared note
+                .registerTypeAdapter(SharedNoteResponseDeserializer.TYPE, new SharedNoteResponseDeserializer())
                 .registerTypeAdapter(NoteFullResponseDeserializer.TYPE, new NoteFullResponseDeserializer())
                 .registerTypeAdapter(SimpleResponseDeserializer.TYPE, new SimpleResponseDeserializer())
                 .create();
@@ -141,6 +143,20 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         mFab.show();
     }
 
+    private void setNote(SharedNoteFull note) {
+        mNote = note.getNote();
+        mEditable = note.canEdit();
+        mHasNote = true;
+        mETNoteText.setText(mNote.getText());
+        mETNoteText.setClickable(mEditable);
+        mETNoteText.setFocusable(mEditable);
+        if (mEditable) {
+            mFab.show();
+        } else {
+            mFab.hide();
+        }
+    }
+
     private void setWaiting(boolean waiting) {
         if (waiting) {
             mFab.hide();
@@ -157,7 +173,8 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         }
         setWaiting(true);
         if (mShared) {
-            // call for shared note
+            Call<ServiceResponse<SharedNoteFull>> call = mApi.sharedGet(mAccessToken, mNoteId);
+            call.enqueue(mSharedNoteCallback);
         } else { // users note call
             Call<ServiceResponse<NoteFull>> call = mApi.noteGet(mAccessToken, mNoteId);
             call.enqueue(mNoteCallback);
@@ -169,10 +186,19 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         if (mShared) {
-            // call shared update
+            callSharedNoteUpdate();
         } else {
             callUserNoteUpdate();
         }
+    }
+
+    private void callSharedNoteUpdate() {
+        if (!mEditable) {
+            return;
+        }
+        String newText = mETNoteText.getText().toString();
+        Call<ServiceResponse<Object>> call = mApi.sharedUpdate(mAccessToken, mNote.getId(), newText);
+        call.enqueue(mSimpleResponseCallback);
     }
 
     private void callUserNoteUpdate() {
@@ -210,6 +236,38 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onFailure(Call<ServiceResponse<NoteFull>> call, Throwable t) {
+            Toast.makeText(NoteActivity.this, R.string.text_failure, Toast.LENGTH_SHORT)
+                    .show();
+        }
+    };
+
+    private Callback<ServiceResponse<SharedNoteFull>> mSharedNoteCallback = new Callback<ServiceResponse<SharedNoteFull>>() {
+        @Override
+        public void onResponse(Call<ServiceResponse<SharedNoteFull>> call, Response<ServiceResponse<SharedNoteFull>> response) {
+            setWaiting(false);
+            if (!response.isSuccessful()) {
+                Toast.makeText(
+                        NoteActivity.this,
+                        response.message()
+                                .concat(" (")
+                                .concat(String.valueOf(response.code()))
+                                .concat(")"),
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+            ServiceResponse<SharedNoteFull> sharedNoteResponse = response.body();
+            if (sharedNoteResponse.isError() && !sharedNoteResponse.containsData()) {
+                Toast.makeText(NoteActivity.this, sharedNoteResponse.getMessage(), Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
+            SharedNoteFull sharedNoteFull = sharedNoteResponse.getData();
+            setNote(sharedNoteFull);
+        }
+
+        @Override
+        public void onFailure(Call<ServiceResponse<SharedNoteFull>> call, Throwable t) {
             Toast.makeText(NoteActivity.this, R.string.text_failure, Toast.LENGTH_SHORT)
                     .show();
         }
