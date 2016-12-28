@@ -87,6 +87,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private void callLogin() {
         String login = mETLogin.getText().toString();
         String password = mETPassword.getText().toString();
+        if (login.contains(" ")) {
+            Toast.makeText(getContext(), R.string.text_login_contains_space, Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        if (login.isEmpty() || password.isEmpty()) {
+            Toast.makeText(getContext(), R.string.text_login_or_password_is_empty, Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
         setWaiting(true);
         Call<ServiceResponse<LoginResult>> loginCall = mApi.userLogin(login, password);
         loginCall.enqueue(loginCallback);

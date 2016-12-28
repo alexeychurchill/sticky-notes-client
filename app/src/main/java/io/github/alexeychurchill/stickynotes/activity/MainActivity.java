@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     private void initMenuData() {
         mMenuStrings = new String[] {
-                getResources().getString(R.string.text_menu_notes),
-                getResources().getString(R.string.text_menu_friends)
+                getResources().getString(R.string.text_main_menu_notes),
+                getResources().getString(R.string.text_main_menu_friends)
         };
         mMenuDrawables = new Drawable[] {
                 ContextCompat.getDrawable(this, R.drawable.ic_note_white_36dp),

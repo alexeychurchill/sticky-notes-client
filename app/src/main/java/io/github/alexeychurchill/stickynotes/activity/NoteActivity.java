@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -117,6 +119,50 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         }
         mShared = intent.getBooleanExtra(EXTRA_NOTE_SHARED, mShared);
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.note_edit, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (mShared) {
+            menuSwitchShared(menu);
+        } else {
+            menuSwitchOwn(menu);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void menuSwitchShared(Menu menu) {
+        for (int menuNumber = 0; menuNumber < menu.size(); menuNumber++) {
+            MenuItem menuItem = menu.getItem(menuNumber);
+            switch (menuItem.getItemId()) {
+                case R.id.menuSharedTo:
+                case R.id.menuShareNote:
+                    menuItem.setVisible(true);
+                    break;
+                case R.id.menuEditMetadata:
+                    menuItem.setVisible(false);
+            }
+        }
+    }
+
+    private void menuSwitchOwn(Menu menu) {
+        for (int menuNumber = 0; menuNumber < menu.size(); menuNumber++) {
+            MenuItem menuItem = menu.getItem(menuNumber);
+            switch (menuItem.getItemId()) {
+                case R.id.menuSharedTo:
+                case R.id.menuShareNote:
+                    menuItem.setVisible(false);
+                    break;
+                case R.id.menuEditMetadata:
+                    menuItem.setVisible(true);
+            }
+        }
     }
 
     @Override
