@@ -34,7 +34,9 @@ public interface StickyNotesApi {
 //    void userUpdateName(String name);
 //    void userUpdateLastName(String lastName);
 //    void userUpdateNameLastName(String name, String lastName);
-//    void userSearch(String query);
+    @FormUrlEncoded
+    @POST("/user/search")
+    Call<ServiceResponse<List<User>>> userSearch(@Header("X-AccessToken") String token, @Field("query") String query);
 
     // Notes
     @FormUrlEncoded
@@ -64,7 +66,8 @@ public interface StickyNotesApi {
     Call<ServiceResponse<Object>> sharedUpdate(@Header("X-AccessToken") String token, @Path("id") int id, @Field("text") String text);
     // Friends API
 
-//    void friendRequest();
+    @POST("/friend/request/make/{user_id}")
+    Call<ServiceResponse<Object>> friendRequest(@Header("X-AccessToken") String token, @Path("user_id") int userId);
     @POST("/friend/request/{id}/accept")
     Call<ServiceResponse<Object>> friendAcceptRequest(@Header("X-AccessToken") String token, @Path("id") int id);
     @POST("/friend/request/{id}/delete")

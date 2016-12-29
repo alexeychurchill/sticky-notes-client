@@ -43,4 +43,7 @@
     <string name="text_menu_comments">Comments</string>
     <string name="text_login_contains_space">Login contains space!</string>
     <string name="text_login_or_password_is_empty">Login or password is empty!</string>
+    <string name="text_hint_part_of_login">login or part of it...</string>
+    <string name="text_btn_search">Search</string>
+    <string name="text_title_search_users">Search and add...</string>
 </resources>

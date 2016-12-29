@@ -25,6 +25,7 @@ import io.github.alexeychurchill.stickynotes.adapter.UserListAdapter;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
+import io.github.alexeychurchill.stickynotes.dialog.FriendSearchDialogFragment;
 import io.github.alexeychurchill.stickynotes.listener.EndlessRecyclerViewScrollListener;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.User;
@@ -208,7 +209,8 @@ public class FriendsListFragment extends Fragment implements
     }
 
     private void addFriends() {
-        //...
+        FriendSearchDialogFragment dialogFragment = new FriendSearchDialogFragment();
+        dialogFragment.show(getChildFragmentManager(), "FriendSearchDialogFragment");
     }
 
     private void loadDataPage() {
