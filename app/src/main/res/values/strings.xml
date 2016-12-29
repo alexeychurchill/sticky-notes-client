@@ -46,4 +46,9 @@
     <string name="text_hint_part_of_login">login or part of it...</string>
     <string name="text_btn_search">Search</string>
     <string name="text_title_search_users">Search and add...</string>
+    <string name="text_title_share_to">Share note to...</string>
+    <string name="text_button_allow">Allow</string>
+    <string name="text_button_forbid">Forbid</string>
+    <string name="text_title_note_sharing">Note sharing...</string>
+    <string name="text_do_you_want_allow_editing_to_this_user">Do you want allow editing to this user?</string>
 </resources>

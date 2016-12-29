@@ -20,6 +20,7 @@ import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
+import io.github.alexeychurchill.stickynotes.dialog.ShareNoteDialogFragment;
 import io.github.alexeychurchill.stickynotes.model.NoteFull;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.SharedNoteFull;
@@ -137,16 +138,29 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         return super.onPrepareOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menuShareNote) {
+            shareThisNote();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void shareThisNote() {
+        ShareNoteDialogFragment dialog = new ShareNoteDialogFragment();
+        dialog.show(getSupportFragmentManager(), "ShareNoteDialogFragment");
+    }
+
     private void menuSwitchShared(Menu menu) {
         for (int menuNumber = 0; menuNumber < menu.size(); menuNumber++) {
             MenuItem menuItem = menu.getItem(menuNumber);
             switch (menuItem.getItemId()) {
                 case R.id.menuSharedTo:
                 case R.id.menuShareNote:
-                    menuItem.setVisible(true);
-                    break;
                 case R.id.menuEditMetadata:
                     menuItem.setVisible(false);
+                    break;
             }
         }
     }
@@ -155,12 +169,11 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         for (int menuNumber = 0; menuNumber < menu.size(); menuNumber++) {
             MenuItem menuItem = menu.getItem(menuNumber);
             switch (menuItem.getItemId()) {
+                case R.id.menuEditMetadata:
                 case R.id.menuSharedTo:
                 case R.id.menuShareNote:
-                    menuItem.setVisible(false);
-                    break;
-                case R.id.menuEditMetadata:
                     menuItem.setVisible(true);
+                    break;
             }
         }
     }

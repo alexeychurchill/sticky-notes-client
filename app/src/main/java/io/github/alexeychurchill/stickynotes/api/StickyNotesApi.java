@@ -54,7 +54,12 @@ public interface StickyNotesApi {
     Call<ServiceResponse<Object>> noteDelete(@Header("X-AccessToken") String token, @Path("id") int id);
 
     // Shared notes
-//    void sharedShare();
+    @FormUrlEncoded
+    @POST("/shared/share")
+    Call<ServiceResponse<Object>> sharedShare(@Header("X-AccessToken") String token,
+                                              @Field("note_id") int noteId,
+                                              @Field("edit_permission") int editAllowed,
+                                              @Field("user_id") int userId);
 //    void sharedUnshare();
     @GET("/shared/list/{page}")
     Call<ServiceResponse<List<NoteEntry>>> sharedList(@Header("X-AccessToken") String token, @Path("page") int page);
@@ -64,8 +69,8 @@ public interface StickyNotesApi {
     @FormUrlEncoded
     @POST("/shared/{id}/update")
     Call<ServiceResponse<Object>> sharedUpdate(@Header("X-AccessToken") String token, @Path("id") int id, @Field("text") String text);
-    // Friends API
 
+    // Friends API
     @POST("/friend/request/make/{user_id}")
     Call<ServiceResponse<Object>> friendRequest(@Header("X-AccessToken") String token, @Path("user_id") int userId);
     @POST("/friend/request/{id}/accept")
