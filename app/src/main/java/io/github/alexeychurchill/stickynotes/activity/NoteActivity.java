@@ -149,6 +149,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
     private void shareThisNote() {
         ShareNoteDialogFragment dialog = new ShareNoteDialogFragment();
+        dialog.setNoteId(mNoteId);
         dialog.show(getSupportFragmentManager(), "ShareNoteDialogFragment");
     }
 

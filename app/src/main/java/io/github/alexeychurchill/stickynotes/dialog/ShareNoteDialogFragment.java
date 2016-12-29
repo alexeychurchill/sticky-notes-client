@@ -37,13 +37,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Dialog which allows to share note to user
  */
 
-public class ShareNoteDialogFragment extends DialogFragment implements UserListAdapter.OnUserListActionListener, AllowEditDialogFragment.OnAllowDecisionListener {
+public class ShareNoteDialogFragment extends DialogFragment implements
+        UserListAdapter.OnUserListActionListener,
+        AllowEditDialogFragment.OnAllowDecisionListener {
     private StickyNotesApi mApi;
     private String mAccessToken;
     private SimpleResponseCallback mSimpleResponseCallback;
     private SimpleUserListAdapter mAdapter;
     private List<User> mUsers = new ArrayList<>();
     private int mPage = 0;
+
+    private int mUserId = -1;
+    private int mNoteId = -1;
 
     @NonNull
     @Override
@@ -67,7 +72,15 @@ public class ShareNoteDialogFragment extends DialogFragment implements UserListA
                     .build();
             mApi = retrofit.create(StickyNotesApi.class);
         }
-        mSimpleResponseCallback = new SimpleResponseCallback(getContext());
+        mSimpleResponseCallback = new SimpleResponseCallback(getContext()) {
+            @Override
+            public void onResponse(Call<ServiceResponse<Object>> call, Response<ServiceResponse<Object>> response) {
+                super.onResponse(call, response);
+                if (response.isSuccessful() && !response.body().isError()) {
+                    dismiss();
+                }
+            }
+        };
         // RecyclerView
         mAdapter = new SimpleUserListAdapter();
         mAdapter.setDataList(mUsers);
@@ -89,6 +102,14 @@ public class ShareNoteDialogFragment extends DialogFragment implements UserListA
                 .setView(rvUsers)
                 .setNeutralButton(R.string.text_button_cancel, null)
                 .create();
+    }
+
+    public void setNoteId(int noteId) {
+        this.mNoteId = noteId;
+    }
+
+    public void setUserId(int userId) {
+        this.mUserId = userId;
     }
 
     private void addData(List<User> users) {
@@ -140,6 +161,7 @@ public class ShareNoteDialogFragment extends DialogFragment implements UserListA
 
     @Override
     public void onItemClick(int position) {
+        setUserId(mUsers.get(position).getId());
         AllowEditDialogFragment dialog = new AllowEditDialogFragment();
         dialog.setListener(this);
         dialog.show(getChildFragmentManager(), "AllowEditDialogFragment");
@@ -183,6 +205,12 @@ public class ShareNoteDialogFragment extends DialogFragment implements UserListA
 
     @Override
     public void onAllowEditDecision(boolean allowed) {
-//        Call<ServiceResponse<Object>> call = mApi.sharedShare(mAccessToken, )
+        Call<ServiceResponse<Object>> call = mApi.sharedShare(
+                mAccessToken,
+                mNoteId,
+                (allowed) ? 1 : 0,
+                mUserId
+        );
+        call.enqueue(mSimpleResponseCallback);
     }
 }
