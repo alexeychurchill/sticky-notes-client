@@ -21,6 +21,7 @@ import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
 import io.github.alexeychurchill.stickynotes.dialog.ShareNoteDialogFragment;
+import io.github.alexeychurchill.stickynotes.dialog.SharedToDialogFragment;
 import io.github.alexeychurchill.stickynotes.model.NoteFull;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.SharedNoteFull;
@@ -144,7 +145,17 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
             shareThisNote();
             return true;
         }
+        if (item.getItemId() == R.id.menuSharedTo) {
+            sharedTo();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sharedTo() {
+        SharedToDialogFragment dialog = new SharedToDialogFragment();
+        dialog.setNoteId(mNoteId);
+        dialog.show(getSupportFragmentManager(), "SharedToDialogFragment");
     }
 
     private void shareThisNote() {

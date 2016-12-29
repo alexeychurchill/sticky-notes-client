@@ -51,4 +51,6 @@
     <string name="text_button_forbid">Forbid</string>
     <string name="text_title_note_sharing">Note sharing...</string>
     <string name="text_do_you_want_allow_editing_to_this_user">Do you want allow editing to this user?</string>
+    <string name="text_button_unshare">Unshare</string>
+    <string name="text_title_shared_to">Shared to...</string>
 </resources>

@@ -60,10 +60,16 @@ public interface StickyNotesApi {
                                               @Field("note_id") int noteId,
                                               @Field("edit_permission") int editAllowed,
                                               @Field("user_id") int userId);
-//    void sharedUnshare();
+    @POST("/shared/{note_id}/unshare/{user_id}")
+    Call<ServiceResponse<Object>> sharedUnshare(@Header("X-AccessToken") String token,
+                                                @Path("note_id") int noteId,
+                                                @Path("user_id") int userId);
     @GET("/shared/list/{page}")
     Call<ServiceResponse<List<NoteEntry>>> sharedList(@Header("X-AccessToken") String token, @Path("page") int page);
-//    void sharedToList();
+    @GET("/shared/{id}/to/{page}")
+    Call<ServiceResponse<List<User>>> sharedToList(@Header("X-AccessToken") String token,
+                                                   @Path("id") int noteId,
+                                                   @Path("page") int page);
     @GET("/shared/{id}")
     Call<ServiceResponse<SharedNoteFull>> sharedGet(@Header("X-AccessToken") String token, @Path("id") int id);
     @FormUrlEncoded
