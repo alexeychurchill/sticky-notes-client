@@ -20,6 +20,7 @@ import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
+import io.github.alexeychurchill.stickynotes.dialog.EditNoteMetadataDialogFragment;
 import io.github.alexeychurchill.stickynotes.dialog.ShareNoteDialogFragment;
 import io.github.alexeychurchill.stickynotes.dialog.SharedToDialogFragment;
 import io.github.alexeychurchill.stickynotes.model.NoteFull;
@@ -149,7 +150,17 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
             sharedTo();
             return true;
         }
+        if (item.getItemId() == R.id.menuEditMetadata) {
+            editMetadata();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void editMetadata() {
+        EditNoteMetadataDialogFragment dialog = new EditNoteMetadataDialogFragment();
+        dialog.setNote(mNote);
+        dialog.show(getSupportFragmentManager(), "EditNoteMetadataDialogFragment");
     }
 
     private void sharedTo() {

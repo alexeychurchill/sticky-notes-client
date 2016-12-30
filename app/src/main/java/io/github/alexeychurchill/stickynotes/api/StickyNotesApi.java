@@ -47,7 +47,12 @@ public interface StickyNotesApi {
     @FormUrlEncoded
     @POST("/note/{id}/update")
     Call<ServiceResponse<Object>> noteUpdate(@Header("X-AccessToken") String token, @Path("id") int id, @Field("text") String text);
-    //...edit metadata method...
+    @FormUrlEncoded
+    @POST("/note/{id}/update/metadata")
+    Call<ServiceResponse<Object>> noteUpdateMetadata(@Header("X-AccessToken") String token,
+                                                     @Path("id") int id,
+                                                     @Field("title") String title,
+                                                     @Field("subject") String subject);
     @GET("/note/list/{page}")
     Call<ServiceResponse<List<NoteEntry>>> noteGetList(@Header("X-AccessToken") String token, @Path("page") int page);
     @POST("/note/{id}/delete")
