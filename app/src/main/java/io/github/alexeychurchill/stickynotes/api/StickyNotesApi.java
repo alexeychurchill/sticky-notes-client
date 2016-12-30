@@ -2,6 +2,7 @@ package io.github.alexeychurchill.stickynotes.api;
 
 import java.util.List;
 
+import io.github.alexeychurchill.stickynotes.model.Comment;
 import io.github.alexeychurchill.stickynotes.model.FriendRequest;
 import io.github.alexeychurchill.stickynotes.model.LoginResult;
 import io.github.alexeychurchill.stickynotes.model.NoteEntry;
@@ -96,4 +97,17 @@ public interface StickyNotesApi {
     Call<ServiceResponse<List<User>>> friendGetList(@Header("X-AccessToken") String token, @Path("page") int page);
     @GET("/friend/requests/{page}")
     Call<ServiceResponse<List<FriendRequest>>> friendGetRequests(@Header("X-AccessToken") String token, @Path("page") int page);
+
+    // Comments API
+    @GET("/comment/list/{note_id}/{page}")
+    Call<ServiceResponse<List<Comment>>> commentGetList(@Header("X-AccessToken") String token,
+                                                        @Path("note_id") int noteId,
+                                                        @Path("page") int page);
+    @FormUrlEncoded
+    @POST("/comment")
+    Call<ServiceResponse<Object>> commentAdd(@Header("X-AccessToken") String token,
+                                             @Field("note_id") int noteId,
+                                             @Field("text") String text);
+    @POST("/comment/{id}/delete")
+    Call<ServiceResponse<Object>> commentDelete(@Header("X-AccessToken") String token, @Path("id") int id);
 }
