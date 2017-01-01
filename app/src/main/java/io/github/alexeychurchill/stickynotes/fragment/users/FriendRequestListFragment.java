@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.fragment;
+package io.github.alexeychurchill.stickynotes.fragment.users;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -62,7 +62,6 @@ public abstract class FriendRequestListFragment extends Fragment implements
         mAdapter = new FriendRequestUserListAdapter();
         mAdapter.setDataList(mFriendRequests);
         mAdapter.setActionListener(this);
-        // TODO: 27.12.2016 Set list listener
         mRVFriendRequests = ((RecyclerView) view.findViewById(R.id.rvFriendRequests));
         if (mRVFriendRequests != null) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

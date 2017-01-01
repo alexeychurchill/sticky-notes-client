@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.fragment;
+package io.github.alexeychurchill.stickynotes.fragment.users;
 
 import android.view.View;
 

@@ -16,8 +16,8 @@ import android.widget.ListView;
 
 import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.adapter.MenuAdapter;
-import io.github.alexeychurchill.stickynotes.fragment.FriendsFragment;
-import io.github.alexeychurchill.stickynotes.fragment.NotesFragment;
+import io.github.alexeychurchill.stickynotes.fragment.users.FriendsFragment;
+import io.github.alexeychurchill.stickynotes.fragment.notes.NotesFragment;
 
 /**
  * Main application activity

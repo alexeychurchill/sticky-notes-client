@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.fragment;
+package io.github.alexeychurchill.stickynotes.fragment.notes;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,57 +15,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
+import io.github.alexeychurchill.stickynotes.fragment.notes.SharedNotesFragment;
+import io.github.alexeychurchill.stickynotes.fragment.notes.UserNotesFragment;
 
 /**
- * Friends fragment
+ * Notes fragment
  */
 
-public class FriendsFragment extends Fragment {
-    private FriendsListFragment mFriendsListFragment;
-    private IncomingFriendRequestListFragment mIncomingFriendRequestListFragment;
-    private UserFriendRequestListFragment mUserFriendRequestListFragment;
+public class NotesFragment extends Fragment {
+    private UserNotesFragment mUserNotesFragment;
+    private SharedNotesFragment mSharedNotesFragment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_friends, container, false);
-
-        mFriendsListFragment = new FriendsListFragment();
-        mIncomingFriendRequestListFragment = new IncomingFriendRequestListFragment();
-        mUserFriendRequestListFragment = new UserFriendRequestListFragment();
-
+        // Fragments
+        mUserNotesFragment = new UserNotesFragment();
+        mSharedNotesFragment = new SharedNotesFragment();
+        // View
+        View view = inflater.inflate(R.layout.fragment_notes, container, false);
+        // Tabs
         ViewPager pager = ((ViewPager) view.findViewById(R.id.pager));
         setupViewPager(pager);
-
         TabLayout tabs = ((TabLayout) view.findViewById(R.id.tabs));
         tabs.setupWithViewPager(pager);
-
         return view;
     }
 
-    private void setupViewPager(ViewPager pager) {
+    private void setupViewPager(ViewPager viewPager) {
+        getChildFragmentManager();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addPage(
-                mFriendsListFragment,
-                getString(R.string.text_title_friends)
+                mUserNotesFragment,
+                getContext().getString(R.string.text_title_page_user_notes)
         );
         adapter.addPage(
-                mIncomingFriendRequestListFragment,
-                getString(R.string.text_title_incoming)
+                mSharedNotesFragment,
+                getContext().getString(R.string.text_title_page_shared_notes)
         );
-        adapter.addPage(
-                mUserFriendRequestListFragment,
-                getString(R.string.text_title_by_user)
-        );
-        pager.setAdapter(adapter);
+        viewPager.setAdapter(adapter);
     }
 
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
+    public static class ViewPagerAdapter extends FragmentPagerAdapter {
         private List<Fragment> mPages = new ArrayList<>();
         private List<String> mTitles = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
         @Override

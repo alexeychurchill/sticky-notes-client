@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.fragment;
+package io.github.alexeychurchill.stickynotes.fragment.notes;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,14 +14,10 @@ import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.activity.NoteActivity;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
-import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
-import io.github.alexeychurchill.stickynotes.dialog.ConfirmDeleteNoteDialogFragment;
-import io.github.alexeychurchill.stickynotes.dialog.CreateNoteDialogFragment;
 import io.github.alexeychurchill.stickynotes.model.NoteEntry;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListResponseDeserializer;
-import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,12 +25,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * User notes fragment
+ * Shared notes fragment
  */
 
-public class UserNotesFragment extends BaseNotesFragment implements
-        CreateNoteDialogFragment.CreateNoteListener,
-        ConfirmDeleteNoteDialogFragment.OnDeleteNoteListener {
+public class SharedNotesFragment extends BaseNotesFragment {
     private int mPage = 0;
     private StickyNotesApi mApi;
     private String mAccessToken;
@@ -44,11 +38,8 @@ public class UserNotesFragment extends BaseNotesFragment implements
         mAccessToken = getActivity()
                 .getSharedPreferences(AppConfig.APP_PREFERENCES, Context.MODE_PRIVATE)
                 .getString(AppConfig.SHARED_ACCESS_TOKEN, null);
-        setFabIcon(R.drawable.ic_add_white_36dp);
-        setFabVisible(true);
         // Gson
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(SimpleResponseDeserializer.TYPE, new SimpleResponseDeserializer())
                 .registerTypeAdapter(NoteEntryListResponseDeserializer.TYPE, new NoteEntryListResponseDeserializer())
                 .registerTypeAdapter(NoteEntryListDeserializer.TYPE, new NoteEntryListDeserializer())
                 .create();
@@ -65,25 +56,8 @@ public class UserNotesFragment extends BaseNotesFragment implements
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         mApi = retrofit.create(StickyNotesApi.class);
-        // Simple response callback
-        mSimpleResponseCallback = new SimpleResponseCallback(getContext()) {
-            @Override
-            public void onResponse(Call<ServiceResponse<Object>> call, Response<ServiceResponse<Object>> response) {
-                setWaiting(false);
-                super.onResponse(call, response);
-                if(response.isSuccessful() && !response.body().isError()) {
-                    refresh();
-                }
-            }
-        };
-    }
-
-    private void loadDataPage() {
-        if (mApi == null || mAccessToken == null) {
-            return;
-        }
-        Call<ServiceResponse<List<NoteEntry>>> call = mApi.noteGetList(mAccessToken, mPage);
-        call.enqueue(mNoteEntryListCallback);
+        // Delete button on items
+        setShowItemDeleteButton(false);
     }
 
     @Override
@@ -93,36 +67,10 @@ public class UserNotesFragment extends BaseNotesFragment implements
     }
 
     @Override
-    public void onNoteOpen(NoteEntry noteEntry) {
-        Intent intent = new Intent(getActivity(), NoteActivity.class);
-        intent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteEntry.getId());
-        intent.putExtra(NoteActivity.EXTRA_NOTE_SHARED, false);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onNoteDelete(NoteEntry noteEntry) {
-        ConfirmDeleteNoteDialogFragment confirmDeleteNoteDialogFragment =
-                new ConfirmDeleteNoteDialogFragment();
-        confirmDeleteNoteDialogFragment.setNote(noteEntry);
-        confirmDeleteNoteDialogFragment.setListener(this);
-        confirmDeleteNoteDialogFragment
-                .show(getChildFragmentManager(), "ConfirmDeleteNoteDialogFragment");
-    }
-
-    @Override
     public void refresh() {
-        setWaiting(true);
         clearNotes();
         mPage = 0;
         loadDataPage();
-    }
-
-    @Override
-    public void onFabClick() {
-        CreateNoteDialogFragment dialog = new CreateNoteDialogFragment();
-        dialog.setListener(this);
-        dialog.show(getActivity().getSupportFragmentManager(), "CreateNoteDialogFragment");
     }
 
     @Override
@@ -130,7 +78,27 @@ public class UserNotesFragment extends BaseNotesFragment implements
         loadDataPage();
     }
 
-    private SimpleResponseCallback mSimpleResponseCallback;
+    @Override
+    public void onNoteOpen(NoteEntry noteEntry) {
+        Intent openNoteIntent = new Intent(getContext(), NoteActivity.class);
+        openNoteIntent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteEntry.getId());
+        openNoteIntent.putExtra(NoteActivity.EXTRA_NOTE_SHARED, true);
+        startActivity(openNoteIntent);
+    }
+
+    private void loadDataPage() {
+        if (mApi == null) {
+            return;
+        }
+        if (mAccessToken == null) {
+            Toast.makeText(getActivity(), R.string.text_access_token_is_null, Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
+        Call<ServiceResponse<List<NoteEntry>>> call = mApi.sharedList(mAccessToken, mPage);
+        call.enqueue(mNoteEntryListCallback);
+    }
 
     private Callback<ServiceResponse<List<NoteEntry>>> mNoteEntryListCallback = new Callback<ServiceResponse<List<NoteEntry>>>() {
         @Override
@@ -169,22 +137,4 @@ public class UserNotesFragment extends BaseNotesFragment implements
                     .show();
         }
     };
-
-    @Override
-    public void onCreateNote(String title) {
-        if (mAccessToken == null) {
-            return;
-        }
-        Call<ServiceResponse<Object>> call = mApi.noteCreate(mAccessToken, title);
-        call.enqueue(mSimpleResponseCallback);
-    }
-
-    @Override
-    public void onNoteDeleteConfirmed(NoteEntry note) {
-        if (mApi == null || mAccessToken == null) {
-            return;
-        }
-        Call<ServiceResponse<Object>> call = mApi.noteDelete(mAccessToken, note.getId());
-        call.enqueue(mSimpleResponseCallback);
-    }
 }
