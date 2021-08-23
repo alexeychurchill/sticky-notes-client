@@ -2,8 +2,8 @@ package io.github.alexeychurchill.stickynotes.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,6 @@ import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
-import io.github.alexeychurchill.stickynotes.model.deserializer.LoginResultDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import retrofit2.Call;
 import retrofit2.Response;
