@@ -2,7 +2,7 @@ package io.github.alexeychurchill.stickynotes.fragment.notes;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
