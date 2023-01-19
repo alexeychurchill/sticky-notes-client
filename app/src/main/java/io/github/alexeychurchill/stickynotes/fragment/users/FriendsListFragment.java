@@ -28,7 +28,7 @@ import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback
 import io.github.alexeychurchill.stickynotes.dialog.FriendSearchDialogFragment;
 import io.github.alexeychurchill.stickynotes.listener.EndlessRecyclerViewScrollListener;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
-import io.github.alexeychurchill.stickynotes.model.User;
+import io.github.alexeychurchill.stickynotes.model.JsonUser;
 import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.UserListDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.UserListResponseDeserializer;
@@ -45,7 +45,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FriendsListFragment extends Fragment implements
         UserListAdapter.OnUserListActionListener, View.OnClickListener {
     private String mActionOneTitle;
-    private List<User> mUserList = new ArrayList<>();
+    private List<JsonUser> mUserList = new ArrayList<>();
     private int mPage = 0;
     private SimpleUserListAdapter mAdapter;
     private SimpleResponseCallback mSimpleResponseCallback;
@@ -146,7 +146,7 @@ public class FriendsListFragment extends Fragment implements
         if (mAccessToken == null || mApi == null) {
             return;
         }
-        User friend = mUserList.get(position);
+        JsonUser friend = mUserList.get(position);
         Call<ServiceResponse<Object>> call = mApi.friendUnfriend(mAccessToken, friend.getId());
         call.enqueue(mSimpleResponseCallback);
     }
@@ -196,7 +196,7 @@ public class FriendsListFragment extends Fragment implements
         mAdapter.notifyDataSetChanged();
     }
 
-    private void addData(List<User> users) {
+    private void addData(List<JsonUser> users) {
         mUserList.addAll(users);
         mAdapter.notifyDataSetChanged();
     }
@@ -217,13 +217,13 @@ public class FriendsListFragment extends Fragment implements
         if (mApi == null || mAccessToken == null) {
             return;
         }
-        Call<ServiceResponse<List<User>>> call = mApi.friendGetList(mAccessToken, mPage);
+        Call<ServiceResponse<List<JsonUser>>> call = mApi.friendGetList(mAccessToken, mPage);
         call.enqueue(mUserListCallback);
     }
 
-    private Callback<ServiceResponse<List<User>>> mUserListCallback = new Callback<ServiceResponse<List<User>>>() {
+    private Callback<ServiceResponse<List<JsonUser>>> mUserListCallback = new Callback<ServiceResponse<List<JsonUser>>>() {
         @Override
-        public void onResponse(Call<ServiceResponse<List<User>>> call, Response<ServiceResponse<List<User>>> response) {
+        public void onResponse(Call<ServiceResponse<List<JsonUser>>> call, Response<ServiceResponse<List<JsonUser>>> response) {
             setWaiting(false);
             if (!response.isSuccessful()) {
                 Toast.makeText(
@@ -236,13 +236,13 @@ public class FriendsListFragment extends Fragment implements
                 ).show();
                 return;
             }
-            ServiceResponse<List<User>> userListResponse = response.body();
+            ServiceResponse<List<JsonUser>> userListResponse = response.body();
             if (userListResponse.isError() || !userListResponse.containsData()) {
                 Toast.makeText(getActivity(), userListResponse.getMessage(), Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
-            List<User> users = userListResponse.getData();
+            List<JsonUser> users = userListResponse.getData();
             if (users != null) {
                 if (users.size() > 0) {
                     mPage++;
@@ -252,7 +252,7 @@ public class FriendsListFragment extends Fragment implements
         }
 
         @Override
-        public void onFailure(Call<ServiceResponse<List<User>>> call, Throwable t) {
+        public void onFailure(Call<ServiceResponse<List<JsonUser>>> call, Throwable t) {
             Toast.makeText(getContext(), R.string.text_failure, Toast.LENGTH_SHORT)
                     .show();
         }

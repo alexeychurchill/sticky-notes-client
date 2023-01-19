@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * User class
  */
 
-public class User {
+public class JsonUser {
     @SerializedName("id")
     private int id;
     @SerializedName("login")

@@ -14,7 +14,7 @@ public class FriendRequest {
     @SerializedName("date")
     private int date;
     @SerializedName("user")
-    private User user;
+    private JsonUser user;
 
     public int getId() {
         return id;
@@ -26,7 +26,7 @@ public class FriendRequest {
         return calendar;
     }
 
-    public User getUser() {
+    public JsonUser getUser() {
         return user;
     }
 }

@@ -24,7 +24,7 @@ import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
 import io.github.alexeychurchill.stickynotes.listener.EndlessRecyclerViewScrollListener;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
-import io.github.alexeychurchill.stickynotes.model.User;
+import io.github.alexeychurchill.stickynotes.model.JsonUser;
 import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.UserListDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.UserListResponseDeserializer;
@@ -41,7 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SharedToDialogFragment extends DialogFragment implements
         UserListAdapter.OnUserListActionListener {
     private String mUnshareActionTitle;
-    private List<User> mUsers = new ArrayList<>();
+    private List<JsonUser> mUsers = new ArrayList<>();
     private int mPage = 0;
     private SimpleUserListAdapter mAdapter;
     private StickyNotesApi mApi;
@@ -116,7 +116,7 @@ public class SharedToDialogFragment extends DialogFragment implements
         mAdapter.notifyDataSetChanged();
     }
 
-    private void addData(List<User> users) {
+    private void addData(List<JsonUser> users) {
         mUsers.addAll(users);
         mAdapter.notifyDataSetChanged();
     }
@@ -131,13 +131,13 @@ public class SharedToDialogFragment extends DialogFragment implements
         if (mApi == null || mAccessToken == null || mNoteId == -1) {
             return;
         }
-        Call<ServiceResponse<List<User>>> call = mApi.sharedToList(mAccessToken, mNoteId, mPage);
+        Call<ServiceResponse<List<JsonUser>>> call = mApi.sharedToList(mAccessToken, mNoteId, mPage);
         call.enqueue(mUserListCallback);
     }
 
-    private Callback<ServiceResponse<List<User>>> mUserListCallback = new Callback<ServiceResponse<List<User>>>() {
+    private Callback<ServiceResponse<List<JsonUser>>> mUserListCallback = new Callback<ServiceResponse<List<JsonUser>>>() {
         @Override
-        public void onResponse(Call<ServiceResponse<List<User>>> call, Response<ServiceResponse<List<User>>> response) {
+        public void onResponse(Call<ServiceResponse<List<JsonUser>>> call, Response<ServiceResponse<List<JsonUser>>> response) {
             if (!response.isSuccessful()) {
                 Toast.makeText(
                         getActivity(),
@@ -149,13 +149,13 @@ public class SharedToDialogFragment extends DialogFragment implements
                 ).show();
                 return;
             }
-            ServiceResponse<List<User>> userListResponse = response.body();
+            ServiceResponse<List<JsonUser>> userListResponse = response.body();
             if (userListResponse.isError() || !userListResponse.containsData()) {
                 Toast.makeText(getActivity(), userListResponse.getMessage(), Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
-            List<User> users = userListResponse.getData();
+            List<JsonUser> users = userListResponse.getData();
             if (users != null) {
                 if (users.size() > 0) {
                     mPage++;
@@ -165,7 +165,7 @@ public class SharedToDialogFragment extends DialogFragment implements
         }
 
         @Override
-        public void onFailure(Call<ServiceResponse<List<User>>> call, Throwable t) {
+        public void onFailure(Call<ServiceResponse<List<JsonUser>>> call, Throwable t) {
             Toast.makeText(getContext(), R.string.text_failure, Toast.LENGTH_SHORT)
                     .show();
         }
@@ -183,7 +183,7 @@ public class SharedToDialogFragment extends DialogFragment implements
 
     @Override
     public void onUserListActionOne(int position) {
-        User user = mUsers.get(position);
+        JsonUser user = mUsers.get(position);
         if (mApi == null || mAccessToken == null || mNoteId == -1) {
             return;
         }

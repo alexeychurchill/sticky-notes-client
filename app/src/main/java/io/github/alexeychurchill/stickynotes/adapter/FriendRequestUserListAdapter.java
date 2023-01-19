@@ -3,7 +3,7 @@ package io.github.alexeychurchill.stickynotes.adapter;
 import java.util.Locale;
 
 import io.github.alexeychurchill.stickynotes.model.FriendRequest;
-import io.github.alexeychurchill.stickynotes.model.User;
+import io.github.alexeychurchill.stickynotes.model.JsonUser;
 
 /**
  * Friend request list adapter
@@ -11,7 +11,7 @@ import io.github.alexeychurchill.stickynotes.model.User;
 
 public class FriendRequestUserListAdapter extends UserListAdapter<FriendRequest> {
     @Override
-    protected User getUser(FriendRequest friendRequest) {
+    protected JsonUser getUser(FriendRequest friendRequest) {
         return friendRequest.getUser();
     }
 
