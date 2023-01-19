@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.fragment
+package io.github.alexeychurchill.stickynotes.account
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.R
-import io.github.alexeychurchill.stickynotes.account.RegisterViewModel
 
 /**
  * Register fragment

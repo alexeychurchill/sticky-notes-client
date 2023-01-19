@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.fragment
+package io.github.alexeychurchill.stickynotes.account
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.R
-import io.github.alexeychurchill.stickynotes.account.LoginViewModel
 import io.github.alexeychurchill.stickynotes.listener.OnLoggedInListener
 
 /**
@@ -30,19 +29,21 @@ class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initLoginEventHandler()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(
-        R.layout.fragment_login,
-        container,
-        false
-    )
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initLoginEventHandler()
+    ): View {
+        return inflater.inflate(
+            R.layout.fragment_login,
+            container,
+            false
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

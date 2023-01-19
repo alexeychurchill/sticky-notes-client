@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.activity
+package io.github.alexeychurchill.stickynotes.account
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,9 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.R
+import io.github.alexeychurchill.stickynotes.activity.MainActivity
 import io.github.alexeychurchill.stickynotes.api.AppConfig
-import io.github.alexeychurchill.stickynotes.fragment.LoginFragment
-import io.github.alexeychurchill.stickynotes.fragment.RegisterFragment
 import io.github.alexeychurchill.stickynotes.listener.OnLoggedInListener
 
 /**
