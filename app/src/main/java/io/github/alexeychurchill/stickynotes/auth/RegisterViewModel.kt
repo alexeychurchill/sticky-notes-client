@@ -11,15 +11,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val loginRepository: AccountRepository,
+class RegisterViewModel @Inject constructor(
+    private val accountRepository: AccountRepository,
 ) : ViewModel() {
 
     private val _error = MutableSharedFlow<Int>()
 
     private val _isInProgress = MutableStateFlow(false)
 
-    private val _onLogin = MutableSharedFlow<Unit>()
+    private val _onRegistered = MutableSharedFlow<Unit>()
 
     val error: Flow<Int>
         get() = _error
@@ -27,10 +27,10 @@ class LoginViewModel @Inject constructor(
     val isInProgress: Flow<Boolean>
         get() = _isInProgress
 
-    val onLogin: Flow<Unit>
-        get() = _onLogin
+    val onRegistered: Flow<Unit>
+        get() = _onRegistered
 
-    fun login(login: String, password: String) {
+    fun register(login: String, password: String) {
         viewModelScope.launch {
             if (login.contains(" ")) {
                 _error.emit(R.string.text_login_contains_space)
@@ -40,11 +40,12 @@ class LoginViewModel @Inject constructor(
                 _error.emit(R.string.text_login_or_password_is_empty)
                 return@launch
             }
+
             _isInProgress.emit(true)
             try {
-                val user = loginRepository.login(login, password)
+                val user = accountRepository.register(login, password)
                 if (user != null) {
-                    _onLogin.emit(Unit)
+                    _onRegistered.emit(Unit)
                 }
             } catch (e: Throwable) {
                 _error.emit(R.string.text_failure)

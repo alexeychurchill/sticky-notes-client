@@ -6,12 +6,20 @@ import io.github.alexeychurchill.stickynotes.core.toUser
 import kotlinx.coroutines.tasks.asDeferred
 import javax.inject.Inject
 
-class FirebaseLoginRepository @Inject constructor(
+class FirebaseAccountRepository @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-) : LoginRepository {
+) : AccountRepository {
 
     override suspend fun login(login: String, password: String): User? {
         return firebaseAuth.signInWithEmailAndPassword(login, password)
+            .asDeferred()
+            .await()
+            .user
+            ?.toUser()
+    }
+
+    override suspend fun register(login: String, password: String): User? {
+        return firebaseAuth.createUserWithEmailAndPassword(login, password)
             .asDeferred()
             .await()
             .user
