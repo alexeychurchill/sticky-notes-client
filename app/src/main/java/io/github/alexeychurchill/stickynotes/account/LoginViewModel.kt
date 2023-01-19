@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.auth
+package io.github.alexeychurchill.stickynotes.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,15 +11,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
-    private val accountRepository: AccountRepository,
+class LoginViewModel @Inject constructor(
+    private val loginRepository: AccountRepository,
 ) : ViewModel() {
 
     private val _error = MutableSharedFlow<Int>()
 
     private val _isInProgress = MutableStateFlow(false)
 
-    private val _onRegistered = MutableSharedFlow<Unit>()
+    private val _onLogin = MutableSharedFlow<Unit>()
 
     val error: Flow<Int>
         get() = _error
@@ -27,10 +27,10 @@ class RegisterViewModel @Inject constructor(
     val isInProgress: Flow<Boolean>
         get() = _isInProgress
 
-    val onRegistered: Flow<Unit>
-        get() = _onRegistered
+    val onLogin: Flow<Unit>
+        get() = _onLogin
 
-    fun register(login: String, password: String) {
+    fun login(login: String, password: String) {
         viewModelScope.launch {
             if (login.contains(" ")) {
                 _error.emit(R.string.text_login_contains_space)
@@ -40,12 +40,11 @@ class RegisterViewModel @Inject constructor(
                 _error.emit(R.string.text_login_or_password_is_empty)
                 return@launch
             }
-
             _isInProgress.emit(true)
             try {
-                val user = accountRepository.register(login, password)
+                val user = loginRepository.login(login, password)
                 if (user != null) {
-                    _onRegistered.emit(Unit)
+                    _onLogin.emit(Unit)
                 }
             } catch (e: Throwable) {
                 _error.emit(R.string.text_failure)

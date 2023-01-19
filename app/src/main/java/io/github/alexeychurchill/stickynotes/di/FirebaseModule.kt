@@ -8,8 +8,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.github.alexeychurchill.stickynotes.auth.AccountRepository
-import io.github.alexeychurchill.stickynotes.auth.FirebaseAccountRepository
+import io.github.alexeychurchill.stickynotes.account.AccountRepository
+import io.github.alexeychurchill.stickynotes.account.FirebaseAccountRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)

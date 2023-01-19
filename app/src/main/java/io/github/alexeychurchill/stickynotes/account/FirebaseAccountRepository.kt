@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.auth
+package io.github.alexeychurchill.stickynotes.account
 
 import com.google.firebase.auth.FirebaseAuth
 import io.github.alexeychurchill.stickynotes.core.User

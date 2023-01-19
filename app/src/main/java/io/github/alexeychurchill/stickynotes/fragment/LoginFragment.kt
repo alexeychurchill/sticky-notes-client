@@ -15,7 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.R
-import io.github.alexeychurchill.stickynotes.auth.LoginViewModel
+import io.github.alexeychurchill.stickynotes.account.LoginViewModel
 import io.github.alexeychurchill.stickynotes.listener.OnLoggedInListener
 
 /**
