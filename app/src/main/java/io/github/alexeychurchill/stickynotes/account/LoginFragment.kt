@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.R
-import io.github.alexeychurchill.stickynotes.listener.OnLoggedInListener
 
 /**
  * Login fragment
@@ -28,11 +27,6 @@ class LoginFragment : Fragment() {
     private var mBtnLogin: Button? = null
 
     private val viewModel: LoginViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initLoginEventHandler()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,14 +75,6 @@ class LoginFragment : Fragment() {
             viewModel.isInProgress.collect { isInProgress ->
                 mPBWait!!.isVisible = isInProgress
                 mBtnLogin!!.isInvisible = isInProgress
-            }
-        }
-    }
-
-    private fun initLoginEventHandler() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.onLogin.collect {
-                (requireActivity() as? OnLoggedInListener)?.onLoggedId("")
             }
         }
     }
