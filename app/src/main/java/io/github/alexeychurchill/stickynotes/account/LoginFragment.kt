@@ -4,77 +4,57 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
+import android.widget.Toast.LENGTH_LONG
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.alexeychurchill.stickynotes.R
+import io.github.alexeychurchill.stickynotes.account.ui.LoginScreen
+import io.github.alexeychurchill.stickynotes.core.StickyNotesTheme
 
 /**
  * Login fragment
  */
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-    private var mETLogin: EditText? = null
-    private var mETPassword: EditText? = null
-    private var mPBWait: ProgressBar? = null
-    private var mBtnLogin: Button? = null
+    interface OnLoggedInListener {
+        fun onLoggedIn()
+    }
 
     private val viewModel: LoginViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycleScope.launchWhenCreated {
+            viewModel.onLogin.collect {
+                (requireActivity() as? OnLoggedInListener)?.onLoggedIn()
+            }
+        }
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.error.collect {
+                Toast.makeText(requireContext(), it, LENGTH_LONG).show()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(
-            R.layout.fragment_login,
-            container,
-            false
-        )
+        return ComposeView(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mETLogin = view.findViewById<View>(R.id.etLogin) as EditText
-        mETPassword = view.findViewById<View>(R.id.etPassword) as EditText
-        mPBWait = view.findViewById<View>(R.id.pbWait) as ProgressBar
-        mBtnLogin = view.findViewById<View>(R.id.btnLogin) as Button
+        val composeView = view as? ComposeView ?: return
 
-        initLoginButtonListener()
-        initErrors()
-        initProgress()
-    }
-
-    private fun initLoginButtonListener() {
-        mBtnLogin!!.setOnClickListener {
-            val login = mETLogin!!.text.toString()
-            val password = mETPassword!!.text.toString()
-            viewModel.login(login, password)
-        }
-    }
-
-    private fun initErrors() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.error.collect { errorResId ->
-                Toast
-                    .makeText(context, errorResId, Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
-
-    private fun initProgress() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.isInProgress.collect { isInProgress ->
-                mPBWait!!.isVisible = isInProgress
-                mBtnLogin!!.isInvisible = isInProgress
+        composeView.setContent {
+            StickyNotesTheme {
+                LoginScreen(viewModel)
             }
         }
     }

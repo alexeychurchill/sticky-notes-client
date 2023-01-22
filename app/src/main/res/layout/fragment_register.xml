@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/edit_text_login_screen_margin"
         android:layout_marginStart="@dimen/edit_text_login_screen_margin"
-        android:hint="@string/hint_login"
+        android:hint="@string/login_email_title"
         android:inputType="text"
         android:textColor="@color/colorIcons"
         android:textColorHint="@color/colorPrimaryLight" />
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/edit_text_login_screen_margin"
         android:layout_marginStart="@dimen/edit_text_login_screen_margin"
-        android:hint="@string/hint_password"
+        android:hint="@string/login_password_title"
         android:inputType="textPassword"
         android:textColor="@color/colorIcons"
         android:textColorHint="@color/colorPrimaryLight" />

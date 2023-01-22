@@ -30,19 +30,19 @@ class LoginViewModel @Inject constructor(
     val onLogin: Flow<Unit>
         get() = _onLogin
 
-    fun login(login: String, password: String) {
+    fun login(email: String, password: String) {
         viewModelScope.launch {
-            if (login.contains(" ")) {
+            if (email.contains(" ")) {
                 _error.emit(R.string.text_login_contains_space)
                 return@launch
             }
-            if (login.isEmpty() || password.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty()) {
                 _error.emit(R.string.text_login_or_password_is_empty)
                 return@launch
             }
             _isInProgress.emit(true)
             try {
-                val user = loginRepository.login(login, password)
+                val user = loginRepository.login(email, password)
                 if (user != null) {
                     _onLogin.emit(Unit)
                 }

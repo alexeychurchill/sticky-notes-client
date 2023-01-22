@@ -2,8 +2,8 @@
     <string name="app_name">StickyNotes</string>
     <string name="text_big_login">Login</string>
     <string name="text_button_join">Join</string>
-    <string name="hint_login">login</string>
-    <string name="hint_password">password</string>
+    <string name="login_email_title">e-mail</string>
+    <string name="login_password_title">password</string>
     <string name="text_button_login">Login</string>
     <string name="text_button_back_login">back</string>
     <string name="text_big_register">Register</string>
