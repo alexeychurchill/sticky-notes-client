@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">StickyNotes</string>
+
+    <string name="generic_back">Back</string>
+
     <string name="text_big_login">Login</string>
     <string name="text_button_join">Join</string>
     <string name="login_email_title">e-mail</string>
     <string name="login_password_title">password</string>
+    <string name="login_create_account_do_not_have">Do not have an account?</string>
+    <string name="login_create_account_create">Sign Up</string>
     <string name="text_button_login">Login</string>
     <string name="text_button_back_login">back</string>
     <string name="text_big_register">Register</string>

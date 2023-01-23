@@ -44,8 +44,11 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun toggleMode() {
+    fun toggleMode(mode: AuthMode? = null) {
         _authMode.update {
+            mode?.let { specified ->
+                return@update specified
+            }
             if (it == LOGIN) REGISTER else LOGIN
         }
     }
