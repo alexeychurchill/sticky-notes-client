@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
@@ -12,24 +11,24 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.alexeychurchill.stickynotes.model.NoteEntry;
+import io.github.alexeychurchill.stickynotes.model.OldNoteEntry;
 
 /**
  * Note entry list deserializer
  */
 
-public class NoteEntryListDeserializer implements JsonDeserializer<List<NoteEntry>> {
-    public static final Type TYPE = new TypeToken<List<NoteEntry>>() {}.getType();
+public class NoteEntryListDeserializer implements JsonDeserializer<List<OldNoteEntry>> {
+    public static final Type TYPE = new TypeToken<List<OldNoteEntry>>() {}.getType();
 
     @Override
-    public List<NoteEntry> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public List<OldNoteEntry> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         if (!json.isJsonArray()) {
             return null;
         }
         JsonArray noteEntryArray = json.getAsJsonArray();
-        List<NoteEntry> noteEntries = new ArrayList<>();
+        List<OldNoteEntry> noteEntries = new ArrayList<>();
         for (JsonElement jsonElement : noteEntryArray) {
-            NoteEntry noteEntry = context.deserialize(jsonElement, NoteEntry.class);
+            OldNoteEntry noteEntry = context.deserialize(jsonElement, OldNoteEntry.class);
             noteEntries.add(noteEntry);
         }
         return noteEntries;

@@ -14,10 +14,11 @@ import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.activity.NoteActivity;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
-import io.github.alexeychurchill.stickynotes.model.NoteEntry;
+import io.github.alexeychurchill.stickynotes.model.OldNoteEntry;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListResponseDeserializer;
+import io.github.alexeychurchill.stickynotes.notes.BaseNotesFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,7 +80,7 @@ public class SharedNotesFragment extends BaseNotesFragment {
     }
 
     @Override
-    public void onNoteOpen(NoteEntry noteEntry) {
+    public void onNoteOpen(OldNoteEntry noteEntry) {
         Intent openNoteIntent = new Intent(getContext(), NoteActivity.class);
         openNoteIntent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteEntry.getId());
         openNoteIntent.putExtra(NoteActivity.EXTRA_NOTE_SHARED, true);
@@ -96,13 +97,13 @@ public class SharedNotesFragment extends BaseNotesFragment {
             return;
         }
 
-        Call<ServiceResponse<List<NoteEntry>>> call = mApi.sharedList(mAccessToken, mPage);
+        Call<ServiceResponse<List<OldNoteEntry>>> call = mApi.sharedList(mAccessToken, mPage);
         call.enqueue(mNoteEntryListCallback);
     }
 
-    private Callback<ServiceResponse<List<NoteEntry>>> mNoteEntryListCallback = new Callback<ServiceResponse<List<NoteEntry>>>() {
+    private Callback<ServiceResponse<List<OldNoteEntry>>> mNoteEntryListCallback = new Callback<ServiceResponse<List<OldNoteEntry>>>() {
         @Override
-        public void onResponse(Call<ServiceResponse<List<NoteEntry>>> call, Response<ServiceResponse<List<NoteEntry>>> response) {
+        public void onResponse(Call<ServiceResponse<List<OldNoteEntry>>> call, Response<ServiceResponse<List<OldNoteEntry>>> response) {
             setWaiting(false);
             if (!response.isSuccessful()) {
                 Toast.makeText(
@@ -115,13 +116,13 @@ public class SharedNotesFragment extends BaseNotesFragment {
                 ).show();
                 return;
             }
-            ServiceResponse<List<NoteEntry>> noteEntryListResponse = response.body();
+            ServiceResponse<List<OldNoteEntry>> noteEntryListResponse = response.body();
             if (!noteEntryListResponse.containsData() && noteEntryListResponse.isError()) {
                 Toast.makeText(getActivity(), noteEntryListResponse.getMessage(), Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
-            List<NoteEntry> noteEntries = noteEntryListResponse.getData();
+            List<OldNoteEntry> noteEntries = noteEntryListResponse.getData();
             if (noteEntries != null) {
                 if (!noteEntries.isEmpty()) {
                     mPage++;
@@ -131,7 +132,7 @@ public class SharedNotesFragment extends BaseNotesFragment {
         }
 
         @Override
-        public void onFailure(Call<ServiceResponse<List<NoteEntry>>> call, Throwable t) {
+        public void onFailure(Call<ServiceResponse<List<OldNoteEntry>>> call, Throwable t) {
             setWaiting(false);
             Toast.makeText(getActivity(), "" + t, Toast.LENGTH_SHORT)
                     .show();

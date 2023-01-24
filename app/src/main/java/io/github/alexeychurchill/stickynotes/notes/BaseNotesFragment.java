@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.fragment.notes;
+package io.github.alexeychurchill.stickynotes.notes;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -17,7 +17,7 @@ import java.util.List;
 import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.adapter.NotesAdapter;
 import io.github.alexeychurchill.stickynotes.listener.EndlessRecyclerViewScrollListener;
-import io.github.alexeychurchill.stickynotes.model.NoteEntry;
+import io.github.alexeychurchill.stickynotes.model.OldNoteEntry;
 
 /**
  * Base notes fragment
@@ -27,7 +27,7 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
     private RecyclerView mRVNotes;
     private ProgressBar mPBWait;
     private FloatingActionButton mFab;
-    private List<NoteEntry> mNoteEntries = new ArrayList<>();
+    private List<OldNoteEntry> mNoteEntries = new ArrayList<>();
     private NotesAdapter mNotesAdapter;
 
     @Nullable
@@ -64,7 +64,7 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
         mNotesAdapter.setShowDeleteButton(show);
     }
 
-    public List<NoteEntry> getNoteEntries() {
+    public List<OldNoteEntry> getNoteEntries() {
         return mNoteEntries;
     }
 
@@ -72,7 +72,7 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
         mNotesAdapter.notifyDataSetChanged();
     }
 
-    public void addNotes(List<NoteEntry> noteEntries) {
+    public void addNotes(List<OldNoteEntry> noteEntries) {
         mNoteEntries.addAll(noteEntries);
         notifyDataSetChanged();
     }
@@ -112,11 +112,11 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
     }
 
     @Override
-    public void onNoteOpen(NoteEntry noteEntry) {
+    public void onNoteOpen(OldNoteEntry noteEntry) {
     }
 
     @Override
-    public void onNoteDelete(NoteEntry noteEntry) {
+    public void onNoteDelete(OldNoteEntry noteEntry) {
     }
 
     public void onListReachedEnd(int page, int totalItemsCount, RecyclerView view) {

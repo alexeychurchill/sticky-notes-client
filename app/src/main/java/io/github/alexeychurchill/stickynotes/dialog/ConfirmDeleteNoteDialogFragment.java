@@ -4,21 +4,20 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.Locale;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.model.NoteEntry;
+import io.github.alexeychurchill.stickynotes.model.OldNoteEntry;
 
 /**
  * Confirm for note deleting
  */
 
 public class ConfirmDeleteNoteDialogFragment extends DialogFragment {
-    private NoteEntry mNote;
+    private OldNoteEntry mNote;
     private OnDeleteNoteListener mListener;
 
     @NonNull
@@ -42,7 +41,7 @@ public class ConfirmDeleteNoteDialogFragment extends DialogFragment {
                 .create();
     }
 
-    public void setNote(NoteEntry note) {
+    public void setNote(OldNoteEntry note) {
         this.mNote = note;
     }
 
@@ -51,6 +50,6 @@ public class ConfirmDeleteNoteDialogFragment extends DialogFragment {
     }
 
     public interface OnDeleteNoteListener {
-        void onNoteDeleteConfirmed(NoteEntry note);
+        void onNoteDeleteConfirmed(OldNoteEntry note);
     }
 }

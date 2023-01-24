@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.Locale;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.model.NoteEntry;
+import io.github.alexeychurchill.stickynotes.model.OldNoteEntry;
 
 /**
  * Notes adapter
  */
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
-    private List<NoteEntry> mNoteEntries;
+    private List<OldNoteEntry> mNoteEntries;
     private NoteEntryListener mNoteEntryListener;
     private boolean mShowDeleteButton = true;
 
-    public void setNoteEntries(List<NoteEntry> noteEntries) {
+    public void setNoteEntries(List<OldNoteEntry> noteEntries) {
         this.mNoteEntries = noteEntries;
     }
 
@@ -53,8 +53,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     }
 
     public interface NoteEntryListener {
-        void onNoteOpen(NoteEntry noteEntry);
-        void onNoteDelete(NoteEntry noteEntry);
+        void onNoteOpen(OldNoteEntry noteEntry);
+        void onNoteDelete(OldNoteEntry noteEntry);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,7 +62,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         private TextView mTVSubject;
         private TextView mTVDate;
         private NoteEntryListener mNoteEntryListener;
-        private NoteEntry mNoteEntry;
+        private OldNoteEntry mNoteEntry;
         private Button mBtnDelete;
 
         public ViewHolder(View itemView) {
@@ -98,7 +98,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             }
         }
 
-        public void bind(NoteEntry noteEntry, NoteEntryListener listener, boolean showDelete) {
+        public void bind(OldNoteEntry noteEntry, NoteEntryListener listener, boolean showDelete) {
             mNoteEntryListener = listener;
             mNoteEntry = noteEntry;
             mTVTitle.setText(noteEntry.getTitle());
