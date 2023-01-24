@@ -7,6 +7,8 @@ interface NoteRepository {
 
     val allNotes: Flow<List<NoteEntry>>
 
+    suspend fun getEntry(id: String): NoteEntry?
+
     suspend fun create(title: String): NoteEntry?
 
     suspend fun delete(id: String)

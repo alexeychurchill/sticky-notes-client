@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.activity.NoteActivity
 import io.github.alexeychurchill.stickynotes.core.StickyNotesTheme
-import io.github.alexeychurchill.stickynotes.dialog.ConfirmDeleteNoteDialogFragment
-import io.github.alexeychurchill.stickynotes.model.JsonNoteEntry
 import io.github.alexeychurchill.stickynotes.notes.ui.UserNotesList
 
 /**
@@ -22,6 +21,13 @@ import io.github.alexeychurchill.stickynotes.notes.ui.UserNotesList
 class UserNotesFragment : Fragment() {
 
     private val viewModel by viewModels<UserNotesViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycleScope.launchWhenCreated {
+            viewModel.openNoteEvent.collect(::openNote)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,21 +44,10 @@ class UserNotesFragment : Fragment() {
         }
     }
 
-    /*override*/ fun onNoteOpen(noteEntry: JsonNoteEntry) {
+    private fun openNote(noteId: String) {
         val intent = Intent(activity, NoteActivity::class.java)
-        intent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteEntry.id)
+        intent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteId)
         intent.putExtra(NoteActivity.EXTRA_NOTE_SHARED, false)
         startActivity(intent)
-    }
-
-    /*override*/ fun onNoteDelete(noteEntry: JsonNoteEntry) {
-        val confirmDeleteNoteDialogFragment = ConfirmDeleteNoteDialogFragment()
-        confirmDeleteNoteDialogFragment.setNote(noteEntry)
-        confirmDeleteNoteDialogFragment.setListener {
-            TODO("Refactor ConfirmDeleteNoteDialog")
-            /*viewModel.deleteNote(it.id)*/
-        }
-        confirmDeleteNoteDialogFragment
-            .show(childFragmentManager, "ConfirmDeleteNoteDialogFragment")
     }
 }

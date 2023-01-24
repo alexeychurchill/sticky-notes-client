@@ -6,14 +6,21 @@ import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class FirebaseNoteRepository @Inject constructor() : NoteRepository {
+
     override val allNotes: Flow<List<NoteEntry>>
         get() = flowOf(emptyList())
 
+    override suspend fun getEntry(id: String): NoteEntry? {
+        // TODO: Implement getEntry
+        return null
+    }
+
     override suspend fun create(title: String): NoteEntry? {
-       return null
+        // TODO: Implement create
+        return null
     }
 
     override suspend fun delete(id: String) {
-        // ...
+        // TODO: Implement delete
     }
 }

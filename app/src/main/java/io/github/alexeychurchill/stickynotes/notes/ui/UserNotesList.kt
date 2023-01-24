@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.core.Spacing.Big
+import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.notes.NotesState.*
 import io.github.alexeychurchill.stickynotes.notes.UserNotesViewModel
 import kotlin.Error
@@ -75,6 +76,20 @@ fun UserNotesList(
                 onProceed = viewModel::confirmCreateNote,
                 onCancel = viewModel::cancelCreateNote,
             )
+        }
+
+        val noteToDelete by viewModel.noteToDelete.collectAsState(initial = null)
+        noteToDelete?.let { note ->
+            ConfirmDeleteNoteDialog(
+                noteTitle = note.title,
+                onConfirm = viewModel::confirmDeleteNote,
+                onDismiss = viewModel::rejectDeleteNote,
+            )
+        }
+
+        val isInProgress by viewModel.isInProgress.collectAsState(initial = false)
+        if (isInProgress) {
+            ProgressDialog()
         }
     }
 }

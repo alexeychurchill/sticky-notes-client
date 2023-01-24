@@ -9,6 +9,9 @@
     <string name="dialog_create_note_title_label">Title</string>
     <string name="dialog_create_note_action_create">Create</string>
 
+    <string name="dialog_delete_note_title">Delete note</string>
+    <string name="dialog_delete_note_text">Are you sure want to delete <b>%s</b>?</string>
+
     <string name="text_big_login">Login</string>
     <string name="text_button_join">Join</string>
     <string name="login_email_title">e-mail</string>
@@ -45,8 +48,6 @@
     <string name="text_title_friends">Friends</string>
     <string name="text_title_by_user">By user</string>
     <string name="text_button_cancel">Cancel</string>
-    <string name="text_title_dialog_delete">Delete note</string>
-    <string name="text_formatter_delete_note">Are you sure want to delete <b>%s</b>?</string>
     <string name="text_menu_edit_metadata">Edit metadata</string>
     <string name="text_menu_share_note_with">Share with…</string>
     <string name="text_menu_shared_to">Shared to…</string>
