@@ -2,27 +2,29 @@ package io.github.alexeychurchill.stickynotes.activity;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.adapter.MenuAdapter;
-import io.github.alexeychurchill.stickynotes.fragment.users.FriendsFragment;
 import io.github.alexeychurchill.stickynotes.fragment.notes.NotesFragment;
+import io.github.alexeychurchill.stickynotes.fragment.users.FriendsFragment;
 
 /**
  * Main application activity
  */
-
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener,
         View.OnClickListener {
 

@@ -10,7 +10,7 @@ import java.util.Calendar;
  * Note entry class
  */
 @Deprecated
-public class OldNoteEntry {
+public class JsonNoteEntry {
     @SerializedName("id")
     private int id;
     @SerializedName("title")

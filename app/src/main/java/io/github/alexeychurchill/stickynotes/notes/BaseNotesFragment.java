@@ -17,7 +17,7 @@ import java.util.List;
 import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.adapter.NotesAdapter;
 import io.github.alexeychurchill.stickynotes.listener.EndlessRecyclerViewScrollListener;
-import io.github.alexeychurchill.stickynotes.model.OldNoteEntry;
+import io.github.alexeychurchill.stickynotes.model.JsonNoteEntry;
 
 /**
  * Base notes fragment
@@ -27,7 +27,7 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
     private RecyclerView mRVNotes;
     private ProgressBar mPBWait;
     private FloatingActionButton mFab;
-    private List<OldNoteEntry> mNoteEntries = new ArrayList<>();
+    private List<JsonNoteEntry> mNoteEntries = new ArrayList<>();
     private NotesAdapter mNotesAdapter;
 
     @Nullable
@@ -64,7 +64,7 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
         mNotesAdapter.setShowDeleteButton(show);
     }
 
-    public List<OldNoteEntry> getNoteEntries() {
+    public List<JsonNoteEntry> getNoteEntries() {
         return mNoteEntries;
     }
 
@@ -72,7 +72,7 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
         mNotesAdapter.notifyDataSetChanged();
     }
 
-    public void addNotes(List<OldNoteEntry> noteEntries) {
+    public void addNotes(List<JsonNoteEntry> noteEntries) {
         mNoteEntries.addAll(noteEntries);
         notifyDataSetChanged();
     }
@@ -112,11 +112,11 @@ public class BaseNotesFragment extends Fragment implements NotesAdapter.NoteEntr
     }
 
     @Override
-    public void onNoteOpen(OldNoteEntry noteEntry) {
+    public void onNoteOpen(JsonNoteEntry noteEntry) {
     }
 
     @Override
-    public void onNoteDelete(OldNoteEntry noteEntry) {
+    public void onNoteDelete(JsonNoteEntry noteEntry) {
     }
 
     public void onListReachedEnd(int page, int totalItemsCount, RecyclerView view) {

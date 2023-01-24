@@ -9,4 +9,6 @@ object Spacing {
     val Medium = 16.dp
     val Big = 24.dp
     val Large = 32.dp
+
+    val DialogContentActions = 28.dp
 }

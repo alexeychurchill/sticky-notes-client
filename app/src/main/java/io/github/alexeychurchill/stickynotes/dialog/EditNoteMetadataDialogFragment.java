@@ -22,7 +22,7 @@ import io.github.alexeychurchill.stickynotes.R;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
-import io.github.alexeychurchill.stickynotes.model.OldNoteEntry;
+import io.github.alexeychurchill.stickynotes.model.JsonNoteEntry;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import retrofit2.Call;
@@ -111,7 +111,7 @@ public class EditNoteMetadataDialogFragment extends DialogFragment {
         return dialog;
     }
 
-    public void setNote(OldNoteEntry note) {
+    public void setNote(JsonNoteEntry note) {
         mNoteId = note.getId();
         mNoteSourceTitle = note.getTitle();
         mNoteSourceSubject = note.getSubject();

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * User class
  */
-
+@Deprecated
 public class JsonUser {
     @SerializedName("id")
     private int id;

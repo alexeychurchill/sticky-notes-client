@@ -10,6 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.account.FirebaseAccountRepository
+import io.github.alexeychurchill.stickynotes.notes.FirebaseNoteRepository
+import io.github.alexeychurchill.stickynotes.notes.NoteRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -19,6 +21,10 @@ abstract class FirebaseModule {
     @Singleton
     @Binds
     abstract fun bindLoginRepository(impl: FirebaseAccountRepository): AccountRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindNoteRepository(impl: FirebaseNoteRepository): NoteRepository
 
     companion object {
         @Provides

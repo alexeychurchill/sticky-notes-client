@@ -8,11 +8,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NotesViewModel @Inject constructor(
+class UserNotesViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
 ) : ViewModel() {
 
     private val _isInProgress = MutableStateFlow(false)
+
+    private val _isCreateNoteMode = MutableStateFlow(false)
 
     val notesState: Flow<NotesState>
         get() = noteRepository.allNotes
@@ -23,12 +25,25 @@ class NotesViewModel @Inject constructor(
     val isInProgress: Flow<Boolean>
         get() = _isInProgress
 
+    val isCreateNoteMode: Flow<Boolean>
+        get() = _isCreateNoteMode
+
     /** TODO: Move note creation to upper level **/
-    fun createNote(title: String) {
+    fun createNote() {
         viewModelScope.launch {
-            _isInProgress.emit(true)
-            noteRepository.create(title)
-            _isInProgress.emit(false)
+            _isCreateNoteMode.emit(true)
+        }
+    }
+
+    fun confirmCreateNote(title: String) {
+        viewModelScope.launch {
+            _isCreateNoteMode.emit(false)
+        }
+    }
+
+    fun cancelCreateNote() {
+        viewModelScope.launch {
+            _isCreateNoteMode.emit(false)
         }
     }
 
@@ -39,5 +54,9 @@ class NotesViewModel @Inject constructor(
             noteRepository.delete(id)
             _isInProgress.emit(false)
         }
+    }
+
+    fun reload() {
+        /** TODO: Implement Reload **/
     }
 }

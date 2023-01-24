@@ -5,7 +5,7 @@ import java.util.List;
 import io.github.alexeychurchill.stickynotes.model.Comment;
 import io.github.alexeychurchill.stickynotes.model.FriendRequest;
 import io.github.alexeychurchill.stickynotes.model.JsonUser;
-import io.github.alexeychurchill.stickynotes.model.OldNoteEntry;
+import io.github.alexeychurchill.stickynotes.model.JsonNoteEntry;
 import io.github.alexeychurchill.stickynotes.model.NoteFull;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.SharedNoteFull;
@@ -52,7 +52,7 @@ public interface StickyNotesApi {
                                                      @Field("title") String title,
                                                      @Field("subject") String subject);
     @GET("/note/list/{page}")
-    Call<ServiceResponse<List<OldNoteEntry>>> noteGetList(@Header("X-AccessToken") String token, @Path("page") int page);
+    Call<ServiceResponse<List<JsonNoteEntry>>> noteGetList(@Header("X-AccessToken") String token, @Path("page") int page);
     @POST("/note/{id}/delete")
     Call<ServiceResponse<Object>> noteDelete(@Header("X-AccessToken") String token, @Path("id") int id);
 
@@ -68,7 +68,7 @@ public interface StickyNotesApi {
                                                 @Path("note_id") int noteId,
                                                 @Path("user_id") int userId);
     @GET("/shared/list/{page}")
-    Call<ServiceResponse<List<OldNoteEntry>>> sharedList(@Header("X-AccessToken") String token, @Path("page") int page);
+    Call<ServiceResponse<List<JsonNoteEntry>>> sharedList(@Header("X-AccessToken") String token, @Path("page") int page);
     @GET("/shared/{id}/to/{page}")
     Call<ServiceResponse<List<JsonUser>>> sharedToList(@Header("X-AccessToken") String token,
                                                        @Path("id") int noteId,

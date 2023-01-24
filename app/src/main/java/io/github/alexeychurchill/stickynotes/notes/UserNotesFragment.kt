@@ -2,58 +2,50 @@ package io.github.alexeychurchill.stickynotes.notes
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import io.github.alexeychurchill.stickynotes.R
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.activity.NoteActivity
+import io.github.alexeychurchill.stickynotes.core.StickyNotesTheme
 import io.github.alexeychurchill.stickynotes.dialog.ConfirmDeleteNoteDialogFragment
-import io.github.alexeychurchill.stickynotes.dialog.CreateNoteDialogFragment
-import io.github.alexeychurchill.stickynotes.model.OldNoteEntry
-import io.github.alexeychurchill.stickynotes.notes.NotesState.Loaded
-import io.github.alexeychurchill.stickynotes.notes.NotesState.Loading
-import kotlinx.coroutines.flow.map
+import io.github.alexeychurchill.stickynotes.model.JsonNoteEntry
+import io.github.alexeychurchill.stickynotes.notes.ui.UserNotesList
 
 /**
  * User notes fragment
  */
-class UserNotesFragment : BaseNotesFragment() {
+@AndroidEntryPoint
+class UserNotesFragment : Fragment() {
 
-    private val viewModel by viewModels<NotesViewModel>()
+    private val viewModel by viewModels<UserNotesViewModel>()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(requireContext())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setFabIcon(R.drawable.ic_add_white_36dp)
-        setFabVisible(true)
-
-        // Progress bar
-        lifecycleScope.launchWhenStarted {
-            viewModel.notesState
-                .map { it is Loading }
-                .collect(::setWaiting)
-        }
-
-        // Notes items
-        lifecycleScope.launchWhenStarted {
-            viewModel.notesState.collect { state ->
-                if (state is Loaded) {
-                    clearNotes()
-                    TODO("Get rid of BaseNotesFragment dependency")
-                    /*addNotes(state.items)*/
-                }
+        (view as? ComposeView)?.setContent {
+            StickyNotesTheme {
+                UserNotesList(viewModel)
             }
         }
     }
 
-    override fun onNoteOpen(noteEntry: OldNoteEntry) {
+    /*override*/ fun onNoteOpen(noteEntry: JsonNoteEntry) {
         val intent = Intent(activity, NoteActivity::class.java)
         intent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteEntry.id)
         intent.putExtra(NoteActivity.EXTRA_NOTE_SHARED, false)
         startActivity(intent)
     }
 
-    override fun onNoteDelete(noteEntry: OldNoteEntry) {
+    /*override*/ fun onNoteDelete(noteEntry: JsonNoteEntry) {
         val confirmDeleteNoteDialogFragment = ConfirmDeleteNoteDialogFragment()
         confirmDeleteNoteDialogFragment.setNote(noteEntry)
         confirmDeleteNoteDialogFragment.setListener {
@@ -62,13 +54,5 @@ class UserNotesFragment : BaseNotesFragment() {
         }
         confirmDeleteNoteDialogFragment
             .show(childFragmentManager, "ConfirmDeleteNoteDialogFragment")
-    }
-
-    override fun onFabClick() {
-        val dialog = CreateNoteDialogFragment()
-        dialog.setListener {
-            viewModel.createNote(it)
-        }
-        dialog.show(requireActivity().supportFragmentManager, "CreateNoteDialogFragment")
     }
 }

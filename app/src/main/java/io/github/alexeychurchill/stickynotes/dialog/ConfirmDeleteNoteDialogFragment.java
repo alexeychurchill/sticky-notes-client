@@ -10,14 +10,14 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.Locale;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.model.OldNoteEntry;
+import io.github.alexeychurchill.stickynotes.model.JsonNoteEntry;
 
 /**
  * Confirm for note deleting
  */
 
 public class ConfirmDeleteNoteDialogFragment extends DialogFragment {
-    private OldNoteEntry mNote;
+    private JsonNoteEntry mNote;
     private OnDeleteNoteListener mListener;
 
     @NonNull
@@ -41,7 +41,7 @@ public class ConfirmDeleteNoteDialogFragment extends DialogFragment {
                 .create();
     }
 
-    public void setNote(OldNoteEntry note) {
+    public void setNote(JsonNoteEntry note) {
         this.mNote = note;
     }
 
@@ -50,6 +50,6 @@ public class ConfirmDeleteNoteDialogFragment extends DialogFragment {
     }
 
     public interface OnDeleteNoteListener {
-        void onNoteDeleteConfirmed(OldNoteEntry note);
+        void onNoteDeleteConfirmed(JsonNoteEntry note);
     }
 }
