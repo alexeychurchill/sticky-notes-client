@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.account.ui.AuthScreen
 import io.github.alexeychurchill.stickynotes.activity.MainActivity
-import io.github.alexeychurchill.stickynotes.core.StickyNotesTheme
+import io.github.alexeychurchill.stickynotes.core.ui.StickyNotesTheme
 
 /**
  * Login and register activity

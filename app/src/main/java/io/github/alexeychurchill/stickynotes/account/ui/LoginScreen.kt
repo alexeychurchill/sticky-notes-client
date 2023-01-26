@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.account.LoginViewModel
-import io.github.alexeychurchill.stickynotes.core.Spacing.Big
-import io.github.alexeychurchill.stickynotes.core.Spacing.Regular
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Regular
 
 private const val ANNOTATION_NAV = "nav"
 private const val TAG_SIGNUP = "signup"

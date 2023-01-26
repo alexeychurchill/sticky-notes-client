@@ -1,6 +1,6 @@
 package io.github.alexeychurchill.stickynotes.account
 
-import io.github.alexeychurchill.stickynotes.core.User
+import io.github.alexeychurchill.stickynotes.core.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository {

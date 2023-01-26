@@ -11,9 +11,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.github.alexeychurchill.stickynotes.R
-import io.github.alexeychurchill.stickynotes.core.Spacing.Big
-import io.github.alexeychurchill.stickynotes.core.Spacing.DialogContentActions
-import io.github.alexeychurchill.stickynotes.core.Spacing.Regular
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.DialogContentActions
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Regular
 
 @Composable
 fun CreateNoteDialog(

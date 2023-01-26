@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.core.extensions
+package io.github.alexeychurchill.stickynotes.core.extension
 
 import java.util.*
 

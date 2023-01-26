@@ -1,7 +1,7 @@
 package io.github.alexeychurchill.stickynotes.notes
 
 import com.google.firebase.firestore.FirebaseFirestore
-import io.github.alexeychurchill.stickynotes.core.NoteEntry
+import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await

@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.core
+package io.github.alexeychurchill.stickynotes.core.ui
 
 import androidx.compose.ui.unit.dp
 

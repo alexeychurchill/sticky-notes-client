@@ -3,7 +3,7 @@ package io.github.alexeychurchill.stickynotes.notes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.alexeychurchill.stickynotes.core.NoteEntry
+import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject

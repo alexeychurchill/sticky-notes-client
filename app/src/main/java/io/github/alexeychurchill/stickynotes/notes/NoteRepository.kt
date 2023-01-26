@@ -1,6 +1,6 @@
 package io.github.alexeychurchill.stickynotes.notes
 
-import io.github.alexeychurchill.stickynotes.core.NoteEntry
+import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {

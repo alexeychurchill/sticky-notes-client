@@ -2,8 +2,8 @@ package io.github.alexeychurchill.stickynotes.notes
 
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.account.AuthState.Authorized
-import io.github.alexeychurchill.stickynotes.core.NoteEntry
-import io.github.alexeychurchill.stickynotes.core.NoteEntry.Companion.NO_ID
+import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
+import io.github.alexeychurchill.stickynotes.core.model.NoteEntry.Companion.NO_ID
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import java.util.*

@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.core
+package io.github.alexeychurchill.stickynotes.core.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors

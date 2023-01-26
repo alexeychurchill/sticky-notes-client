@@ -1,8 +1,8 @@
 package io.github.alexeychurchill.stickynotes.notes
 
 import com.google.firebase.firestore.PropertyName
-import io.github.alexeychurchill.stickynotes.core.NoteEntry
-import io.github.alexeychurchill.stickynotes.core.extensions.ofTimeMillis
+import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
+import io.github.alexeychurchill.stickynotes.core.extension.ofTimeMillis
 
 data class FirestoreNoteEntry(
     @PropertyName("owner_id")

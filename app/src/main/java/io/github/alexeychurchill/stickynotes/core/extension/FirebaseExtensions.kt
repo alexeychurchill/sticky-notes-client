@@ -1,7 +1,7 @@
-package io.github.alexeychurchill.stickynotes.core.extensions
+package io.github.alexeychurchill.stickynotes.core.extension
 
 import com.google.firebase.auth.FirebaseUser
-import io.github.alexeychurchill.stickynotes.core.User
+import io.github.alexeychurchill.stickynotes.core.model.User
 
 fun FirebaseUser.toUser(): User {
     return User(

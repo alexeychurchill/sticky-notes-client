@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.alexeychurchill.stickynotes.R
-import io.github.alexeychurchill.stickynotes.core.Spacing.Big
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.notes.NotesState.*
 import io.github.alexeychurchill.stickynotes.notes.UserNotesViewModel

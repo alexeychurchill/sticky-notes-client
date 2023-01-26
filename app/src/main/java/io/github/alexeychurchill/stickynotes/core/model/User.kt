@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.core
+package io.github.alexeychurchill.stickynotes.core.model
 
 data class User(
     val id: String,
