@@ -9,4 +9,8 @@ data class NoteEntry(
     val subject: String? = null,
     val createdAt: Calendar,
     val changedAt: Calendar,
-)
+) {
+    companion object {
+        const val NO_ID = ""
+    }
+}

@@ -2,6 +2,8 @@ package io.github.alexeychurchill.stickynotes.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.Binds
 import dagger.Module
@@ -29,5 +31,8 @@ abstract class FirebaseModule {
     companion object {
         @Provides
         fun provideAuth(): FirebaseAuth = Firebase.auth
+
+        @Provides
+        fun provideFirestore(): FirebaseFirestore = Firebase.firestore
     }
 }

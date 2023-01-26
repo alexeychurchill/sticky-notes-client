@@ -9,7 +9,7 @@ interface NoteRepository {
 
     suspend fun getEntry(id: String): NoteEntry?
 
-    suspend fun create(title: String): NoteEntry?
+    suspend fun create(entry: NoteEntry): NoteEntry?
 
     suspend fun delete(id: String)
 }

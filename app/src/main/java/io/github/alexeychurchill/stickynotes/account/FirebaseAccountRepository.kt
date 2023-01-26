@@ -5,7 +5,7 @@ package io.github.alexeychurchill.stickynotes.account
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import io.github.alexeychurchill.stickynotes.core.User
-import io.github.alexeychurchill.stickynotes.core.toUser
+import io.github.alexeychurchill.stickynotes.core.extensions.toUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking

@@ -11,6 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserNotesViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
+    private val noteEntryFactory: NoteEntryFactory,
 ) : ViewModel() {
 
     private val _isInProgress = MutableStateFlow(false)
@@ -59,6 +60,10 @@ class UserNotesViewModel @Inject constructor(
     fun confirmCreateNote(title: String) {
         viewModelScope.launch {
             _isCreateNoteMode.emit(false)
+            _isInProgress.emit(true)
+            val entry = noteEntryFactory.create(title)
+            noteRepository.create(entry)
+            _isInProgress.emit(false)
         }
     }
 
