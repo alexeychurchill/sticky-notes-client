@@ -64,12 +64,10 @@ class UserNotesViewModel @Inject constructor(
     }
 
     fun confirmCreateNote(title: String) {
-        viewModelScope.launch {
+        safeOp {
             _isCreateNoteMode.emit(false)
-            _isInProgress.emit(true)
             val entry = noteEntryFactory.create(title)
             noteRepository.create(entry)
-            _isInProgress.emit(false)
         }
     }
 
@@ -81,20 +79,17 @@ class UserNotesViewModel @Inject constructor(
 
     /** TODO: Consider moving to upper level **/
     fun deleteNote(id: String) {
-        viewModelScope.launch {
-            _isInProgress.emit(true)
-            val note = noteRepository.getEntry(id) ?: return@launch
-            _noteToDelete.emit(note)
-            _isInProgress.emit(false)
+        safeOp {
+            noteRepository.getEntry(id)?.let { noteEntry ->
+                _noteToDelete.emit(noteEntry)
+            }
         }
     }
 
     fun confirmDeleteNote() {
         val noteToDelete = _noteToDelete.value ?: return
-        viewModelScope.launch {
-            _isInProgress.emit(true)
+        safeOp {
             noteRepository.delete(noteToDelete.id)
-            _isInProgress.emit(false)
         }
     }
 
@@ -102,5 +97,25 @@ class UserNotesViewModel @Inject constructor(
         viewModelScope.launch {
             _noteToDelete.emit(null)
         }
+    }
+
+    private fun safeOp(
+        errorHandler: suspend (Throwable) -> Unit = ::handleError,
+        block: suspend () -> Unit,
+    ) {
+        viewModelScope.launch {
+            _isInProgress.emit(true)
+            try {
+                block()
+            } catch (e: Throwable) {
+                errorHandler(e)
+            } finally {
+                _isInProgress.emit(false)
+            }
+        }
+    }
+
+    private suspend fun handleError(e: Throwable) {
+        // TODO: Implement error handling
     }
 }
