@@ -1,20 +1,20 @@
 package io.github.alexeychurchill.stickynotes.notes
 
 import com.google.firebase.firestore.PropertyName
-import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.core.extension.ofTimeMillis
+import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 
 data class FirestoreNoteEntry(
     @PropertyName("owner_id")
-    val ownerId: String,
+    val ownerId: String = "",
     @PropertyName("title")
-    val title: String,
+    val title: String = "",
     @PropertyName("subject")
-    val subject: String?,
+    val subject: String? = null,
     @PropertyName("created_at")
-    val createdAt: Long,
+    val createdAt: Long = 0L,
     @PropertyName("changed_at")
-    val changedAt: Long,
+    val changedAt: Long = 0L,
 ) {
     constructor(noteEntry: NoteEntry): this(
         ownerId = noteEntry.ownerId,
