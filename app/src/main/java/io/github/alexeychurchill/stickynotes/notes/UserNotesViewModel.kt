@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
+import io.github.alexeychurchill.stickynotes.notes.ModalState.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,13 +15,13 @@ class UserNotesViewModel @Inject constructor(
     private val noteEntryFactory: NoteEntryFactory,
 ) : ViewModel() {
 
+    private val _openNoteEvent = MutableSharedFlow<String>()
+
     private val _isInProgress = MutableStateFlow(false)
 
     private val _isCreateNoteMode = MutableStateFlow(false)
 
     private val _noteToDelete = MutableStateFlow<NoteEntry?>(null)
-
-    private val _openNoteEvent = MutableSharedFlow<String>()
 
     val notesState: Flow<NotesState>
         get() = noteRepository.allNotes
@@ -31,14 +32,19 @@ class UserNotesViewModel @Inject constructor(
     val openNoteEvent: Flow<String>
         get() = _openNoteEvent
 
-    val isInProgress: Flow<Boolean>
-        get() = _isInProgress
-
-    val isCreateNoteMode: Flow<Boolean>
-        get() = _isCreateNoteMode
-
-    val noteToDelete: Flow<NoteEntry?>
-        get() = _noteToDelete
+    val modalState: Flow<ModalState>
+        get() = combine(
+            _isInProgress,
+            _isCreateNoteMode,
+            _noteToDelete
+        ) { inProgress, isInCreateMode, toDelete ->
+            when {
+                inProgress -> InProgress
+                isInCreateMode -> CreateNote
+                toDelete != null -> DeleteNote(toDelete)
+                else -> None
+            }
+        }
 
     fun reload() {
         /** TODO: Implement Reload **/
