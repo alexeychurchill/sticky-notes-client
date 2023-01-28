@@ -16,10 +16,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.alexeychurchill.stickynotes.R
+import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
-import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Regular
 import io.github.alexeychurchill.stickynotes.core.ui.space
 import io.github.alexeychurchill.stickynotes.notes.ModalState
 import io.github.alexeychurchill.stickynotes.notes.ModalState.*
@@ -39,6 +39,8 @@ fun UserNotesList(
             NotesState(
                 notesState = notesState,
                 onReload = viewModel::reload,
+                onEntryClick = { /** TODO: Handle note entry click **/  },
+                onEntryDelete = { viewModel.proceedDeleteNote(it.id) },
             )
         }
 
@@ -62,6 +64,8 @@ fun UserNotesList(
 private fun BoxScope.NotesState(
     notesState: NotesState,
     onReload: () -> Unit,
+    onEntryClick: (NoteEntry) -> Unit,
+    onEntryDelete: (NoteEntry) -> Unit,
 ) {
     when (notesState) {
         is Loading -> CircularProgressIndicator(
@@ -76,11 +80,10 @@ private fun BoxScope.NotesState(
 
             val notes = notesState.items
             items(items = notes, key = { it.id }) { note ->
-                NoteEntryWidget(
-                    modifier = Modifier
-                        .padding(horizontal = Regular)
-                        .padding(top = Regular),
-                    entry = note,
+                NoteEntryListItem(
+                    noteEntry = note,
+                    onEntryClick = onEntryClick,
+                    onEntryDelete = onEntryDelete,
                 )
             }
 
@@ -110,7 +113,10 @@ private fun Dialogs(viewModel: UserNotesViewModel) {
 
         is DeleteNote -> ConfirmDeleteNoteDialog(
             noteTitle = (operation as DeleteNote).entry.title,
-            onConfirm = viewModel::confirmDeleteNote,
+            onConfirm = {
+                val noteId = (operation as DeleteNote).entry.id
+                viewModel.proceedDeleteNote(noteId)
+            },
             onDismiss = viewModel::rejectDeleteNote,
         )
 

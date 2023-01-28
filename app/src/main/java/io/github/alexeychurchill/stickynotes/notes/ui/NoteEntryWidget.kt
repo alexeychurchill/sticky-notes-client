@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,12 +32,17 @@ fun NoteEntryWidget(
 ) {
     Box(modifier = modifier) {
         val shape = RoundedCornerShape(16.dp)
+        val backgroundColor = MaterialTheme.colors
+            .primary
+            .copy(alpha = 0.3f)
+            .compositeOver(MaterialTheme.colors.surface)
+
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape)
                 .clickable(onClick = onClick),
-            color = MaterialTheme.colors.primary.copy(alpha = 0.2f),
+            color = backgroundColor,
             shape = shape,
         ) {
             Column(

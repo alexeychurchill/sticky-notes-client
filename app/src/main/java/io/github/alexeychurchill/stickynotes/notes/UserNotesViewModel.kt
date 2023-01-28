@@ -91,10 +91,10 @@ class UserNotesViewModel @Inject constructor(
         }
     }
 
-    fun confirmDeleteNote() {
-        val noteToDelete = _noteToDelete.value ?: return
+    fun proceedDeleteNote(noteId: String) {
         safeOp {
-            noteRepository.delete(noteToDelete.id)
+            _noteToDelete.emit(null)
+            noteRepository.delete(noteId)
         }
     }
 
