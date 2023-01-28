@@ -18,6 +18,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Regular
+import io.github.alexeychurchill.stickynotes.core.ui.space
 import io.github.alexeychurchill.stickynotes.notes.ModalState
 import io.github.alexeychurchill.stickynotes.notes.ModalState.*
 import io.github.alexeychurchill.stickynotes.notes.NotesState
@@ -32,10 +35,12 @@ fun UserNotesList(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         val notesState by viewModel.notesState.collectAsState(initial = None)
-        NotesState(
-            notesState = notesState,
-            onReload = viewModel::reload,
-        )
+        WithDateTimeFormatter(viewModel.dateTimeFormatter) {
+            NotesState(
+                notesState = notesState,
+                onReload = viewModel::reload,
+            )
+        }
 
         FloatingActionButton(
             modifier = Modifier
@@ -67,18 +72,19 @@ private fun BoxScope.NotesState(
         )
 
         is Loaded -> LazyColumn(modifier = Modifier.fillMaxSize()) {
+            space(Medium)
+
             val notes = notesState.items
             items(items = notes, key = { it.id }) { note ->
-                /** TODO: Call Note Entry composable **/
-            }
-
-            item {
-                Box(
+                NoteEntryWidget(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(96.dp)
+                        .padding(horizontal = Regular)
+                        .padding(top = Regular),
+                    entry = note,
                 )
             }
+
+            space(96.dp)
         }
 
         is Error -> OutlinedButton(
@@ -110,8 +116,6 @@ private fun Dialogs(viewModel: UserNotesViewModel) {
 
         InProgress -> ProgressDialog()
 
-        ModalState.None -> {
-            /** NO OP **/
-        }
+        ModalState.None -> { /** NO OP **/ }
     }
 }

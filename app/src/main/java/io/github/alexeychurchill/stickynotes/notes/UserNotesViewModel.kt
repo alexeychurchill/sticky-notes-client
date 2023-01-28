@@ -3,6 +3,8 @@ package io.github.alexeychurchill.stickynotes.notes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
+import io.github.alexeychurchill.stickynotes.core.datetime.DateTimeFormatter
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.notes.ModalState.*
 import kotlinx.coroutines.flow.*
@@ -13,6 +15,8 @@ import javax.inject.Inject
 class UserNotesViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
     private val noteEntryFactory: NoteEntryFactory,
+    private val dispatchers: DispatcherProvider,
+    val dateTimeFormatter: DateTimeFormatter,
 ) : ViewModel() {
 
     private val _openNoteEvent = MutableSharedFlow<String>()
@@ -26,7 +30,8 @@ class UserNotesViewModel @Inject constructor(
     val notesState: Flow<NotesState>
         get() = noteRepository.allNotes
             .map { NotesState.items(it) }
-            .onStart { NotesState.loading() }
+            .flowOn(dispatchers.io)
+            .onStart { emit(NotesState.loading()) }
             .catch { emit(NotesState.error(it)) }
 
     val openNoteEvent: Flow<String>
