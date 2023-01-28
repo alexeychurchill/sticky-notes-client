@@ -45,7 +45,10 @@ class FirebaseNoteRepository @Inject constructor(
     }
 
     override suspend fun delete(id: String) {
-        // TODO: Implement delete
+        firestore.collection(NOTE_ENTRIES_PATH)
+            .document(id)
+            .delete()
+            .await()
     }
 
     private fun flowOfUserNoteEntries(ownerId: String): Flow<List<NoteEntry>> {
