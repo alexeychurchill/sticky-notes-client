@@ -11,7 +11,7 @@ import com.google.gson.GsonBuilder;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.activity.NoteActivity;
+import io.github.alexeychurchill.stickynotes.note_editor.NoteActivity;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.model.JsonNoteEntry;
