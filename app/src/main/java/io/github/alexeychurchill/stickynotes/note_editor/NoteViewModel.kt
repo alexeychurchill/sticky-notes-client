@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteContentRepository
 import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption
+import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption.COMMENTS
 import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -20,6 +21,8 @@ class NoteViewModel @Inject constructor(
     private val _subject = MutableStateFlow("")
     private val _text = MutableStateFlow("")
 
+    private val _onOptionEvent = MutableSharedFlow<NoteOption>()
+
     private val _onExitEvent = MutableSharedFlow<Unit>()
 
     val inProgress: StateFlow<Boolean>
@@ -32,10 +35,10 @@ class NoteViewModel @Inject constructor(
         get() = MutableStateFlow(true)
 
     val enabledOptions: StateFlow<Set<NoteOption>>
-        get() = MutableStateFlow(emptySet())
+        get() = MutableStateFlow(NoteOption.values().toSet())
 
     val onOptionEvent: Flow<NoteOption>
-        get() = flowOf()
+        get() = _onOptionEvent
 
     val title: StateFlow<String>
         get() = _title
@@ -54,7 +57,12 @@ class NoteViewModel @Inject constructor(
     }
 
     fun pickOption(option: NoteOption) {
-        // TODO: Handle picked option
+        viewModelScope.launch {
+            if (option == COMMENTS) {
+                return@launch
+            }
+            _onOptionEvent.emit(option)
+        }
     }
 
     fun onTitleChange(title: String) {

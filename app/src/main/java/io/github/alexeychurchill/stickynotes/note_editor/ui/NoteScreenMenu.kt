@@ -8,7 +8,6 @@ import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption
 import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption.*
 
 private val NoteScreenMenuList = listOf(
-    EDIT_METADATA withTitle R.string.text_menu_edit_metadata,
     SHARE_WITH withTitle R.string.text_menu_share_note_with,
     SHARED_TO withTitle R.string.text_menu_shared_to,
     COMMENTS withTitle R.string.text_menu_comments,

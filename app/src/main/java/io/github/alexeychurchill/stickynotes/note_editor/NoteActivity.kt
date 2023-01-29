@@ -9,10 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.core.ui.StickyNotesTheme
-import io.github.alexeychurchill.stickynotes.dialog.EditNoteMetadataDialogFragment
 import io.github.alexeychurchill.stickynotes.dialog.ShareNoteDialogFragment
 import io.github.alexeychurchill.stickynotes.dialog.SharedToDialogFragment
-import io.github.alexeychurchill.stickynotes.model.NoteFull
 import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption
 import io.github.alexeychurchill.stickynotes.note_editor.ui.NoteScreen
 
@@ -21,7 +19,6 @@ import io.github.alexeychurchill.stickynotes.note_editor.ui.NoteScreen
  */
 @AndroidEntryPoint
 class NoteActivity : AppCompatActivity() {
-    private var mNote: NoteFull? = null
     private var mNoteId = -1
 
     private val noteId by lazy {
@@ -55,17 +52,10 @@ class NoteActivity : AppCompatActivity() {
 
     private fun handleNoteOption(option: NoteOption) {
         when(option) {
-            NoteOption.EDIT_METADATA -> editMetadata()
             NoteOption.SHARE_WITH -> shareThisNote()
             NoteOption.SHARED_TO -> sharedTo()
-            else -> { /** TODO: Implement comments **/ }
+            else -> { /** Default, action not defined yet **/ }
         }
-    }
-
-    private fun editMetadata() {
-        val dialog = EditNoteMetadataDialogFragment()
-        dialog.setNote(mNote)
-        dialog.show(supportFragmentManager, "EditNoteMetadataDialogFragment")
     }
 
     private fun sharedTo() {
