@@ -33,8 +33,11 @@ class FirebaseNoteRepository @Inject constructor(
             .flowOn(dispatchers.io)
 
     override suspend fun getEntry(id: String): NoteEntry? {
-        // TODO: Implement getEntry
-        return null
+        val docRef = firestore.collection(NOTE_ENTRIES_PATH)
+            .document(id)
+            .get()
+            .await()
+        return docRef.toObject<FirestoreNoteEntry>()?.toDomain(docRef.id)
     }
 
     override suspend fun create(entry: NoteEntry): NoteEntry {

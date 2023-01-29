@@ -40,7 +40,7 @@ fun UserNotesList(
                 notesState = notesState,
                 onReload = viewModel::reload,
                 onEntryClick = { /** TODO: Handle note entry click **/  },
-                onEntryDelete = { viewModel.proceedDeleteNote(it.id) },
+                onEntryDelete = { viewModel.deleteNote(it) },
             )
         }
 
@@ -104,24 +104,28 @@ private fun BoxScope.NotesState(
 
 @Composable
 private fun Dialogs(viewModel: UserNotesViewModel) {
-    val operation by viewModel.modalState.collectAsState(initial = ModalState.None)
+    val operation by viewModel.modalState.collectAsState(
+        initial = ModalState.None
+    )
     when (operation) {
-        CreateNote -> CreateNoteDialog(
+        is CreateNote -> CreateNoteDialog(
             onProceed = viewModel::confirmCreateNote,
             onCancel = viewModel::cancelCreateNote,
         )
 
         is DeleteNote -> ConfirmDeleteNoteDialog(
-            noteTitle = (operation as DeleteNote).entry.title,
+            noteTitle = (operation as? DeleteNote)?.entry?.title ?: "",
             onConfirm = {
-                val noteId = (operation as DeleteNote).entry.id
-                viewModel.proceedDeleteNote(noteId)
+                (operation as? DeleteNote)
+                    ?.entry
+                    ?.id
+                    ?.let(viewModel::proceedDeleteNote)
             },
             onDismiss = viewModel::rejectDeleteNote,
         )
 
-        InProgress -> ProgressDialog()
+        is InProgress -> ProgressDialog()
 
-        ModalState.None -> { /** NO OP **/ }
+        is ModalState.None -> { /** NO OP **/ }
     }
 }

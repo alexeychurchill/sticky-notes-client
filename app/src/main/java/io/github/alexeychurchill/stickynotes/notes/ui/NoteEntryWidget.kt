@@ -24,6 +24,8 @@ import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Regular
 import io.github.alexeychurchill.stickynotes.core.ui.StickyNotesTheme
 import java.util.*
 
+val NoteEntryShape = RoundedCornerShape(16.dp)
+
 @Composable
 fun NoteEntryWidget(
     modifier: Modifier = Modifier,
@@ -31,7 +33,7 @@ fun NoteEntryWidget(
     entry: NoteEntry,
 ) {
     Box(modifier = modifier) {
-        val shape = RoundedCornerShape(16.dp)
+        val shape = NoteEntryShape
         val backgroundColor = MaterialTheme.colors
             .primary
             .copy(alpha = 0.3f)

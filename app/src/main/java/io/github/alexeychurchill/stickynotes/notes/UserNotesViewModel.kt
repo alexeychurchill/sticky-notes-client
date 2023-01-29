@@ -41,7 +41,7 @@ class UserNotesViewModel @Inject constructor(
         get() = combine(
             _isInProgress,
             _isCreateNoteMode,
-            _noteToDelete
+            _noteToDelete,
         ) { inProgress, isInCreateMode, toDelete ->
             when {
                 inProgress -> InProgress
@@ -83,11 +83,9 @@ class UserNotesViewModel @Inject constructor(
     }
 
     /** TODO: Consider moving to upper level **/
-    fun deleteNote(id: String) {
-        safeOp {
-            noteRepository.getEntry(id)?.let { noteEntry ->
-                _noteToDelete.emit(noteEntry)
-            }
+    fun deleteNote(entry: NoteEntry) {
+        viewModelScope.launch {
+            _noteToDelete.emit(entry)
         }
     }
 

@@ -2,22 +2,27 @@
 
 package io.github.alexeychurchill.stickynotes.notes.ui
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.DismissDirection.EndToStart
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
-import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
+import io.github.alexeychurchill.stickynotes.core.ui.ShiftToReveal
+import io.github.alexeychurchill.stickynotes.core.ui.ShiftValue
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Large
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Regular
+import io.github.alexeychurchill.stickynotes.core.ui.specialColors
 
 @Composable
 fun NoteEntryListItem(
@@ -25,15 +30,12 @@ fun NoteEntryListItem(
     onEntryClick: (NoteEntry) -> Unit,
     onEntryDelete: (NoteEntry) -> Unit,
 ) {
-    val dismissState = rememberDismissState {
-        onEntryDelete(noteEntry)
-        true
-    }
-    SwipeToDismiss(
-        state = dismissState,
-        directions = setOf(EndToStart),
-        dismissThresholds = { FractionalThreshold(0.4f) },
-        dismissContent = {
+    ShiftToReveal(
+        modifier = Modifier.fillMaxWidth(),
+        shifts = mapOf(
+            96.dp to ShiftValue.EndToStart,
+        ),
+        content = {
             NoteEntryWidget(
                 modifier = Modifier
                     .padding(horizontal = Regular)
@@ -43,42 +45,48 @@ fun NoteEntryListItem(
             )
         },
         background = {
-            DismissBackground(dismissState)
+            ShiftBackground(
+                modifier = Modifier.fillMaxWidth(),
+                onDeleteClick = { onEntryDelete(noteEntry) },
+            )
         },
     )
 }
 
 @Composable
-private fun DismissBackground(
-    dismissState: DismissState,
+private fun ShiftBackground(
+    modifier: Modifier = Modifier,
+    onDeleteClick: () -> Unit = { },
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = Regular)
-            .padding(top = Regular),
-    ) {
-        val color = if (dismissState.dismissDirection == EndToStart) {
-            Color.Red
-        } else {
-            Color.Transparent
-        }
-
+    Box(modifier = modifier) {
+        val interactionSource = remember { MutableInteractionSource() }
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .clip(RoundedCornerShape(16.dp))
-                .background(color = color),
+                .padding(top = Regular)
+                .padding(horizontal = Regular)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = rememberRipple(
+                        color = MaterialTheme.specialColors.delete,
+                    ),
+                    onClick = onDeleteClick,
+                )
+                .border(
+                    width = 3.dp,
+                    color = MaterialTheme.specialColors.delete,
+                    shape = NoteEntryShape,
+                ),
         ) {
             Icon(
                 modifier = Modifier
                     .align(CenterEnd)
-                    .padding(end = Big)
+                    .padding(end = Large)
                     .fillMaxHeight(fraction = 0.33f)
                     .aspectRatio(ratio = 1.0f),
                 imageVector = Icons.Rounded.Delete,
                 contentDescription = null,
-                tint = MaterialTheme.colors.onError,
+                tint = MaterialTheme.specialColors.delete,
             )
         }
     }

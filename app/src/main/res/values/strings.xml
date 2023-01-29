@@ -4,6 +4,7 @@
     <string name="generic_back">Back</string>
     <string name="generic_retry">Retry</string>
     <string name="generic_cancel">Cancel</string>
+    <string name="generic_delete">Delete</string>
 
     <string name="dialog_create_note_title">Create note</string>
     <string name="dialog_create_note_title_label">Title</string>
