@@ -1,6 +1,5 @@
 package io.github.alexeychurchill.stickynotes.notes
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.alexeychurchill.stickynotes.note_editor.NoteActivity
 import io.github.alexeychurchill.stickynotes.core.ui.StickyNotesTheme
+import io.github.alexeychurchill.stickynotes.note_editor.NoteActivity
 import io.github.alexeychurchill.stickynotes.notes.presentation.UserNotesViewModel
 import io.github.alexeychurchill.stickynotes.notes.ui.UserNotesList
 
@@ -46,9 +45,6 @@ class UserNotesFragment : Fragment() {
     }
 
     private fun openNote(noteId: String) {
-        val intent = Intent(activity, NoteActivity::class.java)
-        intent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteId)
-        intent.putExtra(NoteActivity.EXTRA_NOTE_SHARED, false)
-        startActivity(intent)
+        NoteActivity.start(requireContext(), noteId)
     }
 }

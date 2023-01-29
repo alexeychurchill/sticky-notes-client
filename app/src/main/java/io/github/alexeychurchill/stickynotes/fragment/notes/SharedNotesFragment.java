@@ -1,7 +1,6 @@
 package io.github.alexeychurchill.stickynotes.fragment.notes;
 
 import android.content.Context;
-import android.content.Intent;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Toast;
 
@@ -81,10 +80,8 @@ public class SharedNotesFragment extends BaseNotesFragment {
 
     @Override
     public void onNoteOpen(JsonNoteEntry noteEntry) {
-        Intent openNoteIntent = new Intent(getContext(), NoteActivity.class);
-        openNoteIntent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteEntry.getId());
-        openNoteIntent.putExtra(NoteActivity.EXTRA_NOTE_SHARED, true);
-        startActivity(openNoteIntent);
+        // TODO: Add noteId
+        NoteActivity.start(requireContext(), "");
     }
 
     private void loadDataPage() {
