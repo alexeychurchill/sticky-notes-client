@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.notes
+package io.github.alexeychurchill.stickynotes.notes.presentation
 
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 

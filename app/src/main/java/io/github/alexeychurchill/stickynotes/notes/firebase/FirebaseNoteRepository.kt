@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package io.github.alexeychurchill.stickynotes.notes
+package io.github.alexeychurchill.stickynotes.notes.firebase
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -8,6 +8,7 @@ import com.google.firebase.firestore.ktx.toObject
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
+import io.github.alexeychurchill.stickynotes.notes.domain.NoteRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.activity.NoteActivity
 import io.github.alexeychurchill.stickynotes.core.ui.StickyNotesTheme
+import io.github.alexeychurchill.stickynotes.notes.presentation.UserNotesViewModel
 import io.github.alexeychurchill.stickynotes.notes.ui.UserNotesList
 
 /**

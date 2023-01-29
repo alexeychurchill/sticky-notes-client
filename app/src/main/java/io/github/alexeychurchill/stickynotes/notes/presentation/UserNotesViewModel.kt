@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.notes
+package io.github.alexeychurchill.stickynotes.notes.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,7 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
 import io.github.alexeychurchill.stickynotes.core.datetime.DateTimeFormatter
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
-import io.github.alexeychurchill.stickynotes.notes.ModalState.*
+import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryFactory
+import io.github.alexeychurchill.stickynotes.notes.domain.NoteRepository
+import io.github.alexeychurchill.stickynotes.notes.presentation.ModalState.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject

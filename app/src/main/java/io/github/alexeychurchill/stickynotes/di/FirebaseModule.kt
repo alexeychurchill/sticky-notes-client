@@ -12,8 +12,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.account.FirebaseAccountRepository
-import io.github.alexeychurchill.stickynotes.notes.FirebaseNoteRepository
-import io.github.alexeychurchill.stickynotes.notes.NoteRepository
+import io.github.alexeychurchill.stickynotes.notes.firebase.FirebaseNoteRepository
+import io.github.alexeychurchill.stickynotes.notes.domain.NoteRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)

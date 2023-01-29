@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.notes
+package io.github.alexeychurchill.stickynotes.notes.firebase
 
 import com.google.firebase.firestore.PropertyName
 import io.github.alexeychurchill.stickynotes.core.extension.ofTimeMillis

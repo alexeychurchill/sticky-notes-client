@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.notes
+package io.github.alexeychurchill.stickynotes.notes.domain
 
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import kotlinx.coroutines.flow.Flow

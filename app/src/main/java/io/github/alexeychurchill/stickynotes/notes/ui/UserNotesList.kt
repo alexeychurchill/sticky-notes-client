@@ -21,12 +21,12 @@ import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
 import io.github.alexeychurchill.stickynotes.core.ui.space
-import io.github.alexeychurchill.stickynotes.notes.ModalState
-import io.github.alexeychurchill.stickynotes.notes.ModalState.*
-import io.github.alexeychurchill.stickynotes.notes.NotesState
-import io.github.alexeychurchill.stickynotes.notes.NotesState.*
-import io.github.alexeychurchill.stickynotes.notes.NotesState.None
-import io.github.alexeychurchill.stickynotes.notes.UserNotesViewModel
+import io.github.alexeychurchill.stickynotes.notes.presentation.ModalState
+import io.github.alexeychurchill.stickynotes.notes.presentation.ModalState.*
+import io.github.alexeychurchill.stickynotes.notes.presentation.NotesState
+import io.github.alexeychurchill.stickynotes.notes.presentation.NotesState.*
+import io.github.alexeychurchill.stickynotes.notes.presentation.NotesState.None
+import io.github.alexeychurchill.stickynotes.notes.presentation.UserNotesViewModel
 import kotlin.Error
 
 @Composable
