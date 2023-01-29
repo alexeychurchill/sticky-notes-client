@@ -8,7 +8,7 @@ import com.google.firebase.firestore.ktx.toObject
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
-import io.github.alexeychurchill.stickynotes.notes.domain.NoteRepository
+import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -19,11 +19,11 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class FirebaseNoteRepository @Inject constructor(
+class FirebaseNoteEntryRepository @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val dispatchers: DispatcherProvider,
     private val accountRepository: AccountRepository,
-) : NoteRepository {
+) : NoteEntryRepository {
 
     override val allNotes: Flow<List<NoteEntry>>
         get() = accountRepository

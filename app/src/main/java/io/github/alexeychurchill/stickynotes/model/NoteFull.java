@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Full note class (with note class)
  */
-
+@Deprecated
 public class NoteFull extends JsonNoteEntry {
     @SerializedName("text")
     private String text;

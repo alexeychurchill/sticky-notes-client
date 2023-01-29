@@ -3,7 +3,7 @@ package io.github.alexeychurchill.stickynotes.notes.domain
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import kotlinx.coroutines.flow.Flow
 
-interface NoteRepository {
+interface NoteEntryRepository {
 
     val allNotes: Flow<List<NoteEntry>>
 

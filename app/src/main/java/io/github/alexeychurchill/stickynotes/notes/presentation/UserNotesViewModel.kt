@@ -7,7 +7,7 @@ import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
 import io.github.alexeychurchill.stickynotes.core.datetime.DateTimeFormatter
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryFactory
-import io.github.alexeychurchill.stickynotes.notes.domain.NoteRepository
+import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
 import io.github.alexeychurchill.stickynotes.notes.presentation.ModalState.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserNotesViewModel @Inject constructor(
-    private val noteRepository: NoteRepository,
+    private val noteEntryRepository: NoteEntryRepository,
     private val noteEntryFactory: NoteEntryFactory,
     private val dispatchers: DispatcherProvider,
     val dateTimeFormatter: DateTimeFormatter,
@@ -30,7 +30,7 @@ class UserNotesViewModel @Inject constructor(
     private val _noteToDelete = MutableStateFlow<NoteEntry?>(null)
 
     val notesState: Flow<NotesState>
-        get() = noteRepository.allNotes
+        get() = noteEntryRepository.allNotes
             .map { NotesState.items(it) }
             .flowOn(dispatchers.io)
             .onStart { emit(NotesState.loading()) }
@@ -74,7 +74,7 @@ class UserNotesViewModel @Inject constructor(
         safeOp {
             _isCreateNoteMode.emit(false)
             val entry = noteEntryFactory.create(title)
-            noteRepository.create(entry)
+            noteEntryRepository.create(entry)
         }
     }
 
@@ -94,7 +94,7 @@ class UserNotesViewModel @Inject constructor(
     fun proceedDeleteNote(noteId: String) {
         safeOp {
             _noteToDelete.emit(null)
-            noteRepository.delete(noteId)
+            noteEntryRepository.delete(noteId)
         }
     }
 

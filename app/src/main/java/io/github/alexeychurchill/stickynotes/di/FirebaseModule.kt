@@ -12,8 +12,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.account.FirebaseAccountRepository
-import io.github.alexeychurchill.stickynotes.notes.firebase.FirebaseNoteRepository
-import io.github.alexeychurchill.stickynotes.notes.domain.NoteRepository
+import io.github.alexeychurchill.stickynotes.note_editor.data.FirebaseNoteContentRepository
+import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteContentRepository
+import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
+import io.github.alexeychurchill.stickynotes.notes.firebase.FirebaseNoteEntryRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -26,7 +28,11 @@ abstract class FirebaseModule {
 
     @Singleton
     @Binds
-    abstract fun bindNoteRepository(impl: FirebaseNoteRepository): NoteRepository
+    abstract fun bindNoteEntryRepository(impl: FirebaseNoteEntryRepository): NoteEntryRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindNoteRepository(impl: FirebaseNoteContentRepository): NoteContentRepository
 
     companion object {
         @Provides

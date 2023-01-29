@@ -39,7 +39,7 @@ fun UserNotesList(
             NotesState(
                 notesState = notesState,
                 onReload = viewModel::reload,
-                onEntryClick = { /** TODO: Handle note entry click **/  },
+                onEntryClick = { viewModel.openNote(it.id)  },
                 onEntryDelete = { viewModel.deleteNote(it) },
             )
         }
