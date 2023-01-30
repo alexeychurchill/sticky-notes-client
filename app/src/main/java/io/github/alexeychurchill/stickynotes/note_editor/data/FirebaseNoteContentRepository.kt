@@ -43,7 +43,7 @@ class FirebaseNoteContentRepository @Inject constructor(
             .collection(NoteEntry.Path)
             .document(id)
 
-        entryDocRef.set(FirestoreNoteEntry(note.entry)).await()
+        entryDocRef.set(FirestoreNoteEntry.toFirestore(note.entry)).await()
 
         val contentDocRef = firestore
             .collection(NoteContent.Path)

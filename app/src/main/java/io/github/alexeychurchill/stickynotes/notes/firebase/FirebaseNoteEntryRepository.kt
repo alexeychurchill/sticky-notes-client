@@ -4,11 +4,9 @@ package io.github.alexeychurchill.stickynotes.notes.firebase
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.toObject
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
 import io.github.alexeychurchill.stickynotes.core.data.FirestoreNoteEntry
-import io.github.alexeychurchill.stickynotes.core.data.toDomain
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,12 +38,14 @@ class FirebaseNoteEntryRepository @Inject constructor(
             .document(id)
             .get()
             .await()
-        return docRef.toObject<FirestoreNoteEntry>()?.toDomain(docRef.id)
+        return docRef.data?.let { data ->
+            FirestoreNoteEntry.toDomain(docRef.id, data)
+        }
     }
 
     override suspend fun create(entry: NoteEntry): NoteEntry {
         val docRef = firestore.collection(NOTE_ENTRIES_PATH)
-            .add(FirestoreNoteEntry(entry))
+            .add(FirestoreNoteEntry.toFirestore(entry))
             .await()
         return entry.copy(id = docRef.id)
     }
@@ -76,8 +76,9 @@ class FirebaseNoteEntryRepository @Inject constructor(
     private fun toNoteEntries(value: QuerySnapshot?): List<NoteEntry> = value
         ?.documents
         ?.mapNotNull { snapshot ->
-            val fsEntry = snapshot.toObject<FirestoreNoteEntry>()
-            fsEntry?.toDomain(snapshot.id)
+            snapshot.data?.let { data ->
+                FirestoreNoteEntry.toDomain(snapshot.id, data)
+            }
         }
         ?: emptyList()
 
