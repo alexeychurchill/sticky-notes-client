@@ -1,6 +1,6 @@
 package io.github.alexeychurchill.stickynotes.core.model
 
-data class NoteContent(
-    val id: String,
+data class Note(
+    val entry: NoteEntry,
     val text: String,
 )

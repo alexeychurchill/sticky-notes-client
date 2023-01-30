@@ -7,6 +7,8 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.toObject
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
+import io.github.alexeychurchill.stickynotes.core.data.FirestoreNoteEntry
+import io.github.alexeychurchill.stickynotes.core.data.toDomain
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi

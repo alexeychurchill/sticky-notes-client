@@ -101,7 +101,6 @@ private fun NoteEntry_Preview() {
                         ownerId = NoteEntry.NO_ID,
                         title = "Test entry",
                         subject = "Test subject",
-                        createdAt = someTime,
                         changedAt = someTime,
                     )
                 )

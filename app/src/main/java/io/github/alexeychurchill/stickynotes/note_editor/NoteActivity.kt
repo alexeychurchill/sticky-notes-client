@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.core.ui.StickyNotesTheme
 import io.github.alexeychurchill.stickynotes.dialog.ShareNoteDialogFragment
 import io.github.alexeychurchill.stickynotes.dialog.SharedToDialogFragment
+import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.NoteId
 import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption
 import io.github.alexeychurchill.stickynotes.note_editor.ui.NoteScreen
 
@@ -20,10 +21,6 @@ import io.github.alexeychurchill.stickynotes.note_editor.ui.NoteScreen
 @AndroidEntryPoint
 class NoteActivity : AppCompatActivity() {
     private var mNoteId = -1
-
-    private val noteId by lazy {
-        intent.getStringExtra(EXTRA_NOTE_ID) ?: ""
-    }
 
     private val viewModel by viewModels<NoteViewModel>()
 
@@ -45,9 +42,6 @@ class NoteActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-        // TODO: Forward ID to viewModel
-        /** viewModel.initialise() **/
     }
 
     private fun handleNoteOption(option: NoteOption) {
@@ -71,12 +65,10 @@ class NoteActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val EXTRA_NOTE_ID = "note_id"
-
         @JvmStatic
         fun start(context: Context, noteId: String) {
             val intent = Intent(context, NoteActivity::class.java).apply {
-                putExtra(EXTRA_NOTE_ID, noteId)
+                putExtra(NoteId, noteId)
             }
             context.startActivity(intent)
         }

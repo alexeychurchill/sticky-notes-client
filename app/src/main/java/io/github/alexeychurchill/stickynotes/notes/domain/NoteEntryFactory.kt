@@ -23,7 +23,6 @@ class NoteEntryFactory @Inject constructor(
             ownerId = user.id,
             title = title,
             subject = null,
-            createdAt = now,
             changedAt = now,
         )
     }

@@ -7,7 +7,6 @@ data class NoteEntry(
     val ownerId: String,
     val title: String,
     val subject: String? = null,
-    val createdAt: Calendar,
     val changedAt: Calendar,
 ) {
     companion object {

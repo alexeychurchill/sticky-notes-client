@@ -1,21 +1,40 @@
 package io.github.alexeychurchill.stickynotes.note_editor
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.alexeychurchill.stickynotes.core.datetime.Now
+import io.github.alexeychurchill.stickynotes.core.extension.ofTimeMillis
+import io.github.alexeychurchill.stickynotes.core.model.Note
+import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
+import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.NoteId
+import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.OwnerId
 import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteContentRepository
 import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption
 import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption.COMMENTS
-import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteViewModel @Inject constructor(
-    private val noteEntryRepository: NoteEntryRepository,
+    private val savedStateHandle: SavedStateHandle,
+    private val now: Now,
     private val noteContentRepository: NoteContentRepository,
 ) : ViewModel() {
+
+    private val noteId: String = savedStateHandle[NoteId]
+        ?: throw IllegalArgumentException("No parameter $NoteId passed!")
+
+    private var ownerId: String
+        get() = savedStateHandle[OwnerId]
+            ?: throw IllegalArgumentException("No $OwnerId!")
+        set(value) {
+            savedStateHandle[OwnerId] = value
+        }
+
+    private val _inProgress = MutableStateFlow(false)
 
     private val _title = MutableStateFlow("")
     private val _subject = MutableStateFlow("")
@@ -35,7 +54,7 @@ class NoteViewModel @Inject constructor(
         get() = MutableStateFlow(true)
 
     val enabledOptions: StateFlow<Set<NoteOption>>
-        get() = MutableStateFlow(NoteOption.values().toSet())
+        get() = MutableStateFlow(emptySet())
 
     val onOptionEvent: Flow<NoteOption>
         get() = _onOptionEvent
@@ -52,8 +71,21 @@ class NoteViewModel @Inject constructor(
     val onExitEvent: Flow<Unit>
         get() = _onExitEvent
 
-    fun initialise(id: String) {
-        // TODO: Start view model
+    init {
+        viewModelScope.launch {
+            _inProgress.emit(true)
+            val note = noteContentRepository.getNote(noteId) ?: run {
+                // TODO: Handle Note load error (Dialog)
+                _onExitEvent.emit(Unit)
+                return@launch
+            }
+            val entry = note.entry
+            ownerId = entry.ownerId
+            _title.emit(entry.title)
+            _subject.emit(entry.subject ?: "")
+            _text.emit(note.text)
+            _inProgress.emit(false)
+        }
     }
 
     fun pickOption(option: NoteOption) {
@@ -78,7 +110,23 @@ class NoteViewModel @Inject constructor(
     }
 
     fun saveNote() {
-        // TODO: Save Note
+        viewModelScope.launch {
+            _inProgress.emit(true)
+            val noteEntry = NoteEntry(
+                id = noteId,
+                ownerId = ownerId,
+                title = _title.value,
+                subject = _subject.value.takeIf(String::isNotBlank),
+                changedAt = ofTimeMillis(now()),
+            )
+            val note = Note(
+                entry = noteEntry,
+                text = _text.value,
+            )
+            noteContentRepository.saveNote(note)
+            _inProgress.emit(false)
+            _onExitEvent.emit(Unit)
+        }
     }
 
     fun exit() {
