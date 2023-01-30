@@ -10,7 +10,7 @@ import io.github.alexeychurchill.stickynotes.core.model.Note
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.NoteId
 import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.OwnerId
-import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteContentRepository
+import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteRepository
 import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption
 import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption.COMMENTS
 import kotlinx.coroutines.flow.*
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class NoteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val now: Now,
-    private val noteContentRepository: NoteContentRepository,
+    private val noteRepository: NoteRepository,
 ) : ViewModel() {
 
     private val noteId: String = savedStateHandle[NoteId]
@@ -74,7 +74,7 @@ class NoteViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _inProgress.emit(true)
-            val note = noteContentRepository.getNote(noteId) ?: run {
+            val note = noteRepository.getNote(noteId) ?: run {
                 // TODO: Handle Note load error (Dialog)
                 _onExitEvent.emit(Unit)
                 return@launch
@@ -123,7 +123,7 @@ class NoteViewModel @Inject constructor(
                 entry = noteEntry,
                 text = _text.value,
             )
-            noteContentRepository.saveNote(note)
+            noteRepository.saveNote(note)
             _inProgress.emit(false)
             _onExitEvent.emit(Unit)
         }

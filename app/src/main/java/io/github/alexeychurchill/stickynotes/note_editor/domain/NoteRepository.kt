@@ -2,7 +2,7 @@ package io.github.alexeychurchill.stickynotes.note_editor.domain
 
 import io.github.alexeychurchill.stickynotes.core.model.Note
 
-interface NoteContentRepository {
+interface NoteRepository {
 
     suspend fun getNote(id: String): Note?
 

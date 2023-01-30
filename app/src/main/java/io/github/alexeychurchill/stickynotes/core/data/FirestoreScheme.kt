@@ -8,6 +8,7 @@ object FirestoreScheme {
             const val Subject = "subject"
             const val OwnerId = "ownerId"
             const val ChangedAt = "changedAt"
+            const val Content = "contentRef"
         }
     }
 

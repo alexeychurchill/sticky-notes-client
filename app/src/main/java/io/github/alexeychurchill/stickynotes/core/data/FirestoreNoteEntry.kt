@@ -13,7 +13,7 @@ object FirestoreNoteEntry {
             OwnerId to ownerId,
             Title to title,
             Subject to subject,
-            ChangedAt to changedAt,
+            ChangedAt to changedAt.timeInMillis,
         )
     }
 
@@ -22,6 +22,6 @@ object FirestoreNoteEntry {
         ownerId = values[OwnerId] as String,
         title = values[Title] as String,
         subject = values[Subject] as String?,
-        changedAt = ofTimeMillis(values[ChangedAt] as Long),
+        changedAt = ofTimeMillis((values[ChangedAt] as? Long) ?: 0L),
     )
 }
