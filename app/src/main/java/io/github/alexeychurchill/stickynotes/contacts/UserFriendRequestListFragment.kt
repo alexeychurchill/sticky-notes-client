@@ -1,41 +1,37 @@
 package io.github.alexeychurchill.stickynotes.contacts
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import io.github.alexeychurchill.stickynotes.R
-import io.github.alexeychurchill.stickynotes.model.FriendRequest
-import io.github.alexeychurchill.stickynotes.model.ServiceResponse
-import retrofit2.Call
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import io.github.alexeychurchill.stickynotes.contacts.presentation.ContactRequestsViewModel
+import io.github.alexeychurchill.stickynotes.contacts.ui.OutcomingRequestScreen
+import io.github.alexeychurchill.stickynotes.core.ui.StickyNotesTheme
 
 /**
  * User friend request list fragment
  */
-class UserFriendRequestListFragment : FriendRequestListFragment() {
-    private var mCancelTitle = ""
-    override fun onInit(view: View?) {
-        super.onInit(view)
-        mCancelTitle = getString(R.string.text_button_cancel)
-    }
+@AndroidEntryPoint
+class UserFriendRequestListFragment : Fragment() {
 
-    override fun getActionOneTitle(): String {
-        return mCancelTitle
-    }
+    private val viewModel by viewModels<ContactRequestsViewModel>()
 
-    override fun userListNeedActionOne(): Boolean {
-        return true
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(requireContext())
 
-    override fun getActionOneCall(friendRequest: FriendRequest?): Call<ServiceResponse<Any>>? {
-        return if (api == null || accessToken == null) {
-            null
-        } else api!!.friendDeleteRequest(accessToken, friendRequest!!.id)
-    }
-
-    override fun getLoadDataPageCall(page: Int): Call<ServiceResponse<List<FriendRequest>>>? {
-        if (api == null) {
-            return null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val composeView = (view as? ComposeView) ?: return
+        composeView.setContent {
+            StickyNotesTheme {
+                OutcomingRequestScreen(viewModel)
+            }
         }
-        return if (accessToken == null) {
-            null
-        } else api!!.friendGetMyRequests(accessToken, page)
     }
 }
