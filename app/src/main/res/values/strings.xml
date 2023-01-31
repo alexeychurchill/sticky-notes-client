@@ -20,6 +20,9 @@
     <string name="screen_note_text_hint">Text…</string>
     <string name="screen_note_save_caption">Save</string>
 
+    <string name="screen_contacts_contacts">Contacts</string>
+    <string name="screen_contacts_requests">Requests</string>
+
     <string name="screen_requests_incoming_section">Incoming</string>
     <string name="screen_requests_outcoming_section">Outcoming</string>
     <string name="screen_requests_empty">No outcoming or incoming contact requests</string>
