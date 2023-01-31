@@ -55,16 +55,24 @@ fun ContactWidget(
                     .padding(start = Regular)
                     .align(CenterVertically),
             ) {
-                Text(
-                    text = "${user.firstName} ${user.lastName}",
-                    style = MaterialTheme.typography.subtitle1,
-                    fontWeight = ExtraBold,
-                )
+                val hasName = user.firstName.isNotBlank() && user.lastName.isNotBlank()
+                if (hasName) {
+                    Text(
+                        text = "${user.firstName} ${user.lastName}",
+                        style = MaterialTheme.typography.subtitle1,
+                        fontWeight = ExtraBold,
+                    )
+                }
 
+                val loginStyle = if (hasName) {
+                    MaterialTheme.typography.subtitle2
+                } else {
+                    MaterialTheme.typography.subtitle1
+                }
                 Text(
                     text = user.login,
-                    style = MaterialTheme.typography.subtitle2,
-                    fontWeight = Normal,
+                    style = loginStyle,
+                    fontWeight = if (hasName) Normal else ExtraBold,
                 )
             }
         }
