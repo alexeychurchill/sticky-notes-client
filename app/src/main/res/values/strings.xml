@@ -5,6 +5,8 @@
     <string name="generic_retry">Retry</string>
     <string name="generic_cancel">Cancel</string>
     <string name="generic_delete">Delete</string>
+    <string name="generic_accept">Accept</string>
+    <string name="generic_reject">Reject</string>
 
     <string name="dialog_create_note_title">Create note</string>
     <string name="dialog_create_note_title_label">Title</string>
@@ -17,6 +19,10 @@
     <string name="screen_note_subject_hint">Subject</string>
     <string name="screen_note_text_hint">Text…</string>
     <string name="screen_note_save_caption">Save</string>
+
+    <string name="screen_requests_incoming_section">Incoming</string>
+    <string name="screen_requests_outcoming_section">Outcoming</string>
+    <string name="screen_requests_empty">No outcoming or incoming contact requests</string>
 
     <string name="text_big_login">Login</string>
     <string name="text_button_join">Join</string>

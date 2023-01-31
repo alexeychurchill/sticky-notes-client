@@ -19,7 +19,7 @@ import io.github.alexeychurchill.stickynotes.R
 class FriendsFragment : Fragment() {
     private var mFriendsListFragment: FriendsListFragment? = null
     private var mIncomingFriendRequestListFragment: IncomingFriendRequestListFragment? = null
-    private var mUserFriendRequestListFragment: UserFriendRequestListFragment? = null
+    private var mUserFriendRequestListFragment: RequestListFragment? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,7 +28,7 @@ class FriendsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_friends, container, false)
         mFriendsListFragment = FriendsListFragment()
         mIncomingFriendRequestListFragment = IncomingFriendRequestListFragment()
-        mUserFriendRequestListFragment = UserFriendRequestListFragment()
+        mUserFriendRequestListFragment = RequestListFragment()
         val pager = view.findViewById<View>(R.id.pager) as ViewPager
         setupViewPager(pager)
         val tabs = view.findViewById<View>(R.id.tabs) as TabLayout

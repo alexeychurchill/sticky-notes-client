@@ -9,14 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.contacts.presentation.ContactRequestsViewModel
-import io.github.alexeychurchill.stickynotes.contacts.ui.OutcomingRequestScreen
+import io.github.alexeychurchill.stickynotes.contacts.ui.ContactRequestsScreen
 import io.github.alexeychurchill.stickynotes.core.ui.StickyNotesTheme
 
 /**
  * User friend request list fragment
  */
 @AndroidEntryPoint
-class UserFriendRequestListFragment : Fragment() {
+class RequestListFragment : Fragment() {
 
     private val viewModel by viewModels<ContactRequestsViewModel>()
 
@@ -30,7 +30,7 @@ class UserFriendRequestListFragment : Fragment() {
         val composeView = (view as? ComposeView) ?: return
         composeView.setContent {
             StickyNotesTheme {
-                OutcomingRequestScreen(viewModel)
+                ContactRequestsScreen(viewModel)
             }
         }
     }
