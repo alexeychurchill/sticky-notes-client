@@ -19,4 +19,13 @@ object FirestoreScheme {
             const val Text = "text"
         }
     }
+
+    object User {
+        const val Path = "users"
+        object Fields {
+            const val Username = "username"
+            const val FirstName = "firstName"
+            const val LastName = "lastName"
+        }
+    }
 }
