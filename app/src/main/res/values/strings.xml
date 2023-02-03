@@ -7,6 +7,7 @@
     <string name="generic_delete">Delete</string>
     <string name="generic_accept">Accept</string>
     <string name="generic_reject">Reject</string>
+    <string name="generic_add">Add</string>
 
     <string name="dialog_create_note_title">Create note</string>
     <string name="dialog_create_note_title_label">Title</string>
@@ -22,6 +23,11 @@
 
     <string name="screen_contacts_contacts">Contacts</string>
     <string name="screen_contacts_requests">Requests</string>
+
+    <string name="screen_contact_list_add_contact">Add Contact…</string>
+
+    <string name="screen_add_contact_search_hint">Search user…</string>
+    <string name="screen_add_contact_requested">Requested</string>
 
     <string name="screen_requests_incoming_section">Incoming</string>
     <string name="screen_requests_outcoming_section">Outcoming</string>

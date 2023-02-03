@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,12 +18,15 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.contacts.presentation.ContactListViewModel
 import io.github.alexeychurchill.stickynotes.core.model.User
 import io.github.alexeychurchill.stickynotes.core.ui.ShiftToReveal
 import io.github.alexeychurchill.stickynotes.core.ui.ShiftValue.EndToStart
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Regular
 import io.github.alexeychurchill.stickynotes.core.ui.space
 import io.github.alexeychurchill.stickynotes.core.ui.specialColors
@@ -41,6 +45,25 @@ fun ContactListScreen(
         } else {
             LazyColumn {
                 space(Regular)
+
+                /** TODO: Remove temporary Add Contact button **/
+                item {
+                    OutlinedButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = Medium),
+                        onClick = viewModel::addContact,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Add,
+                            contentDescription = null,
+                        )
+
+                        val caption = stringResource(R.string.screen_contact_list_add_contact)
+                            .uppercase()
+                        Text(text = caption)
+                    }
+                }
 
                 items(contacts) { contact ->
                     ContactItemWidget(
