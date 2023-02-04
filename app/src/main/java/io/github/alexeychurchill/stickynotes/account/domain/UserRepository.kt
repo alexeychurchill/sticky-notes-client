@@ -7,6 +7,8 @@ interface UserRepository {
 
     suspend fun currentUserSync()
 
+    suspend fun contacts(): Flow<List<User>>
+
     suspend fun searchUser(query: String): List<User>
 
     suspend fun outgoingRequests(): Flow<List<User>>
