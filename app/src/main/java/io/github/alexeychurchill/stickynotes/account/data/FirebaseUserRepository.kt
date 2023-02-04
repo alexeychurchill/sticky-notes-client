@@ -1,5 +1,6 @@
 package io.github.alexeychurchill.stickynotes.account.data
 
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.account.domain.UserRepository
@@ -34,6 +35,25 @@ class FirebaseUserRepository @Inject constructor(
             val docRef = firestore.collection(Path).document(user.id)
             docRef.set(fsUser).await()
         }
+    }
+
+    override suspend fun contacts(): Flow<List<User>> {
+        val currentUserId = accountRepository.user.first().id
+        return firestore
+            .collection(Contact.Path)
+            .document(currentUserId)
+            .asSnapshotFlow()
+            .map { docSnapshot ->
+                val usersRefArray = docSnapshot[Contact.Fields.Users]
+                        as? List<DocumentReference>
+
+                usersRefArray?.mapNotNull { userRef ->
+                    val userDoc = userRef.get().await()
+                    userDoc.data?.let { data ->
+                        FirestoreUser.toDomain(userDoc.id, data)
+                    }
+                } ?: emptyList()
+            }
     }
 
     // TODO: Think regarding username, firstName, lastName FTS search
@@ -88,18 +108,7 @@ class FirebaseUserRepository @Inject constructor(
     }
 
     override suspend fun acceptRequest(userId: String) {
-        val currentUserId = accountRepository.user.first().id
-        firestore
-            .collection(Contact.Path)
-            .document(currentUserId)
-            .collection(Contact.ItemsPath)
-            .document()
-            .set(
-                mapOf(
-                    Contact.Fields.User to userId,
-                )
-            )
-            .await()
+        /** TODO: Implement proper user request accept handling **/
     }
 
     override suspend fun rejectRequest(userId: String) {

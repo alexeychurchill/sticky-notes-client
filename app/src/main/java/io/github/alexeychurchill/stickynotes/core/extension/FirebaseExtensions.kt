@@ -1,6 +1,8 @@
 package io.github.alexeychurchill.stickynotes.core.extension
 
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import io.github.alexeychurchill.stickynotes.core.model.User
@@ -19,6 +21,16 @@ fun FirebaseUser.toUser(): User {
 }
 
 fun Query.asSnapshotFlow(): Flow<QuerySnapshot> {
+    return callbackFlow {
+        val subscription = addSnapshotListener { value, error ->
+            error?.let { throw it }
+            value?.let { trySendBlocking(it) }
+        }
+        awaitClose { subscription.remove() }
+    }
+}
+
+fun DocumentReference.asSnapshotFlow(): Flow<DocumentSnapshot> {
     return callbackFlow {
         val subscription = addSnapshotListener { value, error ->
             error?.let { throw it }
