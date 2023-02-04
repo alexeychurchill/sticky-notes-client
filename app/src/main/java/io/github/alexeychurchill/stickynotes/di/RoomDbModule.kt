@@ -9,6 +9,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.alexeychurchill.stickynotes.core.data.Database
+import io.github.alexeychurchill.stickynotes.note_editor.data.RoomNoteRepository
+import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteRepository
 import io.github.alexeychurchill.stickynotes.notes.data.RoomNoteEntryRepository
 import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
 import javax.inject.Singleton
@@ -20,6 +22,10 @@ abstract class RoomDbModule {
     @Singleton
     @Binds
     abstract fun bindNoteEntryRepository(impl: RoomNoteEntryRepository): NoteEntryRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindNoteRepository(impl: RoomNoteRepository): NoteRepository
 
     companion object {
 
