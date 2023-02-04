@@ -18,7 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
-import io.github.alexeychurchill.stickynotes.note_editor.NoteViewModel
+import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteViewModel
 
 @Composable
 fun NoteScreen(
@@ -63,13 +63,6 @@ private fun TopBar(viewModel: NoteViewModel) {
                     contentDescription = null,
                 )
             }
-        },
-        actions = {
-            val enabledOptions by viewModel.enabledOptions.collectAsState()
-            NoteScreenMenu(
-                enabledOptions = enabledOptions,
-                onPickOption = viewModel::pickOption,
-            )
         },
     )
 }

@@ -1,4 +1,4 @@
-package io.github.alexeychurchill.stickynotes.note_editor
+package io.github.alexeychurchill.stickynotes.note_editor.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -11,9 +11,10 @@ import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.NoteId
 import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.OwnerId
 import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteRepository
-import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption
-import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteOption.COMMENTS
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,24 +41,13 @@ class NoteViewModel @Inject constructor(
     private val _subject = MutableStateFlow("")
     private val _text = MutableStateFlow("")
 
-    private val _onOptionEvent = MutableSharedFlow<NoteOption>()
-
     private val _onExitEvent = MutableSharedFlow<Unit>()
 
     val inProgress: StateFlow<Boolean>
         get() = MutableStateFlow(false)
 
-    val isEditable: Flow<Boolean>
-        get() = flowOf(true)
-
     val isSaveEnabled: StateFlow<Boolean>
         get() = MutableStateFlow(true)
-
-    val enabledOptions: StateFlow<Set<NoteOption>>
-        get() = MutableStateFlow(emptySet())
-
-    val onOptionEvent: Flow<NoteOption>
-        get() = _onOptionEvent
 
     val title: StateFlow<String>
         get() = _title
@@ -85,15 +75,6 @@ class NoteViewModel @Inject constructor(
             _subject.emit(entry.subject ?: "")
             _text.emit(note.text)
             _inProgress.emit(false)
-        }
-    }
-
-    fun pickOption(option: NoteOption) {
-        viewModelScope.launch {
-            if (option == COMMENTS) {
-                return@launch
-            }
-            _onOptionEvent.emit(option)
         }
     }
 
