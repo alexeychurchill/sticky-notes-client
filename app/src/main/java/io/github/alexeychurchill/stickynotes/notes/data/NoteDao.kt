@@ -32,8 +32,8 @@ interface NoteDao {
     @Transaction
     suspend fun getNote(id: Long): RoomNote? {
         val entryEntity = getNoteEntry(id) ?: return null
-        val textEntity = getNoteText(id) ?: return null
-        return RoomNote(entryEntity, textEntity.text)
+        val text = getNoteText(id)?.text ?: ""
+        return RoomNote(entryEntity, text)
     }
 
     @Transaction
