@@ -16,8 +16,6 @@ import io.github.alexeychurchill.stickynotes.account.data.FirebaseUserRepository
 import io.github.alexeychurchill.stickynotes.account.domain.UserRepository
 import io.github.alexeychurchill.stickynotes.note_editor.data.FirebaseNoteRepository
 import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteRepository
-import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
-import io.github.alexeychurchill.stickynotes.notes.firebase.FirebaseNoteEntryRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -27,10 +25,6 @@ abstract class FirebaseModule {
     @Singleton
     @Binds
     abstract fun bindLoginRepository(impl: FirebaseAccountRepository): AccountRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindNoteEntryRepository(impl: FirebaseNoteEntryRepository): NoteEntryRepository
 
     @Singleton
     @Binds
