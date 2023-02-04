@@ -14,4 +14,10 @@ interface UserRepository {
     suspend fun ingoingRequests(): Flow<List<User>>
 
     suspend fun makeRequest(userId: String)
+
+    suspend fun cancelRequest(userId: String)
+
+    suspend fun acceptRequest(userId: String)
+
+    suspend fun rejectRequest(userId: String)
 }

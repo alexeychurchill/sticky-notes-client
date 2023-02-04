@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import io.github.alexeychurchill.stickynotes.account.AccountRepository
 import io.github.alexeychurchill.stickynotes.account.domain.UserRepository
 import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
+import io.github.alexeychurchill.stickynotes.core.data.FirestoreScheme.Contact
 import io.github.alexeychurchill.stickynotes.core.data.FirestoreScheme.ContactRequest
 import io.github.alexeychurchill.stickynotes.core.data.FirestoreScheme.User.Fields
 import io.github.alexeychurchill.stickynotes.core.data.FirestoreScheme.User.Path
@@ -70,6 +71,49 @@ class FirebaseUserRepository @Inject constructor(
             .document()
             .set(data)
             .await()
+    }
+
+    override suspend fun cancelRequest(userId: String) {
+        val currentUserId = accountRepository.user.first().id
+        firestore
+            .collection(ContactRequest.Path)
+            .whereEqualTo(ContactRequest.Fields.From, currentUserId)
+            .whereEqualTo(ContactRequest.Fields.To, userId)
+            .get()
+            .await()
+            .firstOrNull()
+            ?.reference
+            ?.delete()
+            ?.await()
+    }
+
+    override suspend fun acceptRequest(userId: String) {
+        val currentUserId = accountRepository.user.first().id
+        firestore
+            .collection(Contact.Path)
+            .document(currentUserId)
+            .collection(Contact.ItemsPath)
+            .document()
+            .set(
+                mapOf(
+                    Contact.Fields.User to userId,
+                )
+            )
+            .await()
+    }
+
+    override suspend fun rejectRequest(userId: String) {
+        val currentUserId = accountRepository.user.first().id
+        firestore
+            .collection(ContactRequest.Path)
+            .whereEqualTo(ContactRequest.Fields.From, userId)
+            .whereEqualTo(ContactRequest.Fields.To, currentUserId)
+            .get()
+            .await()
+            .firstOrNull()
+            ?.reference
+            ?.delete()
+            ?.await()
     }
 
     private suspend fun getUser(userId: String): User? {

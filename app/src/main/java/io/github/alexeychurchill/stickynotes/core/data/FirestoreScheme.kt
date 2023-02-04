@@ -36,4 +36,12 @@ object FirestoreScheme {
             const val To = "to"
         }
     }
+
+    object Contact {
+        const val Path = "contacts"
+        const val ItemsPath = "items"
+        object Fields {
+            const val User = "user"
+        }
+    }
 }
