@@ -28,7 +28,7 @@ import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
 import io.github.alexeychurchill.stickynotes.api.callback.SimpleResponseCallback;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
-import io.github.alexeychurchill.stickynotes.model.User;
+import io.github.alexeychurchill.stickynotes.model.JsonUser;
 import io.github.alexeychurchill.stickynotes.model.deserializer.SimpleResponseDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.UserListResponseDeserializer;
 import retrofit2.Call;
@@ -51,7 +51,7 @@ public class FriendSearchDialogFragment extends DialogFragment implements
     private ProgressBar mPBWait;
     private SimpleResponseCallback mSimpleResponseCallback;
     private SimpleUserListAdapter mAdapter;
-    private List<User> mUsers = new ArrayList<>();
+    private List<JsonUser> mUsers = new ArrayList<>();
 
     @NonNull
     @Override
@@ -126,7 +126,7 @@ public class FriendSearchDialogFragment extends DialogFragment implements
         if (mApi == null || mAccessToken == null) {
             return;
         }
-        Call<ServiceResponse<List<User>>> call = mApi.userSearch(mAccessToken, query);
+        Call<ServiceResponse<List<JsonUser>>> call = mApi.userSearch(mAccessToken, query);
         call.enqueue(userListCallback);
     }
 
@@ -138,9 +138,9 @@ public class FriendSearchDialogFragment extends DialogFragment implements
         mBtnSearch.setVisibility((waiting) ? View.INVISIBLE : View.VISIBLE);
     }
 
-    private Callback<ServiceResponse<List<User>>> userListCallback = new Callback<ServiceResponse<List<User>>>() {
+    private Callback<ServiceResponse<List<JsonUser>>> userListCallback = new Callback<ServiceResponse<List<JsonUser>>>() {
         @Override
-        public void onResponse(Call<ServiceResponse<List<User>>> call, Response<ServiceResponse<List<User>>> response) {
+        public void onResponse(Call<ServiceResponse<List<JsonUser>>> call, Response<ServiceResponse<List<JsonUser>>> response) {
             setWaiting(false);
             if (!response.isSuccessful()) {
                 Toast.makeText(
@@ -153,13 +153,13 @@ public class FriendSearchDialogFragment extends DialogFragment implements
                 ).show();
                 return;
             }
-            ServiceResponse<List<User>> userListResponse = response.body();
+            ServiceResponse<List<JsonUser>> userListResponse = response.body();
             if (userListResponse.isError() || !userListResponse.containsData()) {
                 Toast.makeText(getActivity(), userListResponse.getMessage(), Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
-            List<User> users = userListResponse.getData();
+            List<JsonUser> users = userListResponse.getData();
             mUsers.clear();
             mAdapter.notifyDataSetChanged();
             if (users != null) {
@@ -169,7 +169,7 @@ public class FriendSearchDialogFragment extends DialogFragment implements
         }
 
         @Override
-        public void onFailure(Call<ServiceResponse<List<User>>> call, Throwable t) {
+        public void onFailure(Call<ServiceResponse<List<JsonUser>>> call, Throwable t) {
             Toast.makeText(getContext(), "" + t, Toast.LENGTH_LONG)
                     .show();
         }
@@ -216,7 +216,7 @@ public class FriendSearchDialogFragment extends DialogFragment implements
             return;
         }
         setWaiting(true);
-        User user = mUsers.get(position);
+        JsonUser user = mUsers.get(position);
         Call<ServiceResponse<Object>> call = mApi.friendRequest(mAccessToken, user.getId());
         call.enqueue(mSimpleResponseCallback);
     }

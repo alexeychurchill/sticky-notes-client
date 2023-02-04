@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
+import io.github.alexeychurchill.stickynotes.notes.UserNotesFragment;
 
 /**
  * Notes fragment

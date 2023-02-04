@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.model.User;
+import io.github.alexeychurchill.stickynotes.model.JsonUser;
 
 /**
  * User list adapter for RecyclerView
@@ -47,7 +47,7 @@ public abstract class UserListAdapter<U> extends RecyclerView.Adapter<UserListAd
         return (mDataList == null) ? 0 : mDataList.size();
     }
 
-    protected User getUser(int position) {
+    protected JsonUser getUser(int position) {
         return getUser(mDataList.get(position));
     }
 
@@ -55,7 +55,7 @@ public abstract class UserListAdapter<U> extends RecyclerView.Adapter<UserListAd
         return getInfo(mDataList.get(position));
     }
 
-    protected abstract User getUser(U u);
+    protected abstract JsonUser getUser(U u);
 
     protected abstract String getInfo(U u);
 
@@ -90,7 +90,7 @@ public abstract class UserListAdapter<U> extends RecyclerView.Adapter<UserListAd
             mBtnSecondAction = ((Button) itemView.findViewById(R.id.btnSecondAction));
         }
 
-        void bind(int position, User user, String info, OnUserListActionListener listener) {
+        void bind(int position, JsonUser user, String info, OnUserListActionListener listener) {
             mPosition = position;
             bindUser(user);
             bindInfo(info);
@@ -137,7 +137,7 @@ public abstract class UserListAdapter<U> extends RecyclerView.Adapter<UserListAd
             mTVThirdLine.setText(info);
         }
 
-        private void bindUser(User user) {
+        private void bindUser(JsonUser user) {
             StringBuilder firstLineBuilder = new StringBuilder();
             if (user.getName() != null) {
                 firstLineBuilder.append(user.getName().trim());

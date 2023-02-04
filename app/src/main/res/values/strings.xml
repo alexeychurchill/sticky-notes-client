@@ -1,9 +1,44 @@
 <resources>
     <string name="app_name">StickyNotes</string>
+
+    <string name="generic_back">Back</string>
+    <string name="generic_retry">Retry</string>
+    <string name="generic_cancel">Cancel</string>
+    <string name="generic_delete">Delete</string>
+    <string name="generic_accept">Accept</string>
+    <string name="generic_reject">Reject</string>
+    <string name="generic_add">Add</string>
+
+    <string name="dialog_create_note_title">Create note</string>
+    <string name="dialog_create_note_title_label">Title</string>
+    <string name="dialog_create_note_action_create">Create</string>
+
+    <string name="dialog_delete_note_title">Delete note</string>
+    <string name="dialog_delete_note_text">Are you sure want to delete <b>%s</b>?</string>
+
+    <string name="screen_note_title_hint">Title</string>
+    <string name="screen_note_subject_hint">Subject</string>
+    <string name="screen_note_text_hint">Text…</string>
+    <string name="screen_note_save_caption">Save</string>
+
+    <string name="screen_contacts_contacts">Contacts</string>
+    <string name="screen_contacts_requests">Requests</string>
+
+    <string name="screen_contact_list_add_contact">Add Contact…</string>
+
+    <string name="screen_add_contact_search_hint">Search user…</string>
+    <string name="screen_add_contact_requested">Requested</string>
+
+    <string name="screen_requests_incoming_section">Incoming</string>
+    <string name="screen_requests_outcoming_section">Outcoming</string>
+    <string name="screen_requests_empty">No outcoming or incoming contact requests</string>
+
     <string name="text_big_login">Login</string>
     <string name="text_button_join">Join</string>
-    <string name="hint_login">login</string>
-    <string name="hint_password">password</string>
+    <string name="login_email_title">e-mail</string>
+    <string name="login_password_title">password</string>
+    <string name="login_create_account_do_not_have">Do not have an account?</string>
+    <string name="login_create_account_create">Sign Up</string>
     <string name="text_button_login">Login</string>
     <string name="text_button_back_login">back</string>
     <string name="text_big_register">Register</string>
@@ -26,7 +61,6 @@
     <string name="text_hint_note">Type here…</string>
     <string name="text_dismiss">Dismiss</string>
     <string name="text_create">Create</string>
-    <string name="text_title_dialog_create">Create note</string>
     <string name="text_hint_title">Note title…</string>
     <string name="text_title_empty">Note title can\'t be empty!</string>
     <string name="text_button_accept">Accept</string>
@@ -35,12 +69,11 @@
     <string name="text_title_friends">Friends</string>
     <string name="text_title_by_user">By user</string>
     <string name="text_button_cancel">Cancel</string>
-    <string name="text_title_dialog_delete">Delete note</string>
-    <string name="text_formatter_delete_note">Are you sure want to delete <b>%s</b>?</string>
-    <string name="text_menu_edit_metadata">Edit metadata</string>
+    
     <string name="text_menu_share_note_with">Share with…</string>
     <string name="text_menu_shared_to">Shared to…</string>
     <string name="text_menu_comments">Comments</string>
+
     <string name="text_login_contains_space">Login contains space!</string>
     <string name="text_login_or_password_is_empty">Login or password is empty!</string>
     <string name="text_hint_part_of_login">Login or part of it…</string>

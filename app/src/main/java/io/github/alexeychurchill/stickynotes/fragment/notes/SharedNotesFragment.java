@@ -1,7 +1,6 @@
 package io.github.alexeychurchill.stickynotes.fragment.notes;
 
 import android.content.Context;
-import android.content.Intent;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Toast;
 
@@ -11,13 +10,14 @@ import com.google.gson.GsonBuilder;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.R;
-import io.github.alexeychurchill.stickynotes.activity.NoteActivity;
+import io.github.alexeychurchill.stickynotes.note_editor.NoteActivity;
 import io.github.alexeychurchill.stickynotes.api.AppConfig;
 import io.github.alexeychurchill.stickynotes.api.StickyNotesApi;
-import io.github.alexeychurchill.stickynotes.model.NoteEntry;
+import io.github.alexeychurchill.stickynotes.model.JsonNoteEntry;
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListDeserializer;
 import io.github.alexeychurchill.stickynotes.model.deserializer.NoteEntryListResponseDeserializer;
+import io.github.alexeychurchill.stickynotes.notes.BaseNotesFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,11 +79,9 @@ public class SharedNotesFragment extends BaseNotesFragment {
     }
 
     @Override
-    public void onNoteOpen(NoteEntry noteEntry) {
-        Intent openNoteIntent = new Intent(getContext(), NoteActivity.class);
-        openNoteIntent.putExtra(NoteActivity.EXTRA_NOTE_ID, noteEntry.getId());
-        openNoteIntent.putExtra(NoteActivity.EXTRA_NOTE_SHARED, true);
-        startActivity(openNoteIntent);
+    public void onNoteOpen(JsonNoteEntry noteEntry) {
+        // TODO: Add noteId
+        NoteActivity.start(requireContext(), "");
     }
 
     private void loadDataPage() {
@@ -96,13 +94,13 @@ public class SharedNotesFragment extends BaseNotesFragment {
             return;
         }
 
-        Call<ServiceResponse<List<NoteEntry>>> call = mApi.sharedList(mAccessToken, mPage);
+        Call<ServiceResponse<List<JsonNoteEntry>>> call = mApi.sharedList(mAccessToken, mPage);
         call.enqueue(mNoteEntryListCallback);
     }
 
-    private Callback<ServiceResponse<List<NoteEntry>>> mNoteEntryListCallback = new Callback<ServiceResponse<List<NoteEntry>>>() {
+    private Callback<ServiceResponse<List<JsonNoteEntry>>> mNoteEntryListCallback = new Callback<ServiceResponse<List<JsonNoteEntry>>>() {
         @Override
-        public void onResponse(Call<ServiceResponse<List<NoteEntry>>> call, Response<ServiceResponse<List<NoteEntry>>> response) {
+        public void onResponse(Call<ServiceResponse<List<JsonNoteEntry>>> call, Response<ServiceResponse<List<JsonNoteEntry>>> response) {
             setWaiting(false);
             if (!response.isSuccessful()) {
                 Toast.makeText(
@@ -115,13 +113,13 @@ public class SharedNotesFragment extends BaseNotesFragment {
                 ).show();
                 return;
             }
-            ServiceResponse<List<NoteEntry>> noteEntryListResponse = response.body();
+            ServiceResponse<List<JsonNoteEntry>> noteEntryListResponse = response.body();
             if (!noteEntryListResponse.containsData() && noteEntryListResponse.isError()) {
                 Toast.makeText(getActivity(), noteEntryListResponse.getMessage(), Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
-            List<NoteEntry> noteEntries = noteEntryListResponse.getData();
+            List<JsonNoteEntry> noteEntries = noteEntryListResponse.getData();
             if (noteEntries != null) {
                 if (!noteEntries.isEmpty()) {
                     mPage++;
@@ -131,7 +129,7 @@ public class SharedNotesFragment extends BaseNotesFragment {
         }
 
         @Override
-        public void onFailure(Call<ServiceResponse<List<NoteEntry>>> call, Throwable t) {
+        public void onFailure(Call<ServiceResponse<List<JsonNoteEntry>>> call, Throwable t) {
             setWaiting(false);
             Toast.makeText(getActivity(), "" + t, Toast.LENGTH_SHORT)
                     .show();

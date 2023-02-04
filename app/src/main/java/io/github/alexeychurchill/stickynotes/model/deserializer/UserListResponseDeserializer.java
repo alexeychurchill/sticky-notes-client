@@ -12,21 +12,21 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import io.github.alexeychurchill.stickynotes.model.ServiceResponse;
-import io.github.alexeychurchill.stickynotes.model.User;
+import io.github.alexeychurchill.stickynotes.model.JsonUser;
 
 /**
  * User list response deserializer
  */
 
-public class UserListResponseDeserializer implements JsonDeserializer<ServiceResponse<List<User>>> {
-    public static final Type TYPE = new TypeToken<ServiceResponse<List<User>>>() {}.getType();
+public class UserListResponseDeserializer implements JsonDeserializer<ServiceResponse<List<JsonUser>>> {
+    public static final Type TYPE = new TypeToken<ServiceResponse<List<JsonUser>>>() {}.getType();
     @Override
-    public ServiceResponse<List<User>> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        ServiceResponse.Builder<List<User>> builder = new ServiceResponse.Builder<>();
+    public ServiceResponse<List<JsonUser>> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        ServiceResponse.Builder<List<JsonUser>> builder = new ServiceResponse.Builder<>();
         JsonObject rootObject = json.getAsJsonObject();
         if (rootObject.has("response")) {
             JsonArray usersArray = rootObject.get("response").getAsJsonArray();
-            List<User> users = context.deserialize(usersArray, UserListDeserializer.TYPE);
+            List<JsonUser> users = context.deserialize(usersArray, UserListDeserializer.TYPE);
             builder.setData(users);
         }
         if (rootObject.has("error")) {

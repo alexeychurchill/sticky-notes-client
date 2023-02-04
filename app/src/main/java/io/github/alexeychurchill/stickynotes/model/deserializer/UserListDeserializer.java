@@ -11,23 +11,23 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.alexeychurchill.stickynotes.model.User;
+import io.github.alexeychurchill.stickynotes.model.JsonUser;
 
 /**
  * User list deserializer
  */
 
-public class UserListDeserializer implements JsonDeserializer<List<User>> {
-    public static final Type TYPE = new TypeToken<List<User>>() {}.getType();
+public class UserListDeserializer implements JsonDeserializer<List<JsonUser>> {
+    public static final Type TYPE = new TypeToken<List<JsonUser>>() {}.getType();
     @Override
-    public List<User> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        List<User> users = new ArrayList<>();
+    public List<JsonUser> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        List<JsonUser> users = new ArrayList<>();
         if (!json.isJsonArray()) {
             return users;
         }
         JsonArray usersArray = json.getAsJsonArray();
         for (JsonElement element : usersArray) {
-            User user = context.deserialize(element, User.class);
+            JsonUser user = context.deserialize(element, JsonUser.class);
             users.add(user);
         }
         return users;

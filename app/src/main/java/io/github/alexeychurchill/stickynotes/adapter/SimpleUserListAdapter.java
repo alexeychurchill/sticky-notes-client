@@ -1,19 +1,19 @@
 package io.github.alexeychurchill.stickynotes.adapter;
 
-import io.github.alexeychurchill.stickynotes.model.User;
+import io.github.alexeychurchill.stickynotes.model.JsonUser;
 
 /**
  * Simple user list adapter
  */
 
-public class SimpleUserListAdapter extends UserListAdapter<User> {
+public class SimpleUserListAdapter extends UserListAdapter<JsonUser> {
     @Override
-    protected User getUser(User user) {
+    protected JsonUser getUser(JsonUser user) {
         return user;
     }
 
     @Override
-    protected String getInfo(User user) {
+    protected String getInfo(JsonUser user) {
         return null;
     }
 }

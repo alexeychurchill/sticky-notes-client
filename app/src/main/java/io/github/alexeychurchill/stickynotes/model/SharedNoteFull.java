@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Shared note class
  */
-
+@Deprecated
 public class SharedNoteFull {
     @SerializedName("note")
     private NoteFull note;
