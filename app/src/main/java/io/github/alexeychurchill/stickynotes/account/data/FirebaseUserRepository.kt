@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -33,9 +34,11 @@ class FirebaseUserRepository @Inject constructor(
     // TODO: Think regarding username, firstName, lastName FTS search
     // implementation using ElasticSearch, Algolia etc.
     override suspend fun searchUser(query: String): List<User> {
+        val currentUserId = accountRepository.user.first().id
         return searchByAsync(Fields.Username, query)
             .await()
             .distinctBy(User::id)
+            .filterNot { it.id == currentUserId }
     }
 
     private suspend fun searchByAsync(field: String, query: String): Deferred<List<User>> {
