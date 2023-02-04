@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.alexeychurchill.stickynotes.account.domain.UserRepository
 import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
+import io.github.alexeychurchill.stickynotes.core.model.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.Lazily
@@ -25,7 +26,15 @@ class AddContactViewModel @Inject constructor(
 
     val searchResults: StateFlow<SearchContactResult> by lazy {
         _searchQuery
-            .transformLatest { query -> processSearchFlow(query) }
+            .flatMapLatest { query ->
+                if (query.isEmpty()) {
+                    return@flatMapLatest flowOf<SearchContactResult>(
+                        SearchContactResult.None
+                    )
+                }
+
+                searchBy(query)
+            }
             .flowOn(dispatchers.io)
             .stateIn(
                 scope = viewModelScope,
@@ -40,16 +49,24 @@ class AddContactViewModel @Inject constructor(
         }
     }
 
-    private suspend fun FlowCollector<SearchContactResult>.processSearchFlow(
-        query: String
-    ) {
-        if (query.isEmpty()) {
-            emit(SearchContactResult.None)
-            return
+    fun makeRequest(userId: String) {
+        viewModelScope.launch {
+            userRepository.makeRequest(userId)
         }
-
-        emit(SearchContactResult.Loading)
-        val results = userRepository.searchUser(query)
-        emit(SearchContactResult.Items(results))
     }
+
+    private suspend fun searchBy(query: String) = userRepository
+        .outgoingRequests()
+        .transformLatest { outgoing ->
+            emit(SearchContactResult.Loading)
+            val outgoingSet = outgoing.map(User::id).toSet()
+            val found = userRepository.searchUser(query)
+                .map { user ->
+                    SearchContactResult.Items.Item(
+                        user = user,
+                        isRequested = outgoingSet.contains(user.id),
+                    )
+                }
+            emit(SearchContactResult.Items(found))
+        }
 }

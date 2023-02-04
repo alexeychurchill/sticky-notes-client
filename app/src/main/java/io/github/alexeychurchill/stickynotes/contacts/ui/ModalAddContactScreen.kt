@@ -64,6 +64,7 @@ fun ModalAddContactScreen(
                             is Items -> SearchUsersResult(
                                 modifier = Modifier.fillMaxSize(),
                                 items = (searchResult as Items).items,
+                                onAdd = { viewModel.makeRequest(it.id) },
                             )
                         }
                     }
@@ -124,19 +125,18 @@ private fun SearchContactTextField(
 private fun SearchUsersResult(
     modifier: Modifier = Modifier,
     onAdd: (User) -> Unit = { },
-    requestedTo: Set<String> = emptySet(),
-    items: List<User>,
+    items: List<Items.Item>,
 ) {
     LazyColumn(modifier = modifier) {
-        items(items = items, key = User::id) { user ->
+        items(items = items, key = { it.user.id }) { item ->
             ContactWidget(
                 modifier = Modifier.fillMaxWidth(),
-                user = user,
+                user = item.user,
                 actions = {
-                    if (requestedTo.contains(user.id)) {
+                    if (item.isRequested) {
                         TextButton(
                             enabled = false,
-                            onClick = { onAdd(user) },
+                            onClick = { onAdd(item.user) },
                         ) {
                             Text(
                                 text = stringResource(R.string.screen_add_contact_requested)
@@ -144,7 +144,7 @@ private fun SearchUsersResult(
                             )
                         }
                     } else {
-                        TextButton(onClick = { onAdd(user) }) {
+                        TextButton(onClick = { onAdd(item.user) }) {
                             Text(
                                 text = stringResource(R.string.generic_add)
                                     .uppercase()

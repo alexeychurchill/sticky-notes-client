@@ -28,4 +28,12 @@ object FirestoreScheme {
             const val LastName = "lastName"
         }
     }
+
+    object ContactRequest {
+        const val Path = "contact_requests"
+        object Fields {
+            const val From = "from"
+            const val To = "to"
+        }
+    }
 }
