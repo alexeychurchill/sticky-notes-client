@@ -16,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.adapter.MenuAdapter
 import io.github.alexeychurchill.stickynotes.fragment.notes.NotesFragment
-import io.github.alexeychurchill.stickynotes.contacts.FriendsFragment
 
 /**
  * Main application activity
@@ -27,7 +26,6 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, View.OnClickListe
     private lateinit var mMenuDrawables: Array<Drawable?>
     private var mCurrentFragment: Fragment? = null
     private var mNotesFragment: NotesFragment? = null
-    private var mFriendsFragment: FriendsFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +47,6 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, View.OnClickListe
         btnLogout?.setOnClickListener(this)
         // Fragments
         mNotesFragment = NotesFragment()
-        mFriendsFragment =
-            FriendsFragment()
         mCurrentFragment = mNotesFragment
         // Initial fragment
         val manager = supportFragmentManager
@@ -79,16 +75,11 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, View.OnClickListe
     override fun onItemClick(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
         when (i) {
             0 -> showNotesFragment()
-            1 -> showFriendsFragment()
         }
     }
 
     private fun showNotesFragment() {
         showFragment(mNotesFragment, false)
-    }
-
-    private fun showFriendsFragment() {
-        showFragment(mFriendsFragment, false)
     }
 
     private fun showFragment(fragment: Fragment?, addToBackStack: Boolean) {

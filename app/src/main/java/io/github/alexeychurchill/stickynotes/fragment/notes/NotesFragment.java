@@ -1,15 +1,17 @@
 package io.github.alexeychurchill.stickynotes.fragment.notes;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.Nullable;
-import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +25,12 @@ import io.github.alexeychurchill.stickynotes.notes.UserNotesFragment;
 
 public class NotesFragment extends Fragment {
     private UserNotesFragment mUserNotesFragment;
-    private SharedNotesFragment mSharedNotesFragment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Fragments
         mUserNotesFragment = new UserNotesFragment();
-        mSharedNotesFragment = new SharedNotesFragment();
         // View
         View view = inflater.inflate(R.layout.fragment_notes, container, false);
         // Tabs
@@ -47,10 +47,6 @@ public class NotesFragment extends Fragment {
         adapter.addPage(
                 mUserNotesFragment,
                 getContext().getString(R.string.text_title_page_user_notes)
-        );
-        adapter.addPage(
-                mSharedNotesFragment,
-                getContext().getString(R.string.text_title_page_shared_notes)
         );
         viewPager.setAdapter(adapter);
     }
