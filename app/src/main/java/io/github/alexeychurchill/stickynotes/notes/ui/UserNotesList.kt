@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.BottomEnd
@@ -15,7 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import io.github.alexeychurchill.stickynotes.R
+import io.github.alexeychurchill.stickynotes.app.Route
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
@@ -31,8 +34,15 @@ import kotlin.Error
 
 @Composable
 fun UserNotesList(
+    navController: NavController,
     viewModel: UserNotesViewModel = viewModel(),
 ) {
+    LaunchedEffect(key1 = viewModel) {
+        viewModel.openNoteEvent.collect { noteId ->
+            navController.navigate(Route.NoteEditor(noteId).routePath)
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         val notesState by viewModel.notesState.collectAsState(initial = None)
         WithDateTimeFormatter(viewModel.dateTimeFormatter) {
