@@ -4,7 +4,6 @@ import java.util.*
 
 data class NoteEntry(
     val id: String,
-    val ownerId: String,
     val title: String,
     val subject: String? = null,
     val changedAt: Calendar,

@@ -98,7 +98,6 @@ private fun NoteEntry_Preview() {
                     modifier = Modifier.padding(Regular),
                     entry = NoteEntry(
                         id = NoteEntry.NO_ID,
-                        ownerId = NoteEntry.NO_ID,
                         title = "Test entry",
                         subject = "Test subject",
                         changedAt = someTime,

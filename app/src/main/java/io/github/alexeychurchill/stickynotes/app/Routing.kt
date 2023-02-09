@@ -6,13 +6,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys
 import io.github.alexeychurchill.stickynotes.note_editor.ui.NoteScreen
-import io.github.alexeychurchill.stickynotes.notes.ui.UserNotesList
+import io.github.alexeychurchill.stickynotes.notes.ui.UserNotesListScreen
 
 fun NavGraphBuilder.rootNavGraph(navController: NavHostController) {
 
     composable(Route.NoteList.routePath) {
-        UserNotesList(
+        UserNotesListScreen(
             navController = navController,
             viewModel = hiltViewModel(),
         )
@@ -21,7 +22,7 @@ fun NavGraphBuilder.rootNavGraph(navController: NavHostController) {
     composable(
         route = Route.NoteEditor.PathTemplate,
         arguments = listOf(
-            navArgument(Route.NoteEditor.ArgNoteId) { type = NavType.StringType },
+            navArgument(NoteKeys.NoteId) { type = NavType.StringType },
         ),
     ) {
         NoteScreen(

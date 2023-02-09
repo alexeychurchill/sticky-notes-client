@@ -4,12 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.alexeychurchill.stickynotes.app.Route
 import io.github.alexeychurchill.stickynotes.core.datetime.Now
 import io.github.alexeychurchill.stickynotes.core.extension.ofTimeMillis
 import io.github.alexeychurchill.stickynotes.core.model.Note
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
-import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.OwnerId
+import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.NoteId
 import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,15 +24,8 @@ class NoteViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
 ) : ViewModel() {
 
-    private val noteId: String = savedStateHandle[Route.NoteEditor.ArgNoteId]
-        ?: throw IllegalArgumentException("No parameter ${Route.NoteEditor.ArgNoteId} passed!")
-
-    private var ownerId: String
-        get() = savedStateHandle[OwnerId]
-            ?: throw IllegalArgumentException("No $OwnerId!")
-        set(value) {
-            savedStateHandle[OwnerId] = value
-        }
+    private val noteId: String = savedStateHandle[NoteId]
+        ?: throw IllegalArgumentException("No parameter $NoteId passed!")
 
     private val _inProgress = MutableStateFlow(false)
 
@@ -70,7 +62,6 @@ class NoteViewModel @Inject constructor(
                 return@launch
             }
             val entry = note.entry
-            ownerId = entry.ownerId
             _title.emit(entry.title)
             _subject.emit(entry.subject ?: "")
             _text.emit(note.text)
@@ -95,7 +86,6 @@ class NoteViewModel @Inject constructor(
             _inProgress.emit(true)
             val noteEntry = NoteEntry(
                 id = noteId,
-                ownerId = ownerId,
                 title = _title.value,
                 subject = _subject.value.takeIf(String::isNotBlank),
                 changedAt = ofTimeMillis(now()),
