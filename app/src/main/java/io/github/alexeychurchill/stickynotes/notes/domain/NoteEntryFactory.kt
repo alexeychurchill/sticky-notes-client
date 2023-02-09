@@ -10,7 +10,6 @@ class NoteEntryFactory @Inject constructor() {
         val now = Calendar.getInstance()
         return NoteEntry(
             id = NO_ID,
-            ownerId = NO_ID,
             title = title,
             subject = null,
             changedAt = now,

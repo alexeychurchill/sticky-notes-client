@@ -7,6 +7,7 @@ import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RoomNoteEntryRepository @Inject constructor(
@@ -22,16 +23,23 @@ class RoomNoteEntryRepository @Inject constructor(
 
     override suspend fun getEntry(id: String): NoteEntry? {
         val noteId = id.toLongOrNull() ?: return null
-        return db.noteEntryDao().getNoteEntry(noteId)?.toDomain()
+        return withContext(dispatchers.io) {
+            db.noteEntryDao().getNoteEntry(noteId)?.toDomain()
+        }
     }
 
     override suspend fun create(entry: NoteEntry): NoteEntry {
         val entity = entry.toDatabase()
-        val noteId = db.noteEntryDao().upsertNoteEntry(entity)
+        val noteId = withContext(dispatchers.io) {
+            db.noteEntryDao().insertNoteEntry(entity)
+        }
         return entry.copy(id = noteId.toString())
     }
 
     override suspend fun delete(id: String) {
-        db.noteEntryDao().deleteNoteEntry(id = id.toLongOrNull() ?: return)
+        val noteId = id.toLongOrNull() ?: return
+        withContext(dispatchers.io) {
+            db.noteEntryDao().deleteNoteEntry(noteId)
+        }
     }
 }

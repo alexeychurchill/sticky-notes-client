@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterStart
@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
@@ -22,10 +23,23 @@ import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteViewMo
 
 @Composable
 fun NoteScreen(
+    navController: NavController,
     viewModel: NoteViewModel = viewModel(),
 ) {
+    LaunchedEffect(key1 = viewModel, key2 = navController) {
+        viewModel.onExitEvent.collect {
+            navController.navigateUp()
+        }
+    }
+
     Scaffold(
-        topBar = { TopBar(viewModel) },
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.screen_note_title))
+                },
+            )
+        },
         floatingActionButton = {
             val isSaveEnabled by viewModel.isSaveEnabled.collectAsState()
             SaveButton(
@@ -34,41 +48,23 @@ fun NoteScreen(
             )
         },
     ) { paddings ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddings),
-        ) {
+        Box(modifier = Modifier.padding(paddings)) {
             NoteEditWidget(
                 modifier = Modifier.fillMaxSize(),
                 viewModel = viewModel,
             )
-        }
 
-        val isInProgress by viewModel.inProgress.collectAsState()
-        if (isInProgress) {
-            ProgressDialog()
+            val isInProgress by viewModel.inProgress.collectAsState()
+            if (isInProgress) {
+                ProgressDialog()
+            }
         }
     }
 }
 
 @Composable
-private fun TopBar(viewModel: NoteViewModel) {
-    TopAppBar(
-        title = { /** Just skip for right now **/ },
-        navigationIcon = {
-            IconButton(onClick = viewModel::exit) {
-                Icon(
-                    imageVector = Icons.Rounded.Close,
-                    contentDescription = null,
-                )
-            }
-        },
-    )
-}
-
-@Composable
 private fun SaveButton(
+    modifier: Modifier = Modifier,
     isEnabled: Boolean = false,
     onClick: () -> Unit = { },
 ) {
@@ -77,6 +73,7 @@ private fun SaveButton(
     }
 
     ExtendedFloatingActionButton(
+        modifier = modifier,
         text = {
             Text(
                 text = stringResource(R.string.screen_note_save_caption)

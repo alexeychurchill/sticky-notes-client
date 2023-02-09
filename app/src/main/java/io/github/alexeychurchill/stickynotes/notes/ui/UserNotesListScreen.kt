@@ -7,18 +7,19 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import io.github.alexeychurchill.stickynotes.R
+import io.github.alexeychurchill.stickynotes.app.Route
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
-import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
 import io.github.alexeychurchill.stickynotes.core.ui.space
 import io.github.alexeychurchill.stickynotes.notes.presentation.ModalState
@@ -30,33 +31,46 @@ import io.github.alexeychurchill.stickynotes.notes.presentation.UserNotesViewMod
 import kotlin.Error
 
 @Composable
-fun UserNotesList(
+fun UserNotesListScreen(
+    navController: NavController,
     viewModel: UserNotesViewModel = viewModel(),
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        val notesState by viewModel.notesState.collectAsState(initial = None)
-        WithDateTimeFormatter(viewModel.dateTimeFormatter) {
-            NotesState(
-                notesState = notesState,
-                onReload = viewModel::reload,
-                onEntryClick = { viewModel.openNote(it.id)  },
-                onEntryDelete = { viewModel.deleteNote(it) },
-            )
+    LaunchedEffect(key1 = viewModel, key2 = navController) {
+        viewModel.openNoteEvent.collect { noteId ->
+            navController.navigate(Route.NoteEditor(noteId).routePath)
         }
+    }
 
-        FloatingActionButton(
-            modifier = Modifier
-                .align(BottomEnd)
-                .padding(Big),
-            onClick = viewModel::createNote,
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = null,
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.screen_note_list_title))
+                },
             )
-        }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = viewModel::createNote) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                )
+            }
+        },
+    ) { paddings ->
+        Box(modifier = Modifier.padding(paddings)) {
+            val notesState by viewModel.notesState.collectAsState(initial = None)
+            WithDateTimeFormatter(viewModel.dateTimeFormatter) {
+                NotesState(
+                    notesState = notesState,
+                    onReload = viewModel::reload,
+                    onEntryClick = { viewModel.openNote(it.id)  },
+                    onEntryDelete = { viewModel.deleteNote(it) },
+                )
+            }
 
-        Dialogs(viewModel)
+            Dialogs(viewModel)
+        }
     }
 }
 
