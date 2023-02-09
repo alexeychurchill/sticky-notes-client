@@ -75,8 +75,7 @@ fun CreateNoteDialog(
                         onClick = { onProceed(title) },
                     ) {
                         Text(
-                            text = stringResource(id = R.string.dialog_create_note_action_create)
-                                .uppercase(),
+                            text = stringResource(id = R.string.generic_create).uppercase(),
                         )
                     }
                 }

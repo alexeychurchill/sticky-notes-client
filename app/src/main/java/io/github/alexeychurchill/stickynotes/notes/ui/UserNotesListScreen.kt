@@ -5,7 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.rounded.NoteAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -50,12 +50,7 @@ fun UserNotesListScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = viewModel::createNote) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null,
-                )
-            }
+            CreateButton(viewModel::createNote)
         },
     ) { paddings ->
         Box(modifier = Modifier.padding(paddings)) {
@@ -72,6 +67,24 @@ fun UserNotesListScreen(
             Dialogs(viewModel)
         }
     }
+}
+
+@Composable
+private fun CreateButton(onClick: () -> Unit) {
+    ExtendedFloatingActionButton(
+        onClick = onClick,
+        icon = {
+            Icon(
+                imageVector = Icons.Rounded.NoteAdd,
+                contentDescription = null,
+            )
+        },
+        text = {
+            Text(
+                text = stringResource(id = R.string.generic_create).uppercase()
+            )
+        },
+    )
 }
 
 @Composable
