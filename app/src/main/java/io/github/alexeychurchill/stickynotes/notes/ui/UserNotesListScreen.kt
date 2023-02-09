@@ -35,7 +35,7 @@ fun UserNotesListScreen(
     navController: NavController,
     viewModel: UserNotesViewModel = viewModel(),
 ) {
-    LaunchedEffect(key1 = viewModel) {
+    LaunchedEffect(key1 = viewModel, key2 = navController) {
         viewModel.openNoteEvent.collect { noteId ->
             navController.navigate(Route.NoteEditor(noteId).routePath)
         }

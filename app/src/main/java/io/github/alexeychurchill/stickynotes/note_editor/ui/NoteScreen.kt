@@ -6,6 +6,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterStart
@@ -14,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
@@ -21,8 +23,15 @@ import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteViewMo
 
 @Composable
 fun NoteScreen(
+    navController: NavController,
     viewModel: NoteViewModel = viewModel(),
 ) {
+    LaunchedEffect(key1 = viewModel, key2 = navController) {
+        viewModel.onExitEvent.collect {
+            navController.navigateUp()
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(

@@ -26,6 +26,7 @@ fun NavGraphBuilder.rootNavGraph(navController: NavHostController) {
         ),
     ) {
         NoteScreen(
+            navController = navController,
             viewModel = hiltViewModel(),
         )
     }
