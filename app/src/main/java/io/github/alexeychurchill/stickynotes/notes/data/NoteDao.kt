@@ -1,9 +1,10 @@
 package io.github.alexeychurchill.stickynotes.notes.data
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Upsert
 import io.github.alexeychurchill.stickynotes.note_editor.data.RoomNote
 import io.github.alexeychurchill.stickynotes.note_editor.data.RoomNoteText
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,7 @@ interface NoteDao {
     @Query("SELECT * FROM note_entries WHERE id=:id LIMIT 1")
     suspend fun getNoteEntry(id: Long): RoomNoteEntry?
 
-    @Upsert(entity = RoomNoteEntry::class)
+    @Insert(entity = RoomNoteEntry::class, onConflict = REPLACE)
     suspend fun upsertNoteEntry(entry: RoomNoteEntry): Long
 
     @Query("DELETE FROM note_entries WHERE id=:id")
@@ -26,8 +27,8 @@ interface NoteDao {
     @Query("SELECT * FROM note_texts WHERE id=:id LIMIT 1")
     suspend fun getNoteText(id: Long): RoomNoteText?
 
-    @Upsert
-    suspend fun upsertNoteText(entity: RoomNoteText): Long
+    @Insert(entity = RoomNoteText::class, onConflict = REPLACE)
+    suspend fun upsertNoteText(entity: RoomNoteText)
 
     @Transaction
     suspend fun getNote(id: Long): RoomNote? {
