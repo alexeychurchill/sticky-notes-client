@@ -14,7 +14,7 @@ android {
     buildToolsVersion "31.0.0"
     defaultConfig {
         applicationId "io.github.alexeychurchill.stickynotes"
-        minSdkVersion 21
+        minSdkVersion 28
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"

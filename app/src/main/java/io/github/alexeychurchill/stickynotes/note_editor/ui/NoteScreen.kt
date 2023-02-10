@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle.Companion.Italic
+import androidx.compose.ui.unit.max
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import io.github.alexeychurchill.stickynotes.R
@@ -63,15 +64,24 @@ fun NoteScreen(
             )
         },
     ) { paddings ->
-        Box(modifier = Modifier.padding(paddings)) {
+        Box {
+            val imePaddings = WindowInsets.ime.asPaddingValues()
+            val editorBottomPadding = max(
+                paddings.calculateBottomPadding(),
+                imePaddings.calculateBottomPadding()
+            )
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(Regular),
+                    .padding(
+                        top = paddings.calculateTopPadding(),
+                        bottom = editorBottomPadding,
+                    ),
             ) {
                 val shape = MaterialTheme.shapes.extraLarge
                 NoteEditWidget(
                     modifier = Modifier
+                        .padding(Regular)
                         .fillMaxSize()
                         .clip(shape)
                         .clipToBounds()

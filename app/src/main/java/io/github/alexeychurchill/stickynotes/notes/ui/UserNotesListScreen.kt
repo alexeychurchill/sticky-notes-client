@@ -55,10 +55,11 @@ fun UserNotesListScreen(
             CreateButton(viewModel::createNote)
         },
     ) { paddings ->
-        Box(modifier = Modifier.padding(paddings)) {
+        Box {
             val notesState by viewModel.notesState.collectAsState(initial = None)
             WithDateTimeFormatter(viewModel.dateTimeFormatter) {
                 NotesState(
+                    paddings = paddings,
                     notesState = notesState,
                     onReload = viewModel::reload,
                     onEntryClick = { viewModel.openNote(it.id)  },
@@ -91,6 +92,7 @@ private fun CreateButton(onClick: () -> Unit) {
 
 @Composable
 private fun BoxScope.NotesState(
+    paddings: PaddingValues,
     notesState: NotesState,
     onReload: () -> Unit,
     onEntryClick: (NoteEntry) -> Unit,
@@ -104,11 +106,13 @@ private fun BoxScope.NotesState(
             strokeWidth = 4.dp,
         )
 
-        is Loaded -> LazyColumn(modifier = Modifier.fillMaxSize()) {
-            space(Medium)
+        is Loaded -> LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            space(paddings.calculateTopPadding() + Medium)
 
             val notes = notesState.items
-            items(items = notes, key = { it.id }) { note ->
+            items(items = notes + notes + notes + notes/*, key = { it.id }*/) { note ->
                 NoteEntryListItem(
                     noteEntry = note,
                     onEntryClick = onEntryClick,
@@ -116,7 +120,7 @@ private fun BoxScope.NotesState(
                 )
             }
 
-            space(96.dp)
+            space(paddings.calculateBottomPadding() + 96.dp)
         }
 
         is Error -> OutlinedButton(
