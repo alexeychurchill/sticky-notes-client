@@ -38,15 +38,15 @@ data class SpecialColors(
 private val LocalSpecialColors = compositionLocalOf { SpecialColorsLight }
 
 private val StickyNotesColorsLight = Colors(
-    primary = Color(0xff607d8b),
-    primaryVariant = Color(0xff34515e),
-    secondary = Color(0xff4caf50),
-    secondaryVariant = Color(0xff087f23),
+    primary = Color(0xfffafafa),
+    primaryVariant = Color(0xffc7c7c7),
+    secondary = Color(0xff304ffe),
+    secondaryVariant = Color(0xff0026ca),
     background = Color.White,
     surface = Color.White,
     error = Color(0xffb00020),
-    onPrimary = Color(0xffeeeeee),
-    onSecondary = Color(0xfff5f5f5),
+    onPrimary = Color(0xff304ffe),
+    onSecondary = Color.White,
     onBackground = Color.Black,
     onSurface = Color.Black,
     onError = Color.White,
@@ -54,7 +54,7 @@ private val StickyNotesColorsLight = Colors(
 )
 
 private val SpecialColorsLight = SpecialColors(
-    delete = Color(0xffe53935),
+    delete = Color(0xfff44336),
     onDelete = Color.White,
 )
 
