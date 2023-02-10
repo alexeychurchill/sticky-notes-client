@@ -1,8 +1,10 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package io.github.alexeychurchill.stickynotes.notes.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterStart
@@ -26,7 +28,7 @@ fun CreateNoteDialog(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(4.dp),
-            elevation = 24.dp,
+            shadowElevation = 24.dp,
         ) {
             Column(
                 modifier = Modifier
@@ -38,7 +40,7 @@ fun CreateNoteDialog(
                     Text(
                         modifier = Modifier.align(CenterStart),
                         text = stringResource(R.string.dialog_create_note_title),
-                        style = MaterialTheme.typography.h6,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
 

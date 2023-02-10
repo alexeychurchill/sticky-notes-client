@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -29,7 +29,7 @@ fun ProgressDialog() {
         Surface(
             modifier = Modifier.size(88.dp),
             shape = RoundedCornerShape(4.dp),
-            elevation = 24.dp,
+            shadowElevation = 24.dp,
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(

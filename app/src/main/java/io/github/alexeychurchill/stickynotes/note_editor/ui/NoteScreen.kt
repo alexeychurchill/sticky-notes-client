@@ -1,10 +1,12 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package io.github.alexeychurchill.stickynotes.note_editor.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Save
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -97,7 +99,7 @@ private fun NoteEditWidget(
 ) {
     Column(modifier = modifier) {
         val title by viewModel.title.collectAsState()
-        val titleStyle = MaterialTheme.typography.subtitle1.copy(
+        val titleStyle = MaterialTheme.typography.titleSmall.copy(
             fontWeight = FontWeight.SemiBold
         )
         EditorTextField(
@@ -111,7 +113,7 @@ private fun NoteEditWidget(
         Divider()
 
         val subject by viewModel.subject.collectAsState()
-        val subjectStyle = MaterialTheme.typography.subtitle1
+        val subjectStyle = MaterialTheme.typography.titleSmall
         EditorTextField(
             maxLines = 1,
             hint = stringResource(R.string.screen_note_subject_hint),
@@ -123,7 +125,7 @@ private fun NoteEditWidget(
         Divider()
 
         val text by viewModel.text.collectAsState()
-        val textStyle = MaterialTheme.typography.body1
+        val textStyle = MaterialTheme.typography.bodyMedium
         EditorTextField(
             modifier = Modifier.weight(weight = 1.0f),
             maxLines = 1,
