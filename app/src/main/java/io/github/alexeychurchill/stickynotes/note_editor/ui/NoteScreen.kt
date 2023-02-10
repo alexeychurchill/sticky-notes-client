@@ -1,24 +1,32 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package io.github.alexeychurchill.stickynotes.note_editor.ui
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Save
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment.Companion.CenterStart
+import androidx.compose.ui.Alignment.Companion.TopStart
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontStyle.Companion.Italic
+import androidx.compose.ui.unit.max
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
+import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Regular
 import io.github.alexeychurchill.stickynotes.note_editor.presentation.NoteViewModel
 
 @Composable
@@ -38,6 +46,14 @@ fun NoteScreen(
                 title = {
                     Text(text = stringResource(R.string.screen_note_title))
                 },
+                navigationIcon = {
+                    IconButton(onClick = viewModel::exit) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = null,
+                        )
+                    }
+                },
             )
         },
         floatingActionButton = {
@@ -48,11 +64,35 @@ fun NoteScreen(
             )
         },
     ) { paddings ->
-        Box(modifier = Modifier.padding(paddings)) {
-            NoteEditWidget(
-                modifier = Modifier.fillMaxSize(),
-                viewModel = viewModel,
+        Box {
+            val imePaddings = WindowInsets.ime.asPaddingValues()
+            val editorBottomPadding = max(
+                paddings.calculateBottomPadding(),
+                imePaddings.calculateBottomPadding()
             )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        top = paddings.calculateTopPadding(),
+                        bottom = editorBottomPadding,
+                    ),
+            ) {
+                val shape = MaterialTheme.shapes.extraLarge
+                NoteEditWidget(
+                    modifier = Modifier
+                        .padding(Regular)
+                        .fillMaxSize()
+                        .clip(shape)
+                        .clipToBounds()
+                        .border(
+                            width = DividerDefaults.Thickness,
+                            color = DividerDefaults.color,
+                            shape = shape,
+                        ),
+                    viewModel = viewModel,
+                )
+            }
 
             val isInProgress by viewModel.inProgress.collectAsState()
             if (isInProgress) {
@@ -97,9 +137,7 @@ private fun NoteEditWidget(
 ) {
     Column(modifier = modifier) {
         val title by viewModel.title.collectAsState()
-        val titleStyle = MaterialTheme.typography.subtitle1.copy(
-            fontWeight = FontWeight.SemiBold
-        )
+        val titleStyle = MaterialTheme.typography.titleLarge
         EditorTextField(
             maxLines = 1,
             hint = stringResource(R.string.screen_note_title_hint),
@@ -111,7 +149,9 @@ private fun NoteEditWidget(
         Divider()
 
         val subject by viewModel.subject.collectAsState()
-        val subjectStyle = MaterialTheme.typography.subtitle1
+        val subjectStyle = MaterialTheme.typography.bodyLarge
+            .copy(fontStyle = Italic)
+
         EditorTextField(
             maxLines = 1,
             hint = stringResource(R.string.screen_note_subject_hint),
@@ -123,10 +163,9 @@ private fun NoteEditWidget(
         Divider()
 
         val text by viewModel.text.collectAsState()
-        val textStyle = MaterialTheme.typography.body1
+        val textStyle = MaterialTheme.typography.bodyMedium
         EditorTextField(
             modifier = Modifier.weight(weight = 1.0f),
-            maxLines = 1,
             hint = stringResource(R.string.screen_note_text_hint),
             textStyle = textStyle,
             value = text,
@@ -172,17 +211,13 @@ private fun HintTextFieldDecoration(
     text: String? = null,
     textFieldContent: @Composable () -> Unit,
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-    ) {
+    Box(modifier = Modifier.fillMaxWidth()) {
         textFieldContent()
         val textColor = style.color.copy(alpha = 0.35f)
         val hintStyle = style.copy(color = textColor)
         if (text != null) {
             Text(
-                modifier = Modifier.align(CenterStart),
+                modifier = Modifier.align(TopStart),
                 text = text,
                 style = hintStyle,
             )

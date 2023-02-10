@@ -1,11 +1,13 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package io.github.alexeychurchill.stickynotes.notes.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.rounded.NoteAdd
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -50,18 +52,14 @@ fun UserNotesListScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = viewModel::createNote) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null,
-                )
-            }
+            CreateButton(viewModel::createNote)
         },
     ) { paddings ->
-        Box(modifier = Modifier.padding(paddings)) {
+        Box {
             val notesState by viewModel.notesState.collectAsState(initial = None)
             WithDateTimeFormatter(viewModel.dateTimeFormatter) {
                 NotesState(
+                    paddings = paddings,
                     notesState = notesState,
                     onReload = viewModel::reload,
                     onEntryClick = { viewModel.openNote(it.id)  },
@@ -75,7 +73,26 @@ fun UserNotesListScreen(
 }
 
 @Composable
+private fun CreateButton(onClick: () -> Unit) {
+    ExtendedFloatingActionButton(
+        onClick = onClick,
+        icon = {
+            Icon(
+                imageVector = Icons.Rounded.NoteAdd,
+                contentDescription = null,
+            )
+        },
+        text = {
+            Text(
+                text = stringResource(id = R.string.generic_create).uppercase()
+            )
+        },
+    )
+}
+
+@Composable
 private fun BoxScope.NotesState(
+    paddings: PaddingValues,
     notesState: NotesState,
     onReload: () -> Unit,
     onEntryClick: (NoteEntry) -> Unit,
@@ -89,8 +106,10 @@ private fun BoxScope.NotesState(
             strokeWidth = 4.dp,
         )
 
-        is Loaded -> LazyColumn(modifier = Modifier.fillMaxSize()) {
-            space(Medium)
+        is Loaded -> LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            space(paddings.calculateTopPadding() + Medium)
 
             val notes = notesState.items
             items(items = notes, key = { it.id }) { note ->
@@ -101,7 +120,7 @@ private fun BoxScope.NotesState(
                 )
             }
 
-            space(96.dp)
+            space(paddings.calculateBottomPadding() + 96.dp)
         }
 
         is Error -> OutlinedButton(

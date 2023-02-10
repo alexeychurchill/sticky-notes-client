@@ -8,10 +8,10 @@
     <string name="generic_accept">Accept</string>
     <string name="generic_reject">Reject</string>
     <string name="generic_add">Add</string>
+    <string name="generic_create">Create</string>
 
     <string name="dialog_create_note_title">Create note</string>
     <string name="dialog_create_note_title_label">Title</string>
-    <string name="dialog_create_note_action_create">Create</string>
 
     <string name="dialog_delete_note_title">Delete note</string>
     <string name="dialog_delete_note_text">Are you sure want to delete <b>%s</b>?</string>

@@ -14,7 +14,7 @@ android {
     buildToolsVersion "31.0.0"
     defaultConfig {
         applicationId "io.github.alexeychurchill.stickynotes"
-        minSdkVersion 21
+        minSdkVersion 28
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
@@ -69,7 +69,7 @@ dependencies {
 
     // Compose
     implementation platform("androidx.compose:compose-bom:2022.12.00")
-    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.material3:material3"
     implementation "androidx.activity:activity-compose:1.6.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
     implementation "androidx.navigation:navigation-compose:2.5.3"

@@ -1,9 +1,9 @@
 package io.github.alexeychurchill.stickynotes.core.ui
 
 import androidx.annotation.StringRes
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 
@@ -39,15 +39,16 @@ fun <T> OverflowMenu(
     ) {
         for (item in items) {
             DropdownMenuItem(
+                text = {
+                    Text(
+                        text = stringResource(item.titleResId),
+                    )
+                },
                 onClick = {
                     onPick(item.item)
                     showMenu = false
                 },
-            ) {
-                Text(
-                    text = stringResource(item.titleResId),
-                )
-            }
+            )
         }
     }
 }

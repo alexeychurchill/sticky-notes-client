@@ -1,8 +1,8 @@
 package io.github.alexeychurchill.stickynotes.notes.ui
 
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import io.github.alexeychurchill.stickynotes.R
@@ -17,7 +17,7 @@ fun ConfirmDeleteNoteDialog(
         title = {
             Text(
                 text = stringResource(
-                    R.string.dialog_delete_note_text,
+                    R.string.dialog_delete_note_title,
                     noteTitle,
                 ),
             )
