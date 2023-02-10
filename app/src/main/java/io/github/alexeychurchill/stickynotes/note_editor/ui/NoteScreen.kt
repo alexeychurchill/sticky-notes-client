@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -43,6 +44,14 @@ fun NoteScreen(
             TopAppBar(
                 title = {
                     Text(text = stringResource(R.string.screen_note_title))
+                },
+                navigationIcon = {
+                    IconButton(onClick = viewModel::exit) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = null,
+                        )
+                    }
                 },
             )
         },
