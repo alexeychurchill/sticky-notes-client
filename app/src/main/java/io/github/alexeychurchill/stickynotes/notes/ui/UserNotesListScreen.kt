@@ -112,7 +112,7 @@ private fun BoxScope.NotesState(
             space(paddings.calculateTopPadding() + Medium)
 
             val notes = notesState.items
-            items(items = notes + notes + notes + notes/*, key = { it.id }*/) { note ->
+            items(items = notes, key = { it.id }) { note ->
                 NoteEntryListItem(
                     noteEntry = note,
                     onEntryClick = onEntryClick,
