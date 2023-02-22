@@ -22,17 +22,15 @@ class RoomNoteRepository @Inject constructor(
         }
     }
 
-    override suspend fun saveNote(note: Note) {
+    override suspend fun saveNote(note: Note) = withContext(dispatchers.io) {
         val entryEntity = note.entry.toDatabase()
         val textEntity = RoomNoteText(
             id = entryEntity.id,
             text = note.text,
         )
-        withContext(dispatchers.io) {
-            db.runInTransaction {
-                db.noteEntryDao().insertNoteEntry(entryEntity)
-                db.noteTextDao().insertNoteText(textEntity)
-            }
+        db.runInTransaction {
+            db.noteEntryDao().insertNoteEntry(entryEntity)
+            db.noteTextDao().insertNoteText(textEntity)
         }
     }
 

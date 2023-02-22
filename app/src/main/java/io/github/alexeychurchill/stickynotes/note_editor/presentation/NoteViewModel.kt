@@ -4,12 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.alexeychurchill.stickynotes.core.datetime.Now
-import io.github.alexeychurchill.stickynotes.core.extension.ofTimeMillis
-import io.github.alexeychurchill.stickynotes.core.model.Note
-import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.note_editor.NoteKeys.NoteId
+import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteEdit
 import io.github.alexeychurchill.stickynotes.note_editor.domain.NoteRepository
+import io.github.alexeychurchill.stickynotes.note_editor.domain.SaveNoteUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,8 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val now: Now,
     private val noteRepository: NoteRepository,
+    private val saveNoteUseCase: SaveNoteUseCase,
 ) : ViewModel() {
 
     private val noteId: String = savedStateHandle[NoteId]
@@ -84,17 +82,7 @@ class NoteViewModel @Inject constructor(
     fun saveNote() {
         viewModelScope.launch {
             _inProgress.emit(true)
-            val noteEntry = NoteEntry(
-                id = noteId,
-                title = _title.value,
-                subject = _subject.value.takeIf(String::isNotBlank),
-                changedAt = ofTimeMillis(now()),
-            )
-            val note = Note(
-                entry = noteEntry,
-                text = _text.value,
-            )
-            noteRepository.saveNote(note)
+            saveNoteUseCase(getEdit())
             _inProgress.emit(false)
             _onExitEvent.emit(Unit)
         }
@@ -104,5 +92,14 @@ class NoteViewModel @Inject constructor(
         viewModelScope.launch {
             _onExitEvent.emit(Unit)
         }
+    }
+
+    private fun getEdit(): NoteEdit {
+        return NoteEdit(
+            id = noteId,
+            title = _title.value,
+            subject = _subject.value,
+            text = _text.value,
+        )
     }
 }

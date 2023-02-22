@@ -1,10 +1,12 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
 package io.github.alexeychurchill.stickynotes.notes.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.NoteAdd
 import androidx.compose.material3.*
@@ -12,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,11 +28,7 @@ import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
 import io.github.alexeychurchill.stickynotes.core.ui.space
 import io.github.alexeychurchill.stickynotes.notes.presentation.ModalState
 import io.github.alexeychurchill.stickynotes.notes.presentation.ModalState.*
-import io.github.alexeychurchill.stickynotes.notes.presentation.NotesState
-import io.github.alexeychurchill.stickynotes.notes.presentation.NotesState.*
-import io.github.alexeychurchill.stickynotes.notes.presentation.NotesState.None
 import io.github.alexeychurchill.stickynotes.notes.presentation.UserNotesViewModel
-import kotlin.Error
 
 @Composable
 fun UserNotesListScreen(
@@ -55,18 +53,56 @@ fun UserNotesListScreen(
             CreateButton(viewModel::createNote)
         },
     ) { paddings ->
+        val dateTimeFormatter by viewModel.dateTimeFormatter.collectAsState()
         Box {
-            val notesState by viewModel.notesState.collectAsState(initial = None)
-            WithDateTimeFormatter(viewModel.dateTimeFormatter) {
-                NotesState(
-                    paddings = paddings,
-                    notesState = notesState,
-                    onReload = viewModel::reload,
-                    onEntryClick = { viewModel.openNote(it.id)  },
-                    onEntryDelete = { viewModel.deleteNote(it) },
-                )
-            }
+            WithDateTimeFormatter(dateTimeFormatter) {
+                Column(modifier = Modifier.padding(top = paddings.calculateTopPadding())) {
+                    val tags by viewModel.tags.collectAsState()
+                    TagListWidget(
+                        modifier = Modifier.fillMaxWidth(),
+                        items = tags,
+                        onClick = viewModel::toggleTag,
+                    )
 
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1.0f)
+                            .padding(horizontal = Medium),
+                    ) {
+                        val notes by viewModel.noteEntries.collectAsState()
+                        val notesListState = rememberLazyListState()
+
+                        /** TODO: Figure how out to scroll to begin only on: **/
+                        /** 1. Selected tag set change **/
+                        /** 2. Adding new item **/
+                        /** Actually, some kind of such, but modified code can be used: **/
+                        /** LaunchedEffect(key1 = notes.size) {
+                            notesListState.animateScrollToItem(index = 0)
+                        } **/
+
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(NoteEntryShape),
+                            state = notesListState,
+                        ) {
+                            items(notes, key = NoteEntry::id) { entry ->
+                                NoteEntryListItem(
+                                    modifier = Modifier
+                                        .padding(bottom = Medium)
+                                        .animateItemPlacement(),
+                                    noteEntry = entry,
+                                    onEntryClick = { viewModel.openNote(it.id) },
+                                    onEntryDelete = viewModel::deleteNote,
+                                )
+                            }
+
+                            space(paddings.calculateBottomPadding() + 96.dp)
+                        }
+                    }
+                }
+            }
             Dialogs(viewModel)
         }
     }
@@ -88,51 +124,6 @@ private fun CreateButton(onClick: () -> Unit) {
             )
         },
     )
-}
-
-@Composable
-private fun BoxScope.NotesState(
-    paddings: PaddingValues,
-    notesState: NotesState,
-    onReload: () -> Unit,
-    onEntryClick: (NoteEntry) -> Unit,
-    onEntryDelete: (NoteEntry) -> Unit,
-) {
-    when (notesState) {
-        is Loading -> CircularProgressIndicator(
-            modifier = Modifier
-                .size(48.dp)
-                .align(Center),
-            strokeWidth = 4.dp,
-        )
-
-        is Loaded -> LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            space(paddings.calculateTopPadding() + Medium)
-
-            val notes = notesState.items
-            items(items = notes, key = { it.id }) { note ->
-                NoteEntryListItem(
-                    noteEntry = note,
-                    onEntryClick = onEntryClick,
-                    onEntryDelete = onEntryDelete,
-                )
-            }
-
-            space(paddings.calculateBottomPadding() + 96.dp)
-        }
-
-        is Error -> OutlinedButton(
-            modifier = Modifier
-                .fillMaxWidth(fraction = 0.5f)
-                .widthIn(max = 320.dp)
-                .align(Center),
-            onClick = onReload,
-        ) {
-            Text(text = stringResource(R.string.generic_retry).uppercase())
-        }
-    }
 }
 
 @Composable
