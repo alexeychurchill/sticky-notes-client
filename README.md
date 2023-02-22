@@ -4,16 +4,16 @@ _TODO:_ Add logo and table of contents
 
 Sticky Notes is an application for Android platform which allows users to make some notes and store 'em locally. _TODO:_ Describe in more details
 
-## What's happening there?
+### What's happening there?
 
 Originally, it was one of my curriculum projects, made in 2016. 
 But, I decided to turn Sticky Notes into a small portfolio project 🙂
 
-## Features
+### Features
 
 _TODO_
 
-## Screenshots
+### Screenshots
 
 _TODO_
 
