@@ -1,14 +1,36 @@
-# StickyNotes app (client)
+# Sticky Notes
 
-## Brief description
-StickyNotes Android application (client). StickyNotes - application for making notes and storing them on the server.
+_TODO_
+
+# About the project
+
+Sticky Notes is an application for Android platform which allows users to make some notes and store 'em locally. _TODO:_ Describe in more details
+
+## What's happening there?
+
+Originally, it was one of my curriculum projects, made in 2016. 
+But, I decided to turn Sticky Notes into a small portfolio project 🙂
 
 ## Features
-* Basic operation with notes: creation, editing, deleting
-  * All notes saved to the server, Android app doesn't support offline storage
-* Sharing note to other user of the StickyNotes:
-  * Another users can comment your note if it was shared
-  * You can allow or deny to edit shared note to each user separately
-* Contacts (friends) (this needed for sharing notes):
-  * You can find and add another user to your contact book
-  * You can accept or reject friend request
+
+_TODO_
+
+## Screenshots
+
+_TODO_
+
+# Usage
+
+_TODO_
+
+# Tech Stack
+
+_TODO_
+
+# Contributing
+
+_TODO_
+
+# Licence
+
+_TODO_
