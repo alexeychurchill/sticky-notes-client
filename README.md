@@ -1,6 +1,4 @@
-# Sticky Notes
-
-_TODO_
+_TODO:_ Add logo and table of contents
 
 # About the project
 
