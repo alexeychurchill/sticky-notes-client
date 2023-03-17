@@ -8,7 +8,11 @@ import io.github.alexeychurchill.stickynotes.core.datetime.DateTimeFormatter
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryFactory
 import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
+import io.github.alexeychurchill.stickynotes.notes.domain.NotePin
+import io.github.alexeychurchill.stickynotes.notes.domain.PinNoteUseCase
 import io.github.alexeychurchill.stickynotes.notes.presentation.ModalState.*
+import io.github.alexeychurchill.stickynotes.notes.presentation.NoteEntryAction.Delete
+import io.github.alexeychurchill.stickynotes.notes.presentation.NoteEntryAction.Pin
 import io.github.alexeychurchill.stickynotes.tags.domain.Tag
 import io.github.alexeychurchill.stickynotes.tags.domain.TagRepository
 import kotlinx.coroutines.flow.*
@@ -23,6 +27,7 @@ class UserNotesViewModel @Inject constructor(
     private val noteEntryFactory: NoteEntryFactory,
     private val _dateTimeFormatter: DateTimeFormatter,
     private val tagRepository: TagRepository,
+    private val pinNoteUseCase: PinNoteUseCase,
 ) : ViewModel() {
 
     private val _openNoteEvent = MutableSharedFlow<String>()
@@ -32,6 +37,8 @@ class UserNotesViewModel @Inject constructor(
     private val _isCreateNoteMode = MutableStateFlow(false)
 
     private val _noteToDelete = MutableStateFlow<NoteEntry?>(null)
+
+    private val _cannotPinDueToLimitId = MutableStateFlow<Long?>(null)
 
     private val selectedTags = MutableStateFlow(emptySet<String>())
 
@@ -46,12 +53,42 @@ class UserNotesViewModel @Inject constructor(
         )
     }
 
-    val noteEntries: StateFlow<List<NoteEntry>> by lazy {
-        createNotesState().flowOn(dispatchers.default).stateIn(
-            scope = viewModelScope,
-            started = Eagerly,
-            initialValue = emptyList(),
-        )
+    val noteEntries: StateFlow<List<NoteEntryUiModel>> by lazy {
+        combine(
+            createNotesState(),
+            noteEntryRepository.pinned,
+        ) { notes, pinned ->
+            val notesMap = notes.associateBy(keySelector = { it.id.toLong() })
+            val pinnedSet = pinned.map(NotePin::second).toSet()
+
+            val pinnedNotes = pinned
+                .sortedBy(NotePin::first)
+                .map(NotePin::second)
+                .mapNotNull { pinnedNoteId -> notesMap[pinnedNoteId] }
+                .map { pinnedNote ->
+                    NoteEntryUiModel(
+                        entry = pinnedNote,
+                        isPinned = true,
+                    )
+                }
+
+            val notPinnedNotes = notes
+                .filterNot { entry -> pinnedSet.contains(entry.id.toLong()) }
+                .map { entry ->
+                    NoteEntryUiModel(
+                        entry = entry,
+                        isPinned = false,
+                    )
+                }
+
+            pinnedNotes + notPinnedNotes
+        }
+            .flowOn(dispatchers.default)
+            .stateIn(
+                scope = viewModelScope,
+                started = Eagerly,
+                initialValue = emptyList(),
+            )
     }
 
     val openNoteEvent: Flow<String>
@@ -71,9 +108,8 @@ class UserNotesViewModel @Inject constructor(
             }
         }
 
-    fun reload() {
-        /** TODO: Implement Reload **/
-    }
+    val cannotPinDueToLimitId: StateFlow<Long?>
+        get() = _cannotPinDueToLimitId
 
     fun openNote(id: String) {
         viewModelScope.launch {
@@ -102,10 +138,13 @@ class UserNotesViewModel @Inject constructor(
         }
     }
 
-    /** TODO: Consider moving to upper level **/
-    fun deleteNote(entry: NoteEntry) {
+    fun handleNoteAction(action: NoteEntryAction) {
         viewModelScope.launch {
-            _noteToDelete.emit(entry)
+            when (action) {
+                is Delete -> _noteToDelete.emit(action.entry)
+
+                is Pin -> pinNote(action.id)
+            }
         }
     }
 
@@ -127,6 +166,19 @@ class UserNotesViewModel @Inject constructor(
             selectedTags.update { selected ->
                 if (selected.contains(name)) selected - name else selected + name
             }
+        }
+    }
+
+    fun proceedPinOverLimit(cannotPinDueToLimitId: Long) {
+        viewModelScope.launch {
+            pinNoteUseCase(cannotPinDueToLimitId, true)
+            _cannotPinDueToLimitId.emit(null)
+        }
+    }
+
+    fun cancelPinOverLimit() {
+        viewModelScope.launch {
+            _cannotPinDueToLimitId.emit(null)
         }
     }
 
@@ -181,6 +233,14 @@ class UserNotesViewModel @Inject constructor(
             .filter { tagNote -> selectedTags.contains(tagNote.first.name) }
             .map { tagNote -> tagNote.second }
             .toSet()
+    }
+
+    private suspend fun pinNote(noteId: Long) {
+        val pinResult = pinNoteUseCase(noteId, false)
+        if (pinResult == PinNoteUseCase.Result.LimitReached) {
+            _cannotPinDueToLimitId.emit(noteId)
+            return
+        }
     }
 
     private suspend fun handleError(e: Throwable) {

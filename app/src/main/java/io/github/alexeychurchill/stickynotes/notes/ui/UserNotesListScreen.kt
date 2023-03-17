@@ -22,7 +22,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.app.Route
-import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.core.ui.ProgressDialog
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Medium
 import io.github.alexeychurchill.stickynotes.core.ui.space
@@ -87,14 +86,15 @@ fun UserNotesListScreen(
                                 .clip(NoteEntryShape),
                             state = notesListState,
                         ) {
-                            items(notes, key = NoteEntry::id) { entry ->
+                            items(notes, key = { it.entry.id }) { listItem ->
                                 NoteEntryListItem(
                                     modifier = Modifier
                                         .padding(bottom = Medium)
                                         .animateItemPlacement(),
-                                    noteEntry = entry,
+                                    noteEntry = listItem.entry,
+                                    isPinned = listItem.isPinned,
+                                    onEntryAction = viewModel::handleNoteAction,
                                     onEntryClick = { viewModel.openNote(it.id) },
-                                    onEntryDelete = viewModel::deleteNote,
                                 )
                             }
 
@@ -151,5 +151,13 @@ private fun Dialogs(viewModel: UserNotesViewModel) {
         is InProgress -> ProgressDialog()
 
         is ModalState.None -> { /** NO OP **/ }
+    }
+
+    val cannotPinDueToLimitId by viewModel.cannotPinDueToLimitId.collectAsState()
+    cannotPinDueToLimitId?.let { id ->
+        PinLimitStateDialog(
+            onProceed = { viewModel.proceedPinOverLimit(id) },
+            onDismiss = { viewModel.cancelPinOverLimit() },
+        )
     }
 }

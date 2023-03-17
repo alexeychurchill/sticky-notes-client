@@ -5,7 +5,9 @@ import androidx.room.RoomDatabase
 import io.github.alexeychurchill.stickynotes.note_editor.data.NoteTextDao
 import io.github.alexeychurchill.stickynotes.note_editor.data.RoomNoteText
 import io.github.alexeychurchill.stickynotes.notes.data.NoteDao
+import io.github.alexeychurchill.stickynotes.notes.data.PinnedNotesDao
 import io.github.alexeychurchill.stickynotes.notes.data.RoomNoteEntry
+import io.github.alexeychurchill.stickynotes.notes.data.RoomPinnedNote
 import io.github.alexeychurchill.stickynotes.tags.data.RoomTag
 import io.github.alexeychurchill.stickynotes.tags.data.TagDao
 
@@ -15,6 +17,7 @@ import io.github.alexeychurchill.stickynotes.tags.data.TagDao
         RoomNoteEntry::class,
         RoomNoteText::class,
         RoomTag::class,
+        RoomPinnedNote::class,
     ],
 )
 abstract class Database : RoomDatabase() {
@@ -24,4 +27,6 @@ abstract class Database : RoomDatabase() {
     abstract fun noteTextDao(): NoteTextDao
 
     abstract fun tagDao(): TagDao
+
+    abstract fun pinnedDao(): PinnedNotesDao
 }

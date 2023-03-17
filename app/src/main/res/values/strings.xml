@@ -9,6 +9,7 @@
     <string name="generic_reject">Reject</string>
     <string name="generic_add">Add</string>
     <string name="generic_create">Create</string>
+    <string name="generic_proceed">Proceed</string>
 
     <string name="dialog_create_note_title">Create note</string>
     <string name="dialog_create_note_title_label">Title</string>
@@ -16,7 +17,11 @@
     <string name="dialog_delete_note_title">Delete note</string>
     <string name="dialog_delete_note_text">Are you sure want to delete <b>%s</b>?</string>
 
+    <string name="dialog_proceed_pin_title">Pin Note</string>
+    <string name="dialog_proceed_pin_text">Max pinned count reached :(\nIf you proceed pinning this note, the bottom one will be unpinned</string>
+
     <string name="screen_note_list_title">Notes</string>
+    <string name="screen_note_list_pin">Pin</string>
 
     <string name="screen_note_title">Edit</string>
     <string name="screen_note_title_hint">Title</string>
