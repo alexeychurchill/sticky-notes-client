@@ -4,6 +4,7 @@ import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
 import io.github.alexeychurchill.stickynotes.core.data.Database
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
+import io.github.alexeychurchill.stickynotes.notes.domain.NotePin
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -19,6 +20,16 @@ class RoomNoteEntryRepository @Inject constructor(
         get() = db.noteEntryDao()
             .allNotesFlow()
             .map { entities -> entities.map(RoomNoteEntry::toDomain) }
+            .flowOn(dispatchers.io)
+
+    override val pinned: Flow<List<NotePin>>
+        get() = db.pinnedDao()
+            .flowAll()
+            .map { entities ->
+                entities
+                    .map { pinnedEntity -> pinnedEntity.order to pinnedEntity.noteId }
+                    .sortedBy(NotePin::first)
+            }
             .flowOn(dispatchers.io)
 
     override suspend fun getEntry(id: String): NoteEntry? {
@@ -40,6 +51,24 @@ class RoomNoteEntryRepository @Inject constructor(
         val noteId = id.toLongOrNull() ?: return
         withContext(dispatchers.io) {
             db.noteEntryDao().deleteNoteEntry(noteId)
+        }
+    }
+
+    override suspend fun getPinned(): List<NotePin> = withContext(dispatchers.io) {
+        db.pinnedDao().getAll()
+            .map { entity -> entity.order to entity.noteId }
+            .sortedBy(NotePin::first)
+    }
+
+    override suspend fun savePinned(pinned: List<NotePin>) = withContext(dispatchers.io) {
+        db.runInTransaction {
+            db.pinnedDao().run {
+                deleteAll()
+                val pinnedEntities = pinned.map { (order, noteId) ->
+                    RoomPinnedNote(order = order, noteId = noteId)
+                }
+                insert(pinnedEntities)
+            }
         }
     }
 }

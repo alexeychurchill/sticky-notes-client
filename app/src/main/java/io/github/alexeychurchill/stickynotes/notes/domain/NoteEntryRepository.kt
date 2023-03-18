@@ -7,9 +7,15 @@ interface NoteEntryRepository {
 
     val allNotes: Flow<List<NoteEntry>>
 
+    val pinned: Flow<List<NotePin>>
+
     suspend fun getEntry(id: String): NoteEntry?
 
     suspend fun create(entry: NoteEntry): NoteEntry?
 
     suspend fun delete(id: String)
+
+    suspend fun getPinned(): List<NotePin>
+
+    suspend fun savePinned(pinned: List<NotePin>)
 }

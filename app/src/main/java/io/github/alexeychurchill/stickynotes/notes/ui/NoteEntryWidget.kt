@@ -2,6 +2,9 @@ package io.github.alexeychurchill.stickynotes.notes.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.PushPin
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -14,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.alexeychurchill.stickynotes.core.datetime.RegularDateTimeFormatter
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.core.ui.Spacing.Big
@@ -30,6 +34,7 @@ val NoteEntryShape: Shape
 @Composable
 fun NoteEntryWidget(
     modifier: Modifier = Modifier,
+    isPinned: Boolean = false,
     onClick: () -> Unit = { },
     endItem: @Composable (() -> Unit)? = null,
     entry: NoteEntry,
@@ -58,12 +63,31 @@ fun NoteEntryWidget(
                             end = endItem?.let { Regular } ?: Big,
                         ),
                 ) {
-                    Text(
-                        text = entry.title,
-                        style = MaterialTheme.typography.titleLarge,
-                        maxLines = 1,
-                        overflow = Ellipsis,
-                    )
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        if (isPinned) {
+                            Icon(
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .aspectRatio(ratio = 1.0f)
+                                    .align(CenterVertically),
+                                imageVector = Icons.Rounded.PushPin,
+                                contentDescription = null,
+                            )
+
+                            Spacer(
+                                modifier = Modifier.size(
+                                    width = Regular, height = 0.dp,
+                                )
+                            )
+                        }
+
+                        Text(
+                            text = entry.title,
+                            style = MaterialTheme.typography.titleLarge,
+                            maxLines = 1,
+                            overflow = Ellipsis,
+                        )
+                    }
 
                     Text(
                         text = entry.subject ?: "",
@@ -117,7 +141,8 @@ private fun NoteEntry_Preview() {
                         title = "Test entry",
                         subject = "Test subject",
                         changedAt = someTime,
-                    )
+                    ),
+                     isPinned = true,
                 )
             }
         }
