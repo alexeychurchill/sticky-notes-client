@@ -2,6 +2,7 @@ package io.github.alexeychurchill.stickynotes.notes.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Block
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.PushPin
 import androidx.compose.material3.DropdownMenu
@@ -14,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import io.github.alexeychurchill.stickynotes.R
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
 import io.github.alexeychurchill.stickynotes.notes.presentation.NoteEntryAction
+import io.github.alexeychurchill.stickynotes.notes.presentation.NoteEntryAction.*
 
 @Composable
 fun NoteEntryListItemMenu(
@@ -28,14 +30,18 @@ fun NoteEntryListItemMenu(
         onDismissRequest = onDismiss,
     ) {
 
-        if (!isPinned) {
+        if (isPinned) {
+            Item(titleResId = R.string.screen_note_list_unpin, icon = Icons.Rounded.Block) {
+                onAction(Unpin(id = noteEntry.id.toLong()))
+            }
+        } else {
             Item(titleResId = R.string.screen_note_list_pin, icon = Icons.Rounded.PushPin) {
-                onAction(NoteEntryAction.Pin(id = noteEntry.id.toLong()))
+                onAction(Pin(id = noteEntry.id.toLong()))
             }
         }
 
         Item(titleResId = R.string.generic_delete, icon = Icons.Rounded.Delete) {
-            onAction(NoteEntryAction.Delete(noteEntry))
+            onAction(Delete(noteEntry))
         }
     }
 }

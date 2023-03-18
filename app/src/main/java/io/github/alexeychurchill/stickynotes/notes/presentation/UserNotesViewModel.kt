@@ -6,13 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.alexeychurchill.stickynotes.core.DispatcherProvider
 import io.github.alexeychurchill.stickynotes.core.datetime.DateTimeFormatter
 import io.github.alexeychurchill.stickynotes.core.model.NoteEntry
-import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryFactory
-import io.github.alexeychurchill.stickynotes.notes.domain.NoteEntryRepository
-import io.github.alexeychurchill.stickynotes.notes.domain.NotePin
-import io.github.alexeychurchill.stickynotes.notes.domain.PinNoteUseCase
+import io.github.alexeychurchill.stickynotes.notes.domain.*
 import io.github.alexeychurchill.stickynotes.notes.presentation.ModalState.*
-import io.github.alexeychurchill.stickynotes.notes.presentation.NoteEntryAction.Delete
-import io.github.alexeychurchill.stickynotes.notes.presentation.NoteEntryAction.Pin
+import io.github.alexeychurchill.stickynotes.notes.presentation.NoteEntryAction.*
 import io.github.alexeychurchill.stickynotes.tags.domain.Tag
 import io.github.alexeychurchill.stickynotes.tags.domain.TagRepository
 import kotlinx.coroutines.flow.*
@@ -28,6 +24,7 @@ class UserNotesViewModel @Inject constructor(
     private val _dateTimeFormatter: DateTimeFormatter,
     private val tagRepository: TagRepository,
     private val pinNoteUseCase: PinNoteUseCase,
+    private val unpinNoteUseCase: UnpinNoteUseCase,
 ) : ViewModel() {
 
     private val _openNoteEvent = MutableSharedFlow<String>()
@@ -144,6 +141,8 @@ class UserNotesViewModel @Inject constructor(
                 is Delete -> _noteToDelete.emit(action.entry)
 
                 is Pin -> pinNote(action.id)
+
+                is Unpin -> unpinNoteUseCase(action.id)
             }
         }
     }

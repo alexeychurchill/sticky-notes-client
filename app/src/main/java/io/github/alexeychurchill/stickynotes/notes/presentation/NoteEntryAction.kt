@@ -9,4 +9,6 @@ sealed class NoteEntryAction(
     data class Delete(val entry: NoteEntry) : NoteEntryAction(entry.id.toLong())
 
     data class Pin(override val id: Long) : NoteEntryAction(id)
+
+    data class Unpin(override val id: Long) : NoteEntryAction(id)
 }

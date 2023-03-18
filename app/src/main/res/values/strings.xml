@@ -22,6 +22,7 @@
 
     <string name="screen_note_list_title">Notes</string>
     <string name="screen_note_list_pin">Pin</string>
+    <string name="screen_note_list_unpin">Unpin</string>
 
     <string name="screen_note_title">Edit</string>
     <string name="screen_note_title_hint">Title</string>
